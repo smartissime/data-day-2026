@@ -38,4 +38,5 @@ Organisation : [smartissime](https://github.com/smartissime)
 ---
 
 © ARCHIA365 — Bureau 326, 59 rue de Ponthieu, 75008 Paris  
+Licence : [CC BY 4.0](./LICENSE) — libre de partage et d’adaptation avec attribution.  
 Voir aussi [COPYRIGHT.md](./COPYRIGHT.md).
