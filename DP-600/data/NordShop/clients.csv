@@ -1,0 +1,201 @@
+ClientID,Prenom,Nom,Email,Ville,Region,Segment,DateInscription
+CL0001,Nathan,Leroy,nathan.leroy1@example.com,Paris,Île-de-France,Grand compte,2021-12-21
+CL0002,Hugo,Michel,hugo.michel2@example.com,Montpellier,Occitanie,Grand compte,2025-01-26
+CL0003,Manon,Laurent,manon.laurent3@example.com,Metz,Est,Grand compte,2021-11-07
+CL0004,Lucas,Thomas,lucas.thomas4@example.com,Nancy,Est,Grand compte,2023-03-23
+CL0005,Paul,Robert,paul.robert5@example.com,Paris,Île-de-France,Grand compte,2022-10-14
+CL0006,Tom,David,tom.david6@example.com,Nantes,Ouest,Grand compte,2021-01-28
+CL0007,Léa,Michel,léa.michel7@example.com,Metz,Est,Professionnel,2025-11-16
+CL0008,Emma,Fournier,emma.fournier8@example.com,Toulouse,Occitanie,Particulier,2022-07-28
+CL0009,Tom,Laurent,tom.laurent9@example.com,Nancy,Est,Professionnel,2022-08-15
+CL0010,Camille,Thomas,camille.thomas10@example.com,Tourcoing,Nord,Professionnel,2021-03-17
+CL0011,Sarah,Vincent,sarah.vincent11@example.com,Lyon,Auvergne-Rhône-Alpes,Particulier,2021-06-20
+CL0012,Louis,Durand,louis.durand12@example.com,Lyon,Auvergne-Rhône-Alpes,Grand compte,2022-10-22
+CL0013,Inès,Vincent,inès.vincent13@example.com,Brest,Bretagne,Grand compte,2025-07-01
+CL0014,Camille,Morel,camille.morel14@example.com,Nîmes,Occitanie,Grand compte,2025-02-22
+CL0015,Camille,David,camille.david15@example.com,Rennes,Ouest,Grand compte,2022-12-16
+CL0016,Julie,Simon,julie.simon16@example.com,Angers,Ouest,Particulier,2022-01-27
+CL0017,Julie,Laurent,julie.laurent17@example.com,Toulouse,Occitanie,Particulier,2022-10-05
+CL0018,Inès,Dubois,inès.dubois18@example.com,Grenoble,Auvergne-Rhône-Alpes,Grand compte,2024-08-17
+CL0019,Adam,Petit,adam.petit19@example.com,Nancy,Est,Particulier,2025-09-02
+CL0020,Louis,Laurent,louis.laurent20@example.com,Brest,Bretagne,Particulier,2023-08-19
+CL0021,Anna,Bernard,anna.bernard21@example.com,Paris,Île-de-France,Particulier,2025-10-07
+CL0022,Manon,Roux,manon.roux22@example.com,Montpellier,Occitanie,Particulier,2021-05-26
+CL0023,Sarah,Morel,sarah.morel23@example.com,Tourcoing,Nord,Grand compte,2025-12-28
+CL0024,Anna,David,anna.david24@example.com,Metz,Est,Grand compte,2025-01-14
+CL0025,Léa,Dubois,léa.dubois25@example.com,Montpellier,Occitanie,Particulier,2022-06-07
+CL0026,Julie,Roux,julie.roux26@example.com,Roubaix,Nord,Grand compte,2022-04-13
+CL0027,Hugo,Bernard,hugo.bernard27@example.com,Versailles,Île-de-France,Grand compte,2025-02-10
+CL0028,Manon,Bernard,manon.bernard28@example.com,Lille,Nord,Grand compte,2025-01-03
+CL0029,Louis,Roux,louis.roux29@example.com,Boulogne-Billancourt,Île-de-France,Professionnel,2021-01-10
+CL0030,Inès,Roux,inès.roux30@example.com,Strasbourg,Est,Professionnel,2025-09-19
+CL0031,Sarah,Garcia,sarah.garcia31@example.com,Versailles,Île-de-France,Professionnel,2025-08-14
+CL0032,Tom,Thomas,tom.thomas32@example.com,Nîmes,Occitanie,Grand compte,2021-02-24
+CL0033,Chloé,Martin,chloé.martin33@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Grand compte,2025-04-15
+CL0034,Sarah,Lefebvre,sarah.lefebvre34@example.com,Versailles,Île-de-France,Professionnel,2024-08-18
+CL0035,Camille,Martin,camille.martin35@example.com,Nice,Sud,Grand compte,2021-01-10
+CL0036,Anna,Bertrand,anna.bertrand36@example.com,Nancy,Est,Particulier,2023-03-24
+CL0037,Nathan,Thomas,nathan.thomas37@example.com,Paris,Île-de-France,Particulier,2025-07-08
+CL0038,Sarah,Dubois,sarah.dubois38@example.com,Brest,Bretagne,Particulier,2022-06-10
+CL0039,Léa,Fournier,léa.fournier39@example.com,Grenoble,Auvergne-Rhône-Alpes,Grand compte,2025-10-28
+CL0040,Inès,Dubois,inès.dubois40@example.com,Montpellier,Occitanie,Grand compte,2025-11-03
+CL0041,Nathan,Robert,nathan.robert41@example.com,Versailles,Île-de-France,Professionnel,2024-05-01
+CL0042,Nathan,Thomas,nathan.thomas42@example.com,Brest,Bretagne,Grand compte,2021-09-19
+CL0043,Camille,Lefebvre,camille.lefebvre43@example.com,Brest,Bretagne,Professionnel,2021-09-24
+CL0044,Manon,Garcia,manon.garcia44@example.com,Nancy,Est,Grand compte,2022-10-26
+CL0045,Louis,David,louis.david45@example.com,Nice,Sud,Professionnel,2025-10-01
+CL0046,Chloé,Dubois,chloé.dubois46@example.com,Versailles,Île-de-France,Particulier,2025-04-02
+CL0047,Chloé,Vincent,chloé.vincent47@example.com,Toulouse,Occitanie,Professionnel,2025-04-26
+CL0048,Jules,Garcia,jules.garcia48@example.com,Lyon,Auvergne-Rhône-Alpes,Grand compte,2025-09-27
+CL0049,Enzo,Robert,enzo.robert49@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Professionnel,2021-08-03
+CL0050,Yanis,Robert,yanis.robert50@example.com,Nice,Sud,Particulier,2025-03-06
+CL0051,Camille,Vincent,camille.vincent51@example.com,Grenoble,Auvergne-Rhône-Alpes,Professionnel,2025-09-15
+CL0052,Enzo,Leroy,enzo.leroy52@example.com,Lille,Nord,Professionnel,2021-02-20
+CL0053,Anna,Laurent,anna.laurent53@example.com,Versailles,Île-de-France,Grand compte,2025-12-14
+CL0054,Camille,Bertrand,camille.bertrand54@example.com,Metz,Est,Particulier,2024-12-26
+CL0055,Nathan,David,nathan.david55@example.com,Strasbourg,Est,Professionnel,2021-12-18
+CL0056,Paul,Thomas,paul.thomas56@example.com,Montpellier,Occitanie,Professionnel,2022-07-20
+CL0057,Emma,Simon,emma.simon57@example.com,Strasbourg,Est,Professionnel,2022-09-03
+CL0058,Camille,Fournier,camille.fournier58@example.com,Brest,Bretagne,Professionnel,2021-10-04
+CL0059,Chloé,Michel,chloé.michel59@example.com,Metz,Est,Particulier,2024-01-19
+CL0060,Anna,Bernard,anna.bernard60@example.com,Lyon,Auvergne-Rhône-Alpes,Particulier,2023-02-20
+CL0061,Anna,Garcia,anna.garcia61@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Professionnel,2021-01-18
+CL0062,Julie,Fournier,julie.fournier62@example.com,Versailles,Île-de-France,Professionnel,2022-12-12
+CL0063,Enzo,Vincent,enzo.vincent63@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Particulier,2021-04-09
+CL0064,Sarah,David,sarah.david64@example.com,Metz,Est,Grand compte,2021-01-16
+CL0065,Inès,Bertrand,inès.bertrand65@example.com,Toulouse,Occitanie,Grand compte,2023-07-03
+CL0066,Nathan,Roux,nathan.roux66@example.com,Strasbourg,Est,Professionnel,2022-03-04
+CL0067,Manon,Thomas,manon.thomas67@example.com,Rennes,Ouest,Professionnel,2025-02-27
+CL0068,Anna,Vincent,anna.vincent68@example.com,Metz,Est,Grand compte,2024-04-05
+CL0069,Camille,Moreau,camille.moreau69@example.com,Nice,Sud,Professionnel,2024-01-25
+CL0070,Paul,Roux,paul.roux70@example.com,Nice,Sud,Grand compte,2023-08-01
+CL0071,Julie,Leroy,julie.leroy71@example.com,Marseille,Sud,Grand compte,2023-07-03
+CL0072,Paul,Michel,paul.michel72@example.com,Versailles,Île-de-France,Grand compte,2022-03-01
+CL0073,Paul,Martin,paul.martin73@example.com,Lille,Nord,Particulier,2023-02-27
+CL0074,Chloé,Lefebvre,chloé.lefebvre74@example.com,Grenoble,Auvergne-Rhône-Alpes,Professionnel,2023-08-04
+CL0075,Enzo,Robert,enzo.robert75@example.com,Nîmes,Occitanie,Particulier,2021-10-12
+CL0076,Inès,Simon,inès.simon76@example.com,Toulon,Sud,Particulier,2022-02-13
+CL0077,Chloé,Durand,chloé.durand77@example.com,Rennes,Ouest,Professionnel,2021-06-21
+CL0078,Nathan,Simon,nathan.simon78@example.com,Grenoble,Auvergne-Rhône-Alpes,Professionnel,2023-08-05
+CL0079,Hugo,Moreau,hugo.moreau79@example.com,Versailles,Île-de-France,Particulier,2025-04-16
+CL0080,Paul,Leroy,paul.leroy80@example.com,Metz,Est,Grand compte,2022-02-04
+CL0081,Camille,Martin,camille.martin81@example.com,Nantes,Ouest,Particulier,2024-02-27
+CL0082,Emma,Roux,emma.roux82@example.com,Brest,Bretagne,Particulier,2025-01-08
+CL0083,Sarah,Robert,sarah.robert83@example.com,Rennes,Bretagne,Professionnel,2025-04-22
+CL0084,Camille,Durand,camille.durand84@example.com,Boulogne-Billancourt,Île-de-France,Professionnel,2024-04-14
+CL0085,Manon,Moreau,manon.moreau85@example.com,Nice,Sud,Grand compte,2023-08-02
+CL0086,Léa,Durand,léa.durand86@example.com,Brest,Bretagne,Grand compte,2023-11-12
+CL0087,Nathan,Simon,nathan.simon87@example.com,Nantes,Ouest,Grand compte,2021-03-14
+CL0088,Zoé,Simon,zoé.simon88@example.com,Angers,Ouest,Particulier,2025-12-15
+CL0089,Nathan,Michel,nathan.michel89@example.com,Montpellier,Occitanie,Grand compte,2024-01-27
+CL0090,Inès,Durand,inès.durand90@example.com,Montpellier,Occitanie,Particulier,2023-09-19
+CL0091,Paul,Moreau,paul.moreau91@example.com,Grenoble,Auvergne-Rhône-Alpes,Grand compte,2024-05-10
+CL0092,Adam,Garcia,adam.garcia92@example.com,Angers,Ouest,Professionnel,2023-04-16
+CL0093,Julie,Garcia,julie.garcia93@example.com,Lyon,Auvergne-Rhône-Alpes,Particulier,2022-07-28
+CL0094,Zoé,Dubois,zoé.dubois94@example.com,Tourcoing,Nord,Grand compte,2021-06-05
+CL0095,Nathan,Moreau,nathan.moreau95@example.com,Paris,Île-de-France,Grand compte,2024-02-09
+CL0096,Camille,Fournier,camille.fournier96@example.com,Lille,Nord,Particulier,2024-10-17
+CL0097,Emma,Michel,emma.michel97@example.com,Paris,Île-de-France,Grand compte,2021-06-13
+CL0098,Yanis,Leroy,yanis.leroy98@example.com,Angers,Ouest,Particulier,2023-07-05
+CL0099,Nathan,Dubois,nathan.dubois99@example.com,Nancy,Est,Grand compte,2025-05-21
+CL0100,Anna,Simon,anna.simon100@example.com,Toulon,Sud,Grand compte,2025-10-11
+CL0101,Jules,Morel,jules.morel101@example.com,Versailles,Île-de-France,Particulier,2022-04-24
+CL0102,Zoé,Thomas,zoé.thomas102@example.com,Nancy,Est,Particulier,2022-10-20
+CL0103,Léa,Simon,léa.simon103@example.com,Strasbourg,Est,Grand compte,2021-02-15
+CL0104,Lucas,Fournier,lucas.fournier104@example.com,Versailles,Île-de-France,Particulier,2025-11-04
+CL0105,Camille,Robert,camille.robert105@example.com,Angers,Ouest,Professionnel,2021-02-27
+CL0106,Tom,Morel,tom.morel106@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Grand compte,2022-01-14
+CL0107,Jules,Bernard,jules.bernard107@example.com,Lyon,Auvergne-Rhône-Alpes,Particulier,2024-06-13
+CL0108,Anna,Leroy,anna.leroy108@example.com,Lyon,Auvergne-Rhône-Alpes,Particulier,2022-04-07
+CL0109,Zoé,Leroy,zoé.leroy109@example.com,Toulouse,Occitanie,Particulier,2024-10-27
+CL0110,Paul,Leroy,paul.leroy110@example.com,Roubaix,Nord,Grand compte,2021-01-02
+CL0111,Sarah,Thomas,sarah.thomas111@example.com,Marseille,Sud,Professionnel,2021-08-02
+CL0112,Anna,Dubois,anna.dubois112@example.com,Nantes,Ouest,Professionnel,2022-08-11
+CL0113,Anna,Bernard,anna.bernard113@example.com,Nîmes,Occitanie,Grand compte,2021-07-19
+CL0114,Manon,Petit,manon.petit114@example.com,Montpellier,Occitanie,Particulier,2025-08-12
+CL0115,Jules,Garcia,jules.garcia115@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Grand compte,2022-03-25
+CL0116,Jules,Michel,jules.michel116@example.com,Vannes,Bretagne,Grand compte,2021-09-24
+CL0117,Julie,Michel,julie.michel117@example.com,Grenoble,Auvergne-Rhône-Alpes,Professionnel,2022-09-02
+CL0118,Paul,Simon,paul.simon118@example.com,Roubaix,Nord,Grand compte,2022-12-28
+CL0119,Zoé,Morel,zoé.morel119@example.com,Lyon,Auvergne-Rhône-Alpes,Professionnel,2025-12-17
+CL0120,Nathan,Michel,nathan.michel120@example.com,Nice,Sud,Professionnel,2021-10-22
+CL0121,Louis,Michel,louis.michel121@example.com,Versailles,Île-de-France,Grand compte,2023-04-15
+CL0122,Julie,Vincent,julie.vincent122@example.com,Angers,Ouest,Professionnel,2025-02-01
+CL0123,Manon,Roux,manon.roux123@example.com,Nancy,Est,Professionnel,2021-02-07
+CL0124,Lucas,Fournier,lucas.fournier124@example.com,Strasbourg,Est,Professionnel,2024-06-21
+CL0125,Paul,Morel,paul.morel125@example.com,Rennes,Ouest,Particulier,2022-06-10
+CL0126,Sarah,Petit,sarah.petit126@example.com,Montpellier,Occitanie,Grand compte,2023-07-03
+CL0127,Jules,Durand,jules.durand127@example.com,Metz,Est,Particulier,2025-07-22
+CL0128,Camille,Bertrand,camille.bertrand128@example.com,Grenoble,Auvergne-Rhône-Alpes,Grand compte,2021-12-26
+CL0129,Manon,Fournier,manon.fournier129@example.com,Strasbourg,Est,Professionnel,2025-09-26
+CL0130,Yanis,Martin,yanis.martin130@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Professionnel,2021-07-11
+CL0131,Léa,Morel,léa.morel131@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Particulier,2024-01-08
+CL0132,Julie,Thomas,julie.thomas132@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Particulier,2024-04-22
+CL0133,Manon,David,manon.david133@example.com,Tourcoing,Nord,Particulier,2023-10-03
+CL0134,Nathan,Fournier,nathan.fournier134@example.com,Angers,Ouest,Grand compte,2022-04-22
+CL0135,Hugo,Garcia,hugo.garcia135@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Grand compte,2023-08-22
+CL0136,Anna,David,anna.david136@example.com,Rennes,Bretagne,Professionnel,2023-12-26
+CL0137,Sarah,Robert,sarah.robert137@example.com,Brest,Bretagne,Grand compte,2021-02-10
+CL0138,Jules,Fournier,jules.fournier138@example.com,Boulogne-Billancourt,Île-de-France,Grand compte,2023-04-01
+CL0139,Chloé,Moreau,chloé.moreau139@example.com,Vannes,Bretagne,Particulier,2024-09-05
+CL0140,Sarah,Bernard,sarah.bernard140@example.com,Angers,Ouest,Grand compte,2025-05-01
+CL0141,Lucas,Simon,lucas.simon141@example.com,Montpellier,Occitanie,Grand compte,2021-06-16
+CL0142,Louis,Durand,louis.durand142@example.com,Nantes,Ouest,Particulier,2021-11-09
+CL0143,Julie,Leroy,julie.leroy143@example.com,Lyon,Auvergne-Rhône-Alpes,Grand compte,2022-07-24
+CL0144,Enzo,Bernard,enzo.bernard144@example.com,Nancy,Est,Particulier,2022-09-20
+CL0145,Julie,Bernard,julie.bernard145@example.com,Roubaix,Nord,Particulier,2022-04-06
+CL0146,Emma,Vincent,emma.vincent146@example.com,Lille,Nord,Grand compte,2024-08-21
+CL0147,Paul,Lefebvre,paul.lefebvre147@example.com,Tourcoing,Nord,Professionnel,2025-06-17
+CL0148,Louis,Simon,louis.simon148@example.com,Lyon,Auvergne-Rhône-Alpes,Professionnel,2025-08-15
+CL0149,Léa,Petit,léa.petit149@example.com,Metz,Est,Professionnel,2022-11-14
+CL0150,Enzo,Lefebvre,enzo.lefebvre150@example.com,Nice,Sud,Professionnel,2022-02-23
+CL0151,Adam,Petit,adam.petit151@example.com,Nantes,Ouest,Professionnel,2023-02-12
+CL0152,Louis,Laurent,louis.laurent152@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Professionnel,2024-11-19
+CL0153,Jules,Thomas,jules.thomas153@example.com,Nice,Sud,Grand compte,2024-08-25
+CL0154,Nathan,Vincent,nathan.vincent154@example.com,Brest,Bretagne,Particulier,2024-06-08
+CL0155,Hugo,Petit,hugo.petit155@example.com,Lille,Nord,Grand compte,2022-05-18
+CL0156,Adam,Fournier,adam.fournier156@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Particulier,2023-07-20
+CL0157,Lucas,Garcia,lucas.garcia157@example.com,Versailles,Île-de-France,Particulier,2023-09-19
+CL0158,Léa,David,léa.david158@example.com,Rennes,Ouest,Professionnel,2021-06-21
+CL0159,Louis,David,louis.david159@example.com,Grenoble,Auvergne-Rhône-Alpes,Particulier,2022-02-27
+CL0160,Jules,Leroy,jules.leroy160@example.com,Brest,Bretagne,Professionnel,2025-03-11
+CL0161,Jules,Robert,jules.robert161@example.com,Toulon,Sud,Grand compte,2022-06-13
+CL0162,Inès,Martin,inès.martin162@example.com,Nice,Sud,Grand compte,2025-04-20
+CL0163,Yanis,Moreau,yanis.moreau163@example.com,Nancy,Est,Grand compte,2021-10-27
+CL0164,Zoé,Laurent,zoé.laurent164@example.com,Metz,Est,Professionnel,2022-04-18
+CL0165,Tom,Garcia,tom.garcia165@example.com,Nîmes,Occitanie,Professionnel,2023-08-09
+CL0166,Hugo,Bernard,hugo.bernard166@example.com,Nice,Sud,Grand compte,2025-12-27
+CL0167,Julie,Leroy,julie.leroy167@example.com,Lyon,Auvergne-Rhône-Alpes,Professionnel,2024-11-10
+CL0168,Adam,Vincent,adam.vincent168@example.com,Vannes,Bretagne,Professionnel,2022-09-22
+CL0169,Manon,Thomas,manon.thomas169@example.com,Brest,Bretagne,Professionnel,2023-06-18
+CL0170,Anna,Robert,anna.robert170@example.com,Roubaix,Nord,Professionnel,2023-10-02
+CL0171,Léa,Martin,léa.martin171@example.com,Brest,Bretagne,Grand compte,2022-12-26
+CL0172,Hugo,Fournier,hugo.fournier172@example.com,Lyon,Auvergne-Rhône-Alpes,Particulier,2024-10-20
+CL0173,Adam,David,adam.david173@example.com,Rennes,Ouest,Professionnel,2025-12-16
+CL0174,Anna,Thomas,anna.thomas174@example.com,Rennes,Bretagne,Particulier,2024-06-03
+CL0175,Emma,Moreau,emma.moreau175@example.com,Angers,Ouest,Grand compte,2025-07-18
+CL0176,Anna,Dubois,anna.dubois176@example.com,Toulouse,Occitanie,Particulier,2021-08-22
+CL0177,Léa,Dubois,léa.dubois177@example.com,Toulon,Sud,Grand compte,2023-09-04
+CL0178,Paul,Bernard,paul.bernard178@example.com,Nantes,Ouest,Professionnel,2022-03-21
+CL0179,Jules,Leroy,jules.leroy179@example.com,Lille,Nord,Particulier,2022-08-13
+CL0180,Jules,Morel,jules.morel180@example.com,Boulogne-Billancourt,Île-de-France,Professionnel,2023-09-03
+CL0181,Chloé,Bernard,chloé.bernard181@example.com,Rennes,Bretagne,Particulier,2024-12-08
+CL0182,Paul,Robert,paul.robert182@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Professionnel,2022-10-14
+CL0183,Paul,Fournier,paul.fournier183@example.com,Marseille,Sud,Particulier,2021-12-18
+CL0184,Inès,Garcia,inès.garcia184@example.com,Lyon,Auvergne-Rhône-Alpes,Professionnel,2021-06-07
+CL0185,Enzo,Garcia,enzo.garcia185@example.com,Grenoble,Auvergne-Rhône-Alpes,Particulier,2024-06-27
+CL0186,Enzo,Garcia,enzo.garcia186@example.com,Marseille,Sud,Professionnel,2021-02-04
+CL0187,Julie,Vincent,julie.vincent187@example.com,Grenoble,Auvergne-Rhône-Alpes,Particulier,2025-06-27
+CL0188,Enzo,Dubois,enzo.dubois188@example.com,Rennes,Bretagne,Grand compte,2021-10-12
+CL0189,Emma,Martin,emma.martin189@example.com,Marseille,Sud,Particulier,2025-04-08
+CL0190,Jules,Petit,jules.petit190@example.com,Boulogne-Billancourt,Île-de-France,Professionnel,2022-02-09
+CL0191,Léa,Roux,léa.roux191@example.com,Strasbourg,Est,Professionnel,2025-09-26
+CL0192,Chloé,Laurent,chloé.laurent192@example.com,Nîmes,Occitanie,Grand compte,2023-01-10
+CL0193,Tom,Bertrand,tom.bertrand193@example.com,Nantes,Ouest,Grand compte,2024-07-22
+CL0194,Jules,Moreau,jules.moreau194@example.com,Versailles,Île-de-France,Professionnel,2023-08-23
+CL0195,Camille,Martin,camille.martin195@example.com,Rennes,Bretagne,Particulier,2022-03-27
+CL0196,Chloé,Simon,chloé.simon196@example.com,Clermont-Ferrand,Auvergne-Rhône-Alpes,Particulier,2022-11-21
+CL0197,Anna,Moreau,anna.moreau197@example.com,Paris,Île-de-France,Particulier,2025-11-01
+CL0198,Tom,Morel,tom.morel198@example.com,Toulon,Sud,Particulier,2023-11-24
+CL0199,Tom,Petit,tom.petit199@example.com,Boulogne-Billancourt,Île-de-France,Particulier,2024-02-21
+CL0200,Lucas,Fournier,lucas.fournier200@example.com,Rennes,Bretagne,Grand compte,2023-07-09

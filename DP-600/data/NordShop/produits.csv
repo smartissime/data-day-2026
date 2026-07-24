@@ -1,0 +1,61 @@
+ProductKey,NomProduit,Categorie,SousCategorie,PrixUnitaire,CoutUnitaire,Fournisseur
+PR0001,Café en grains 101,Maison,Sous-catégorie entretien,21.84,12.92,Fournisseur 8
+PR0002,Bougie parfumée 102,Bien-être,Sous-catégorie cosmétique,9.78,6.64,Fournisseur 2
+PR0003,Pâtes complètes 103,Frais,Sous-catégorie viandes,35.08,22.50,Fournisseur 6
+PR0004,Crème hydratante 104,Frais,Sous-catégorie viandes,20.05,12.75,Fournisseur 4
+PR0005,Poulet fermier 105,Frais,Sous-catégorie produits laitiers,28.46,18.78,Fournisseur 6
+PR0006,Lessive écologique 106,Maison,Sous-catégorie décoration,24.64,14.90,Fournisseur 5
+PR0007,Jus d'orange 107,Bien-être,Sous-catégorie hygiène,41.45,30.02,Fournisseur 12
+PR0008,Coussin décoratif 108,Frais,Sous-catégorie fruits & légumes,38.19,25.87,Fournisseur 8
+PR0009,Eau pétillante 109,Frais,Sous-catégorie viandes,12.12,7.82,Fournisseur 11
+PR0010,Liquide vaisselle 110,Frais,Sous-catégorie produits laitiers,46.91,29.52,Fournisseur 11
+PR0011,Bougie parfumée 111,Frais,Sous-catégorie produits laitiers,26.54,18.08,Fournisseur 6
+PR0012,Eau pétillante 112,Maison,Sous-catégorie entretien,8.66,6.08,Fournisseur 8
+PR0013,Liquide vaisselle 113,Maison,Sous-catégorie décoration,2.39,1.57,Fournisseur 8
+PR0014,Chocolat noir 114,Maison,Sous-catégorie entretien,38.59,23.07,Fournisseur 8
+PR0015,Coussin décoratif 115,Bien-être,Sous-catégorie hygiène,21.17,14.59,Fournisseur 9
+PR0016,Savon surgras 116,Bien-être,Sous-catégorie cosmétique,18.44,10.18,Fournisseur 5
+PR0017,Eau pétillante 117,Épicerie,Sous-catégorie sucrée,38.12,23.37,Fournisseur 5
+PR0018,Steak haché 118,Frais,Sous-catégorie viandes,43.18,31.14,Fournisseur 1
+PR0019,Fromage de chèvre 119,Frais,Sous-catégorie fruits & légumes,46.47,27.68,Fournisseur 6
+PR0020,Steak haché 120,Frais,Sous-catégorie produits laitiers,12.23,7.01,Fournisseur 12
+PR0021,Riz basmati 121,Frais,Sous-catégorie fruits & légumes,33.11,23.56,Fournisseur 8
+PR0022,Eau pétillante 122,Épicerie,Sous-catégorie sucrée,11.92,8.03,Fournisseur 3
+PR0023,Café en grains 123,Frais,Sous-catégorie fruits & légumes,46.07,29.67,Fournisseur 7
+PR0024,Bougie parfumée 124,Épicerie,Sous-catégorie boissons,19.99,13.70,Fournisseur 9
+PR0025,Bougie parfumée 125,Bien-être,Sous-catégorie hygiène,25.90,15.10,Fournisseur 12
+PR0026,Yaourt nature 126,Maison,Sous-catégorie décoration,26.43,15.59,Fournisseur 11
+PR0027,Tomates cerises 127,Frais,Sous-catégorie produits laitiers,39.56,27.52,Fournisseur 10
+PR0028,Salade verte 128,Épicerie,Sous-catégorie salée,22.38,14.69,Fournisseur 1
+PR0029,Crème hydratante 129,Bien-être,Sous-catégorie cosmétique,33.35,24.30,Fournisseur 10
+PR0030,Bougie parfumée 130,Épicerie,Sous-catégorie boissons,29.55,20.92,Fournisseur 11
+PR0031,Yaourt nature 131,Maison,Sous-catégorie décoration,18.53,13.76,Fournisseur 7
+PR0032,Lessive écologique 132,Épicerie,Sous-catégorie salée,14.64,9.09,Fournisseur 5
+PR0033,Poulet fermier 133,Frais,Sous-catégorie produits laitiers,43.03,24.98,Fournisseur 1
+PR0034,Savon surgras 134,Épicerie,Sous-catégorie boissons,23.59,13.60,Fournisseur 12
+PR0035,Salade verte 135,Bien-être,Sous-catégorie hygiène,9.72,6.84,Fournisseur 7
+PR0036,Steak haché 136,Bien-être,Sous-catégorie hygiène,9.50,6.14,Fournisseur 8
+PR0037,Savon surgras 137,Frais,Sous-catégorie fruits & légumes,5.87,3.33,Fournisseur 11
+PR0038,Savon surgras 138,Épicerie,Sous-catégorie salée,37.98,23.16,Fournisseur 1
+PR0039,Café en grains 139,Maison,Sous-catégorie entretien,32.18,18.00,Fournisseur 6
+PR0040,Riz basmati 140,Bien-être,Sous-catégorie cosmétique,28.82,19.16,Fournisseur 7
+PR0041,Coussin décoratif 141,Épicerie,Sous-catégorie salée,34.59,25.68,Fournisseur 8
+PR0042,Yaourt nature 142,Frais,Sous-catégorie viandes,35.55,21.54,Fournisseur 10
+PR0043,Bougie parfumée 143,Maison,Sous-catégorie entretien,39.23,22.61,Fournisseur 8
+PR0044,Café en grains 144,Épicerie,Sous-catégorie salée,2.83,1.64,Fournisseur 7
+PR0045,Café en grains 145,Épicerie,Sous-catégorie boissons,43.79,30.57,Fournisseur 11
+PR0046,Riz basmati 146,Maison,Sous-catégorie entretien,19.27,11.85,Fournisseur 5
+PR0047,Chocolat noir 147,Frais,Sous-catégorie fruits & légumes,44.22,26.51,Fournisseur 7
+PR0048,Dentifrice 148,Bien-être,Sous-catégorie hygiène,28.19,20.22,Fournisseur 7
+PR0049,Shampoing solide 149,Épicerie,Sous-catégorie boissons,12.19,6.76,Fournisseur 8
+PR0050,Eau pétillante 150,Maison,Sous-catégorie décoration,8.82,5.43,Fournisseur 11
+PR0051,Yaourt nature 151,Bien-être,Sous-catégorie cosmétique,24.63,13.88,Fournisseur 3
+PR0052,Yaourt nature 152,Frais,Sous-catégorie viandes,11.48,6.86,Fournisseur 5
+PR0053,Savon surgras 153,Maison,Sous-catégorie décoration,14.39,10.70,Fournisseur 4
+PR0054,Salade verte 154,Maison,Sous-catégorie décoration,14.60,8.43,Fournisseur 3
+PR0055,Café en grains 155,Bien-être,Sous-catégorie hygiène,17.34,9.75,Fournisseur 2
+PR0056,Poulet fermier 156,Épicerie,Sous-catégorie salée,18.85,13.81,Fournisseur 10
+PR0057,Dentifrice 157,Maison,Sous-catégorie entretien,40.41,25.29,Fournisseur 5
+PR0058,Eau pétillante 158,Frais,Sous-catégorie fruits & légumes,20.91,11.79,Fournisseur 4
+PR0059,Coussin décoratif 159,Épicerie,Sous-catégorie sucrée,34.64,21.14,Fournisseur 4
+PR0060,Eau pétillante 160,Maison,Sous-catégorie décoration,29.13,21.19,Fournisseur 12
