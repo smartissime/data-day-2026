@@ -14,6 +14,7 @@ Supports du cours **Cours-ARCHIA365-DP-600** : slides de présentation (3 jours)
 
 | Fichier | Description |
 |---------|-------------|
+| `01-Day 00-DP600.pptx` | Présentation de l’entreprise fictive **NordShop** — fil conducteur des exercices |
 | `01-Day 01-DP600.pptx` | Support PowerPoint — Jour 1 |
 | `02-Day 02-DP600.pptx` | Support PowerPoint — Jour 2 |
 | `03-Day 03-DP600.pptx` | Support PowerPoint — Jour 3 |
