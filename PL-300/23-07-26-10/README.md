@@ -7,6 +7,8 @@
 | **Libelle** | Importation et nettoyage dans PowerQuery |
 | **Formateur** | M. Yannick SOUSSOU |
 
-Convention : `jj-mm-aa-hh` (heure = debut du creneau).
+## Contenu
 
-Placez ici les supports de ce creneau.
+Jeux de donnees et fichier lab `PL300_lab01.pbix` pour ce creneau.
+
+Convention : `jj-mm-aa-hh` (heure = debut du creneau).
