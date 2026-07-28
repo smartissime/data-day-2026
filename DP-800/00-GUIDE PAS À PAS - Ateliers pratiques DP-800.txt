@@ -1,0 +1,758 @@
+GUIDE PAS À PAS — Ateliers pratiques DP-800
+Fil rouge : AdventureWorks Commerce Cloud (SQL Server 2025)
+
+À qui s'adresse ce document : au formateur, pour tester chaque exercice avant la
+session et le corriger si besoin, puis aux participants, pour reproduire chaque
+étape sur leur propre poste. Chaque étape indique EXACTEMENT quoi installer,
+quoi ouvrir, quoi taper, et ce qu'on doit voir apparaître. Le script SQL complet
+référencé ici est DP-800-UseCase-AdventureWorks.sql (12 blocs, un par module).
+
+================================================================
+PARTIE 0 — PRÉREQUIS GÉNÉRAUX (à faire AVANT le Jour 1)
+================================================================
+
+0.1 Poste de travail
+----------------------
+- Windows 10/11, macOS ou Linux, 8 Go de RAM minimum (16 Go recommandé si SQL
+  Server tourne en local).
+- Connexion Internet stable et sortante en HTTPS (port 443) — nécessaire dès le
+  Jour 3 pour joindre Azure OpenAI. Si vous êtes derrière un pare-feu
+  d'entreprise, demandez à votre service IT d'autoriser les domaines
+  *.openai.azure.com avant la formation.
+
+0.2 Installer SQL Server 2025
+----------------------------------
+Option A — SQL Server 2025 en local (Windows) :
+  1. Télécharger SQL Server 2025 Developer Edition (gratuite) depuis le site
+     Microsoft (rechercher « SQL Server 2025 Developer Edition download »).
+  2. Lancer l'installeur → choisir « Basic » pour une installation rapide, ou
+     « Custom » si vous voulez choisir le répertoire des fichiers de données.
+  3. Noter le nom de l'instance (par défaut MSSQLSERVER, ou un nom nommé type
+     SQLEXPRESS selon l'édition).
+  4. À la fin de l'installation, vérifier que le service « SQL Server
+     (nom_instance) » est démarré : ouvrir « Services » (services.msc) et
+     contrôler le statut « En cours d'exécution ».
+
+Option B — SQL Server 2025 en conteneur Docker (Windows/macOS/Linux) :
+  1. Installer Docker Desktop.
+  2. Ouvrir un terminal et exécuter :
+       docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=VotreMotDePasse!1" ^
+         -p 1433:1433 --name sql2025 -d mcr.microsoft.com/mssql/server:2025-latest
+  3. Vérifier que le conteneur tourne : docker ps → la ligne sql2025 doit
+     apparaître avec le statut « Up ».
+
+Option C — Azure SQL Database (si pas d'installation locale possible) :
+  1. Se connecter au portail Azure (portal.azure.com).
+  2. Créer une ressource « Azure SQL Database », niveau de service « General
+     Purpose, Serverless » suffit pour la formation.
+  3. Dans « Mise en réseau », autoriser votre adresse IP cliente actuelle et
+     activer « Autoriser les services Azure à accéder à ce serveur ».
+  4. Noter le nom du serveur (xxxx.database.windows.net), le login et le mot de
+     passe administrateur créés à l'étape 2.
+  Remarque : certaines fonctionnalités de bas niveau (Change Data Capture natif,
+  Extended Events serveur complet) sont limitées ou différentes sur Azure SQL
+  Database par rapport à SQL Server 2025 sur machine — pour suivre ce guide à
+  l'identique, l'option A ou B est recommandée.
+
+0.3 Installer SQL Server Management Studio (SSMS) 22 ou version supérieure
+--------------------------------------------------------------------------
+  1. Télécharger SSMS depuis le site Microsoft (« Download SQL Server
+     Management Studio »).
+  2. Lancer l'installeur, accepter les options par défaut.
+  3. Ouvrir SSMS → dans la boîte de connexion, saisir :
+     - Nom du serveur : localhost (ou nom_machine\nom_instance, ou l'adresse du
+       conteneur/Azure SQL selon l'option choisie en 0.2)
+     - Authentification : « Authentification SQL Server » si vous utilisez
+       Docker ou Azure SQL (login sa ou admin + mot de passe), ou
+       « Authentification Windows » pour une installation locale par défaut.
+  4. Cliquer sur « Se connecter » → l'Explorateur d'objets doit afficher
+     l'arborescence du serveur.
+
+0.4 Restaurer la base AdventureWorksLT2025
+-------------------------------------------
+  1. Télécharger le fichier de sauvegarde AdventureWorksLT2025.bak (ou la
+     version compatible SQL Server 2025 la plus récente) depuis le dépôt
+     GitHub officiel Microsoft SQL Server Samples.
+  2. Copier ce fichier .bak dans un dossier accessible par le service SQL
+     Server (par exemple C:\Backups sur Windows, ou dans le volume monté du
+     conteneur Docker).
+  3. Dans SSMS, clic droit sur « Bases de données » → « Restaurer une base de
+     données ».
+  4. Choisir « Périphérique », cliquer sur « ... », ajouter le fichier .bak
+     repéré à l'étape 2.
+  5. Dans la liste des bases à restaurer, vérifier que le nom cible est
+     AdventureWorksLT2025 (renommez-le si besoin dans le champ « Base de
+     données restaurée »).
+  6. Cliquer sur OK → attendre le message « La restauration de la base de
+     données 'AdventureWorksLT2025' s'est terminée avec succès ».
+  7. Vérifier : développer Bases de données → AdventureWorksLT2025 → Tables →
+     vous devez voir SalesLT.Customer, SalesLT.Product, SalesLT.SalesOrderHeader,
+     SalesLT.SalesOrderDetail, SalesLT.ProductCategory, etc.
+  8. Important pour le fil rouge : renommer conceptuellement cette base
+     « AdventureWorksCommerceCloud » dans vos échanges avec les participants
+     (le script utilise ce nom dans ses commentaires) — vous pouvez soit
+     renommer réellement la base (clic droit → Renommer, après avoir mis la
+     base en mode utilisateur unique), soit simplement garder
+     AdventureWorksLT2025 et l'appeler ainsi à l'oral. Les deux fonctionnent
+     pour suivre ce guide.
+
+0.5 Récupérer le script SQL du fil rouge
+-----------------------------------------
+  1. Récupérer le fichier DP-800-UseCase-AdventureWorks.sql fourni avec cette
+     formation.
+  2. Dans SSMS, menu Fichier → Ouvrir → Fichier... → sélectionner ce script.
+  3. En haut de la fenêtre de requête, choisir la base AdventureWorksLT2025 (ou
+     AdventureWorksCommerceCloud si renommée) dans le menu déroulant des bases.
+  4. NE PAS exécuter tout le fichier d'un coup : chaque bloc correspond à un
+     module et doit être exécuté au moment de la démonstration correspondante
+     (voir Partie 2). Les blocs sont clairement délimités par des commentaires
+     /* === Module N === */.
+
+0.6 Installer Visual Studio Code et les extensions (nécessaire dès le Module 4)
+--------------------------------------------------------------------------------
+  1. Télécharger et installer Visual Studio Code (code.visualstudio.com).
+  2. Ouvrir VS Code → panneau Extensions (icône carrés, ou Ctrl+Shift+X) :
+     - Installer « SQL Server (mssql) » — extension officielle Microsoft.
+     - Installer « GitHub Copilot » (nécessite un compte GitHub avec une
+       licence Copilot active, individuelle ou via l'organisation).
+  3. Se connecter à GitHub depuis VS Code : cliquer sur l'icône Copilot en bas
+     à droite → « Sign in to GitHub » → suivre le flux d'autorisation dans le
+     navigateur.
+  4. Vérifier : un badge Copilot actif (icône non grisée) doit apparaître dans
+     la barre d'état en bas de VS Code.
+
+0.7 Installer Git et créer un compte/dépôt GitHub (nécessaire dès le Module 7)
+-------------------------------------------------------------------------------
+  1. Installer Git (git-scm.com) si ce n'est pas déjà fait.
+  2. Vérifier dans un terminal : git --version → doit afficher un numéro de
+     version.
+  3. Créer un compte GitHub si besoin (github.com), ou utiliser un compte
+     d'entreprise existant.
+  4. Créer un nouveau dépôt vide nommé, par exemple, adventureworks-commerce-
+     cloud (public ou privé selon votre contexte).
+  5. Noter l'URL du dépôt (https://github.com/votre-compte/adventureworks-
+     commerce-cloud.git) — elle sera utilisée au Module 7.
+
+0.8 Installer le SDK .NET et les projets SQL Database (nécessaire dès le Module 7)
+-----------------------------------------------------------------------------------
+  1. Télécharger et installer le SDK .NET 8 (ou version LTS la plus récente)
+     depuis dotnet.microsoft.com.
+  2. Vérifier : dotnet --version dans un terminal doit afficher un numéro de
+     version.
+  3. Installer le modèle de projet SQL Database : dans un terminal, exécuter
+       dotnet new install Microsoft.Build.Sql.Templates
+  4. Vérifier que SSMS ou VS Code proposent bien un type de projet « SQL
+     Database Project » (dans SSMS 22+, menu Fichier → Nouveau → Projet).
+
+0.9 Installer Data API Builder (nécessaire dès le Module 8)
+------------------------------------------------------------
+  1. Avec le SDK .NET déjà installé (voir 0.8), exécuter dans un terminal :
+       dotnet tool install -g Microsoft.DataApiBuilder
+  2. Vérifier : dab --version doit afficher un numéro de version.
+  3. Alternative sans installation : utiliser l'image Docker officielle
+     mcr.microsoft.com/azure-databases/data-api-builder — dans ce cas, adapter
+     les commandes de la Partie 2 / Module 8 en conséquence (docker run ...).
+
+0.10 Créer et configurer une ressource Azure OpenAI (nécessaire dès le Jour 3)
+-------------------------------------------------------------------------------
+  1. Se connecter au portail Azure (portal.azure.com) avec un abonnement actif
+     ayant accès à Azure OpenAI (demande d'accès préalable si nécessaire selon
+     votre abonnement).
+  2. Créer une ressource « Azure OpenAI » : choisir une région qui propose les
+     modèles nécessaires (par exemple France Central ou Sweden Central).
+  3. Une fois la ressource créée, ouvrir « Azure OpenAI Studio » depuis le
+     portail (bouton « Go to Azure OpenAI Studio »).
+  4. Dans Azure OpenAI Studio → Deployments → « Create new deployment » :
+     - Créer un déploiement du modèle text-embedding-3-small (nom de
+       déploiement suggéré : embeddings-dp800).
+     - Créer un second déploiement du modèle gpt-4o-mini (nom de déploiement
+       suggéré : chat-dp800).
+  5. Dans le portail Azure, sur la ressource Azure OpenAI → « Clés et
+     points de terminaison » : noter précieusement :
+     - Le point de terminaison (Endpoint), de la forme
+       https://votre-ressource.openai.azure.com/
+     - La clé API (Key 1).
+  6. Garder ces informations à portée de main : elles remplaceront les valeurs
+     d'exemple <votre-ressource> dans le script SQL du Jour 3.
+
+0.11 Vérifier l'accès réseau sortant de SQL Server vers Internet
+-------------------------------------------------------------------
+  1. Sur la machine qui héberge SQL Server, ouvrir une invite de commande et
+     tester : curl -I https://votre-ressource.openai.azure.com/
+     → doit renvoyer une réponse HTTP (même une erreur 401/404 est un bon
+     signe : cela veut dire que la connexion réseau passe).
+  2. Si la commande échoue (timeout), contactez votre service réseau : SQL
+     Server doit pouvoir initier des connexions HTTPS sortantes pour que
+     sp_invoke_external_rest_endpoint fonctionne au Jour 3.
+
+CHECK-LIST FORMATEUR avant le Jour 1 :
+  [ ] SQL Server 2025 installé et démarré
+  [ ] SSMS 22+ installé et connecté
+  [ ] AdventureWorksLT2025 restaurée et vérifiée
+  [ ] Script DP-800-UseCase-AdventureWorks.sql ouvert et prêt
+  [ ] VS Code + extension mssql + GitHub Copilot installés et connectés
+  [ ] Git installé, compte GitHub et dépôt vide créés
+  [ ] SDK .NET + modèle de projet SQL Database installés
+  [ ] Data API Builder installé (dab --version fonctionne)
+  [ ] Ressource Azure OpenAI créée, 2 déploiements actifs (embeddings + chat)
+  [ ] Endpoint et clé Azure OpenAI notés
+  [ ] Test réseau sortant vers Azure OpenAI réussi
+
+================================================================
+PARTIE 1 — COMMENT UTILISER CE GUIDE PENDANT LA FORMATION
+================================================================
+
+Pour chaque module, vous trouverez :
+  - OBJECTIF : ce que l'exercice démontre.
+  - PRÉREQUIS : ce qui doit déjà être fait (renvoi vers la Partie 0 ou un
+    module précédent).
+  - ÉTAPES : la suite exacte d'actions à réaliser, numérotées.
+  - RÉSULTAT ATTENDU : ce qu'on doit voir à l'écran pour valider que
+    l'étape a fonctionné.
+  - DÉPANNAGE : les erreurs les plus probables et comment les résoudre.
+
+Avant de partager ce guide avec les participants, exécutez-le vous-même de bout
+en bout sur un poste « propre » (comme celui d'un participant) pour repérer
+d'éventuels écarts liés à votre propre environnement de formateur.
+
+================================================================
+PARTIE 2 — MODULES ET EXERCICES, PAS À PAS
+================================================================
+
+----------------------------------------------------------------
+MODULE 1 — Objets de base de données (Jour 1, 09:00–10:45)
+----------------------------------------------------------------
+OBJECTIF : étendre le schéma AdventureWorksLT avec une séquence, une colonne
+JSON contrainte, une table temporelle et un partitionnement.
+
+PRÉREQUIS : Partie 0 section 0.2 à 0.5 terminées.
+
+ÉTAPES :
+  1. Dans SSMS, ouvrir une nouvelle fenêtre de requête sur AdventureWorksLT2025.
+  2. Dans le script DP-800-UseCase-AdventureWorks.sql, repérer le commentaire
+     /* === Module 1 — Objets de base de données ================= */.
+  3. Sélectionner tout le texte de ce bloc (jusqu'au commentaire du Module 2)
+     et l'exécuter (F5 ou bouton Exécuter).
+  4. Vérifier qu'aucune erreur rouge n'apparaît dans l'onglet « Messages » en
+     bas de l'écran.
+  5. Développer SalesLT → Tables → vérifier la présence de la nouvelle table
+     CustomerProfileHistory et de CustomerProfileHistory_Archive.
+  6. Tester l'historisation : exécuter
+       UPDATE SalesLT.Customer SET EmailAddress = 'test.demo@example.com'
+       WHERE CustomerID = (SELECT MIN(CustomerID) FROM SalesLT.Customer);
+     puis
+       SELECT * FROM SalesLT.CustomerProfileHistory_Archive;
+  7. Tester la contrainte JSON : exécuter volontairement
+       UPDATE SalesLT.Customer SET Preferences = 'texte-invalide'
+       WHERE CustomerID = (SELECT MIN(CustomerID) FROM SalesLT.Customer);
+     → doit renvoyer une erreur de contrainte CHECK.
+  8. Corriger avec un JSON valide :
+       UPDATE SalesLT.Customer SET Preferences = '{"channel":"email","newsletter":true}'
+       WHERE CustomerID = (SELECT MIN(CustomerID) FROM SalesLT.Customer);
+
+RÉSULTAT ATTENDU : la table CustomerProfileHistory_Archive contient au moins une
+ligne après l'UPDATE de l'étape 6 ; l'étape 7 échoue avec une erreur de
+contrainte ; l'étape 8 réussit sans erreur.
+
+DÉPANNAGE :
+  - Erreur « Nom d'objet SalesLT.CustomerProfileHistory non valide » → le bloc
+    du Module 1 n'a pas été exécuté en entier, relancer l'étape 3.
+  - Erreur de droits (permission denied) → vérifier que votre connexion SSMS
+    dispose des droits ALTER sur le schéma SalesLT (en formation, utilisez de
+    préférence un compte avec des droits sysadmin ou db_owner).
+
+----------------------------------------------------------------
+MODULE 2 — Programmabilité SQL (Jour 1, 10:55–12:00)
+----------------------------------------------------------------
+OBJECTIF : créer une vue, des fonctions, une procédure stockée transactionnelle
+et un déclencheur d'audit.
+
+PRÉREQUIS : Module 1 exécuté avec succès.
+
+ÉTAPES :
+  1. Sélectionner et exécuter le bloc /* === Module 2 — Programmabilité SQL === */.
+  2. Vérifier la vue : exécuter
+       SELECT * FROM SalesLT.vw_CustomerOrderSummary;
+  3. Appeler la procédure avec un produit valide :
+       DECLARE @NewOrderID INT;
+       EXEC SalesLT.usp_PlaceOrder @CustomerID = 1, @ProductID = 680,
+         @Qty = 1, @NewOrderID = @NewOrderID OUTPUT;
+       SELECT @NewOrderID AS NouvelleCommande;
+  4. Vérifier l'audit :
+       SELECT * FROM SalesLT.OrderAudit ORDER BY ChangedAt DESC;
+  5. Rejouer avec un produit inexistant pour tester le ROLLBACK :
+       DECLARE @NewOrderID2 INT;
+       EXEC SalesLT.usp_PlaceOrder @CustomerID = 1, @ProductID = 999999,
+         @Qty = 1, @NewOrderID = @NewOrderID2 OUTPUT;
+       SELECT @NewOrderID2 AS DevraitEtreNull;
+
+RÉSULTAT ATTENDU : l'étape 3 renvoie un numéro de commande ; l'étape 4 montre au
+moins une ligne d'audit ; l'étape 5 échoue proprement (aucune ligne de détail
+orpheline créée, aucune nouvelle ligne d'audit incohérente).
+
+DÉPANNAGE :
+  - Si @ProductID = 680 n'existe pas dans votre jeu de données, remplacez par un
+    ProductID réel : exécutez SELECT TOP 5 ProductID FROM SalesLT.Product
+    d'abord et utilisez un des identifiants renvoyés.
+  - Si l'étape 5 lève une erreur visible dans SSMS au lieu d'un échec « propre »,
+    c'est normal : THROW relance l'erreur à l'appelant, donc SSMS l'affiche en
+    rouge — expliquez aux participants que c'est le comportement attendu.
+
+----------------------------------------------------------------
+MODULE 3 — T-SQL avancé (1/2) (Jour 1, 13:00–14:45)
+----------------------------------------------------------------
+OBJECTIF : manipuler CTE récursif, fonctions fenêtrées, JSON et expressions
+régulières.
+
+PRÉREQUIS : Modules 1 et 2 exécutés.
+
+ÉTAPES :
+  1. Exécuter le bloc /* === Module 3 — T-SQL avancé (1/2) === */ dans son
+     intégralité (il contient 4 requêtes indépendantes : CTE, fenêtrage, JSON,
+     regex — exécutez-les une par une pour bien montrer chaque résultat).
+  2. Pour le CTE récursif : sélectionner uniquement la requête WITH
+     CategoryTree AS (...) et l'exécuter → observer la colonne Niveau qui
+     s'incrémente.
+  3. Pour le fenêtrage : sélectionner la requête SELECT OrderDate, LineTotal,
+     SUM(...) OVER (...) et l'exécuter → observer la colonne CumulTotal
+     croissante.
+  4. Pour le JSON : sélectionner la requête SELECT CustomerID,
+     JSON_VALUE(Preferences, ...) et l'exécuter.
+  5. Pour la regex : sélectionner la requête SELECT ProductID, Name FROM
+     SalesLT.Product WHERE REGEXP_LIKE(...) et l'exécuter.
+
+RÉSULTAT ATTENDU : chaque requête renvoie un jeu de résultats sans erreur ; la
+colonne Niveau du CTE va de 0 à plusieurs niveaux ; CumulTotal est strictement
+croissant si trié par date.
+
+DÉPANNAGE :
+  - Erreur « REGEXP_LIKE n'est pas une fonction intégrée reconnue » → votre
+    instance SQL Server n'est pas en version 2025, ou le niveau de
+    compatibilité de la base est trop ancien. Vérifiez avec
+    SELECT compatibility_level FROM sys.databases WHERE name = DB_NAME();
+    et si besoin : ALTER DATABASE AdventureWorksLT2025 SET COMPATIBILITY_LEVEL = 170;
+
+----------------------------------------------------------------
+MODULE 4 — T-SQL avancé (2/2) : erreurs + IA assistée (Jour 1, 14:55–17:00)
+----------------------------------------------------------------
+OBJECTIF : consolider la gestion d'erreurs, puis démontrer GitHub Copilot et le
+serveur MCP SQL.
+
+PRÉREQUIS : Module 2 (usp_PlaceOrder) exécuté ; VS Code + Copilot configurés
+(Partie 0, section 0.6).
+
+ÉTAPES — Partie gestion d'erreurs :
+  1. Ré-ouvrir la définition de usp_PlaceOrder dans SSMS (clic droit sur la
+     procédure → Modifier) pour la montrer à l'écran.
+  2. Refaire l'essai d'échec du Module 2 étape 5 en le commentant pas à pas :
+     souligner IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION; et THROW;.
+
+ÉTAPES — Partie IA assistée :
+  3. Ouvrir VS Code, dans le dossier de votre projet (créer un dossier vide
+     adventureworks-commerce-cloud si ce n'est pas encore fait).
+  4. Ouvrir la palette de commandes (Ctrl+Shift+P) → « MS SQL: Connect » →
+     saisir les paramètres de connexion à AdventureWorksLT2025.
+  5. Créer un nouveau fichier top-clients.sql, taper uniquement le commentaire :
+       -- top 5 clients par montant total de commandes
+     puis laisser Copilot suggérer la suite (la suggestion apparaît en gris,
+     validez avec Tab).
+  6. Exécuter la requête générée (clic droit → Execute Query, ou Ctrl+Shift+E)
+     et vérifier le résultat contre vw_CustomerOrderSummary.
+  7. Pour la démonstration MCP (si le serveur MCP SQL est disponible dans votre
+     environnement Copilot) : ouvrir le panneau de chat Copilot, poser en
+     langage naturel « Quels sont les 5 clients avec le plus de commandes dans
+     AdventureWorksLT2025 ? » et observer la réponse construite à partir du
+     schéma réel.
+
+RÉSULTAT ATTENDU : Copilot propose du T-SQL syntaxiquement correct référençant
+de vraies tables et colonnes du schéma SalesLT.
+
+DÉPANNAGE :
+  - Si Copilot ne propose aucune suggestion, vérifier le badge de connexion
+    Copilot en bas de VS Code (doit être actif, non grisé) et relancer VS Code.
+  - Si le serveur MCP SQL n'est pas disponible dans votre édition/licence
+    actuelle, remplacez cette étape par une démonstration de complétion de
+    code classique (étapes 3 à 6 suffisent pour illustrer le module).
+
+----------------------------------------------------------------
+MODULE 5 — Sécurité des données (Jour 2, 09:00–10:45)
+----------------------------------------------------------------
+OBJECTIF : chiffrer, masquer, filtrer par ligne et auditer les données client.
+
+PRÉREQUIS : Jour 1 terminé.
+
+ÉTAPES :
+  1. Exécuter le bloc /* === Module 5 — Sécurité des données === */.
+     Attention : la ligne ALTER DATABASE ... SET ENCRYPTION ON nécessite un
+     certificat maître de service déjà présent (c'est le cas par défaut sur une
+     installation neuve de SQL Server) — si une erreur apparaît, passez cette
+     ligne et poursuivez avec le reste du bloc (le TDE n'est pas bloquant pour
+     la suite de la démonstration).
+  2. Vérifier le masquage : créer un login de test et lui donner uniquement le
+     droit SELECT sur SalesLT.Customer, sans UNMASK :
+       CREATE LOGIN commercial_demo WITH PASSWORD = 'Demo!2026azerty';
+       CREATE USER commercial_demo FOR LOGIN commercial_demo;
+       GRANT SELECT ON SalesLT.Customer TO commercial_demo;
+  3. Ouvrir une deuxième fenêtre de requête dans SSMS, se connecter avec
+     commercial_demo / Demo!2026azerty, exécuter
+       SELECT CustomerID, EmailAddress, Phone FROM SalesLT.Customer;
+     → les colonnes doivent apparaître masquées (ex : XXX@XXXX.com).
+  4. Revenir sur la connexion administrateur d'origine, exécuter la même
+     requête → les vraies valeurs doivent apparaître.
+  5. Pour la sécurité au niveau des lignes : se reconnecter avec
+     commercial_demo et exécuter SELECT * FROM SalesLT.Customer; → si la
+     politique fn_SalesRepPredicate est active et ne référence pas ce compte,
+     vous devez voir soit aucune ligne, soit toutes les lignes selon la
+     condition OR ajoutée dans le script (adapter le prédicat pour votre
+     démonstration si besoin, en ajoutant explicitement des noms de compte
+     réels dans SalesLT.Customer.SalesPerson).
+  6. Activer et vérifier l'audit :
+       SELECT * FROM sys.dm_server_audit_status;
+     doit indiquer un statut STARTED.
+
+RÉSULTAT ATTENDU : le compte commercial_demo voit des valeurs masquées sur
+Email/Phone ; le compte administrateur voit les vraies valeurs ; l'audit est
+actif.
+
+DÉPANNAGE :
+  - Le chemin de fichier d'audit ('/var/opt/mssql/audit/') est spécifique à une
+    installation Linux/conteneur : sur Windows, remplacez par un chemin local
+    existant, par exemple 'C:\SQLAudit\', après avoir créé ce dossier.
+  - Si CREATE SECURITY POLICY échoue avec une erreur de schéma, vérifier que le
+    schéma Security existe : CREATE SCHEMA Security; avant de relancer le bloc.
+
+----------------------------------------------------------------
+MODULE 6 — Optimisation des performances (Jour 2, 10:55–12:00)
+----------------------------------------------------------------
+OBJECTIF : diagnostiquer une requête lente, créer un index ciblé, provoquer et
+observer un interblocage.
+
+PRÉREQUIS : Module 5 exécuté ; DEUX fenêtres SSMS distinctes ouvertes et
+connectées à AdventureWorksLT2025 (préparer cela avant le début du module).
+
+ÉTAPES :
+  1. Exécuter le bloc /* === Module 6 — Optimisation des performances === */
+     (active Query Store, crée l'index IX_Product_Category_Price).
+  2. Mesurer l'effet de l'index : dans une fenêtre, activer les statistiques
+       SET STATISTICS TIME ON;
+       SELECT ProductID, Name FROM SalesLT.Product
+       WHERE ProductCategoryID = 6 AND ListPrice < 500;
+     Noter le temps CPU affiché dans l'onglet Messages.
+  3. Démonstration d'interblocage — FENÊTRE A :
+       BEGIN TRAN;
+       UPDATE SalesLT.Product SET ListPrice = ListPrice WHERE ProductID = 1;
+     (ne pas committer, laisser la transaction ouverte)
+  4. FENÊTRE B :
+       BEGIN TRAN;
+       UPDATE SalesLT.SalesOrderHeader SET Status = 1 WHERE SalesOrderID = 1;
+     (ne pas committer)
+  5. FENÊTRE A (revenir dessus) :
+       UPDATE SalesLT.SalesOrderHeader SET Status = 1 WHERE SalesOrderID = 1;
+     → cette commande reste bloquée (elle attend la fenêtre B).
+  6. FENÊTRE B (revenir dessus) :
+       UPDATE SalesLT.Product SET ListPrice = ListPrice WHERE ProductID = 1;
+     → SQL Server détecte l'interblocage : une des deux fenêtres reçoit
+     immédiatement l'erreur 1205 ("Transaction (Process ID ...) was deadlocked").
+  7. Dans la fenêtre qui a « survécu », exécuter COMMIT; ou ROLLBACK; pour
+     libérer les verrous restants.
+
+RÉSULTAT ATTENDU : l'étape 6 déclenche une erreur 1205 dans une des deux
+fenêtres, l'autre fenêtre se débloque et peut committer normalement.
+
+DÉPANNAGE :
+  - Si aucune des deux fenêtres n'affiche d'interblocage après quelques
+    secondes, vérifiez que les deux BEGIN TRAN ont bien été exécutés sans
+    COMMIT entre-temps, et que les ID de produit/commande utilisés existent
+    bien dans votre jeu de données (adaptez ProductID = 1 et
+    SalesOrderID = 1 si besoin en vérifiant avec SELECT TOP 1 ProductID FROM
+    SalesLT.Product; et SELECT TOP 1 SalesOrderID FROM SalesLT.SalesOrderHeader;).
+  - Ne pas oublier de committer/rollback les transactions restées ouvertes
+    avant de passer au module suivant, sinon les verrous persistent et
+    bloquent les exercices suivants.
+
+----------------------------------------------------------------
+MODULE 7 — CI/CD & projets SQL Database (Jour 2, 13:00–14:45)
+----------------------------------------------------------------
+OBJECTIF : créer un projet SQL Database versionné avec Git, ouvrir une pull
+request, valider automatiquement le build.
+
+PRÉREQUIS : Partie 0 sections 0.7 et 0.8 terminées (Git, SDK .NET, modèle de
+projet SQL Database).
+
+ÉTAPES :
+  1. Dans un terminal, se placer dans le dossier de travail choisi et créer le
+     projet :
+       dotnet new sqlproj -n AdventureWorksCommerceCloud
+       cd AdventureWorksCommerceCloud
+  2. Initialiser Git et le premier commit :
+       git init
+       git add .
+       git commit -m "Structure initiale du projet SQL Database"
+       git branch -M main
+       git remote add origin https://github.com/votre-compte/adventureworks-commerce-cloud.git
+       git push -u origin main
+  3. Extraire le schéma existant de la base vers le projet (méthode simple :
+     dans SSMS, clic droit sur AdventureWorksLT2025 → Tâches → Générer des
+     scripts... → choisir tous les objets → Options avancées → « Type de
+     données à créer » = Schéma uniquement → générer un fichier .sql unique) —
+     copier ensuite le contenu utile dans les fichiers du projet, ou (méthode
+     avancée) utiliser SqlPackage pour une extraction directe en .dacpac.
+  4. Créer une branche de fonctionnalité :
+       git checkout -b feature/stock-check
+  5. Modifier le fichier correspondant à usp_PlaceOrder dans le projet (ajouter
+     par exemple une vérification IF EXISTS avant l'insertion de la ligne de
+     détail).
+  6. Committer et pousser :
+       git add .
+       git commit -m "Ajout d'une vérification de stock avant commande"
+       git push origin feature/stock-check
+  7. Sur GitHub, ouvrir une pull request de feature/stock-check vers main.
+  8. Si un workflow GitHub Actions est configuré (fichier
+     .github/workflows/build.yml exécutant dotnet build sur le projet), vérifier
+     que le contrôle de build apparaît automatiquement sur la pull request.
+  9. Fusionner la pull request une fois le build validé.
+
+RÉSULTAT ATTENDU : la pull request affiche un contrôle de build vert (ou une
+erreur rouge explicite si vous avez volontairement introduit une faute de
+syntaxe, pour la démonstration).
+
+DÉPANNAGE :
+  - dotnet new sqlproj introuvable → revérifier l'étape 0.8 (dotnet new install
+    Microsoft.Build.Sql.Templates), puis fermer/rouvrir le terminal.
+  - Pas de workflow GitHub Actions préconfiguré → pour la démonstration, il est
+    possible de simplement montrer dotnet build en local dans le terminal et
+    expliquer que le même principe s'applique dans le pipeline CI/CD.
+
+----------------------------------------------------------------
+MODULE 8 — Intégration Azure (Jour 2, 14:55–17:00)
+----------------------------------------------------------------
+OBJECTIF : exposer la base via Data API Builder (REST + GraphQL) et activer le
+Change Data Capture.
+
+PRÉREQUIS : Partie 0 section 0.9 (Data API Builder installé) ; Module 5 (base
+sécurisée).
+
+ÉTAPES :
+  1. Créer un fichier dab-config.json dans un dossier de travail avec le
+     contenu suivant (adapter la chaîne de connexion à votre installation) :
+       {
+         "data-source": {
+           "database-type": "mssql",
+           "connection-string": "@env('DB_CONNECTION')"
+         },
+         "entities": {
+           "Product": {
+             "source": "SalesLT.Product",
+             "rest": true,
+             "graphql": true,
+             "permissions": [{ "role": "anonymous", "actions": ["read"] }]
+           },
+           "SalesOrderHeader": {
+             "source": "SalesLT.SalesOrderHeader",
+             "rest": true,
+             "graphql": true,
+             "permissions": [{ "role": "anonymous", "actions": ["create", "read"] }]
+           }
+         }
+       }
+  2. Définir la variable d'environnement DB_CONNECTION avant de lancer DAB :
+     - Windows (PowerShell) :
+         $env:DB_CONNECTION = "Server=localhost;Database=AdventureWorksLT2025;User Id=sa;Password=VotreMotDePasse!1;TrustServerCertificate=True;"
+     - macOS/Linux :
+         export DB_CONNECTION="Server=localhost;Database=AdventureWorksLT2025;User Id=sa;Password=VotreMotDePasse!1;TrustServerCertificate=True;"
+  3. Lancer Data API Builder :
+       dab start --config dab-config.json
+     → la console doit afficher « Now listening on: http://localhost:5000 ».
+  4. Tester le REST : ouvrir un navigateur ou utiliser curl :
+       curl http://localhost:5000/api/Product?$top=5
+  5. Tester le GraphQL : ouvrir http://localhost:5000/graphql dans un
+     navigateur (interface Banana Cake Pop intégrée), exécuter :
+       query { products(first: 5) { items { name listPrice } } }
+  6. Créer une commande via REST (POST) avec curl ou Postman :
+       curl -X POST http://localhost:5000/api/SalesOrderHeader ^
+         -H "Content-Type: application/json" ^
+         -d "{\"CustomerID\":1,\"OrderDate\":\"2026-08-06\",\"Status\":1}"
+  7. Activer CDC dans SSMS (retour au script SQL, bloc Module 8) :
+       EXEC sys.sp_cdc_enable_db;
+       EXEC sys.sp_cdc_enable_table @source_schema = 'SalesLT',
+         @source_name = 'SalesOrderHeader', @role_name = NULL;
+  8. Vérifier les changements capturés :
+       SELECT * FROM cdc.dbo_SalesOrderHeader_CT;
+     (le nom exact de la table de changement dépend du schéma source — vérifier
+     avec SELECT * FROM cdc.change_tables; si besoin).
+
+RÉSULTAT ATTENDU : la commande créée à l'étape 6 apparaît dans la table de
+changement CDC interrogée à l'étape 8.
+
+DÉPANNAGE :
+  - Erreur de connexion DAB → vérifier que la variable d'environnement
+    DB_CONNECTION est bien définie dans le MÊME terminal que celui où vous
+    lancez dab start.
+  - CDC nécessite que l'Agent SQL Server soit démarré (job de capture) :
+    vérifier dans SSMS → Objets serveur → Agent SQL Server → statut démarré.
+    Sur un conteneur Docker standard, l'Agent SQL Server n'est pas toujours
+    inclus par défaut — dans ce cas, utiliser une installation locale complète
+    de SQL Server pour cette démonstration.
+
+----------------------------------------------------------------
+MODULE 9 — Modèles et embeddings (Jour 3, 09:00–10:45)
+----------------------------------------------------------------
+OBJECTIF : connecter un modèle Azure OpenAI et générer des embeddings pour le
+catalogue produit.
+
+PRÉREQUIS : Partie 0 sections 0.10 et 0.11 terminées (ressource Azure OpenAI
+avec déploiement d'embedding actif, accès réseau vérifié).
+
+ÉTAPES :
+  1. Créer les identifiants nécessaires à l'appel du modèle (à exécuter dans
+     SSMS, sur AdventureWorksLT2025) :
+       CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'UnMotDePasseSolide!2026';
+       CREATE DATABASE SCOPED CREDENTIAL [https://VOTRE-RESSOURCE.openai.azure.com]
+         WITH IDENTITY = 'HTTPEndpointHeaders', SECRET = '{"api-key":"VOTRE_CLE_API"}';
+     (remplacer VOTRE-RESSOURCE et VOTRE_CLE_API par les valeurs notées à
+     l'étape 0.10).
+  2. Exécuter le bloc /* === Module 9 — Modèles et embeddings === */ du script,
+     en remplaçant dans l'instruction CREATE EXTERNAL MODEL l'URL LOCATION par
+     votre véritable point de terminaison et le nom de déploiement
+     (embeddings-dp800 si vous avez suivi 0.10).
+  3. Vérifier la création du modèle externe :
+       SELECT * FROM sys.external_models;
+  4. Lancer la génération des embeddings (peut prendre plusieurs minutes selon
+     la taille du catalogue) :
+       UPDATE SalesLT.Product
+       SET DescriptionEmbedding = AI_GENERATE_EMBEDDINGS(
+             Name + ' — ' + ISNULL(Description, '') USE MODEL AzureOpenAIEmbedding)
+       WHERE DescriptionEmbedding IS NULL;
+  5. Vérifier le résultat :
+       SELECT COUNT(*) AS ProduitsSansEmbedding
+       FROM SalesLT.Product WHERE DescriptionEmbedding IS NULL;
+     → doit renvoyer 0.
+
+RÉSULTAT ATTENDU : le comptage de l'étape 5 renvoie 0 ; un
+SELECT TOP 3 ProductID, DATALENGTH(DescriptionEmbedding) FROM SalesLT.Product;
+renvoie une taille en octets non nulle pour chaque ligne.
+
+DÉPANNAGE :
+  - Erreur 401 Unauthorized → la clé API notée en 0.10 est incorrecte ou
+    expirée ; régénérer une clé dans le portail Azure et recréer le
+    DATABASE SCOPED CREDENTIAL.
+  - Erreur de type « modèle non trouvé » → vérifier que le nom du déploiement
+    dans CREATE EXTERNAL MODEL correspond EXACTEMENT au nom donné lors de la
+    création du déploiement dans Azure OpenAI Studio (étape 0.10.4), pas
+    seulement au nom du modèle sous-jacent.
+  - Si la génération est très lente, réduire temporairement le nombre de
+    lignes traitées avec TOP (50) pour la démonstration en direct, puis
+    relancer le reste pendant une pause.
+
+----------------------------------------------------------------
+MODULE 10 — Recherche intelligente (Jour 3, 10:55–12:00)
+----------------------------------------------------------------
+OBJECTIF : comparer recherche en texte intégral, vectorielle et hybride.
+
+PRÉREQUIS : Module 9 terminé (embeddings peuplés à 100%).
+
+ÉTAPES :
+  1. Exécuter le bloc /* === Module 10 — Recherche intelligente === */.
+  2. Tester le texte intégral :
+       SELECT ProductID, Name FROM SalesLT.Product
+       WHERE FREETEXT(Description, 'léger compétition');
+  3. Tester la recherche vectorielle :
+       DECLARE @QueryVector VECTOR(1536) = AI_GENERATE_EMBEDDINGS(
+         'vélo de route léger pour compétition' USE MODEL AzureOpenAIEmbedding);
+       SELECT TOP 5 ProductID, Name,
+         VECTOR_DISTANCE('cosine', DescriptionEmbedding, @QueryVector) AS Distance
+       FROM SalesLT.Product ORDER BY Distance;
+  4. Comparer les deux résultats à l'écran, côte à côte si possible (deux
+     fenêtres de résultats ouvertes simultanément).
+  5. Si la procédure usp_HybridProductSearch a été créée séparément (fusion
+     RRF), l'appeler avec la même question et comparer un troisième jeu de
+     résultats.
+
+RÉSULTAT ATTENDU : l'étape 2 renvoie peu ou aucun résultat (absence du mot
+« léger » dans le texte) ; l'étape 3 renvoie des produits pertinents malgré
+l'absence de correspondance exacte de mots-clés.
+
+DÉPANNAGE :
+  - Erreur « FREETEXT requires a full-text index » → créer l'index en amont :
+       CREATE FULLTEXT CATALOG ftCatalog AS DEFAULT;
+       CREATE FULLTEXT INDEX ON SalesLT.Product(Name, Description)
+         KEY INDEX PK_Product_ProductID;
+     puis patienter quelques secondes que le peuplement se termine avant de
+     retester.
+
+----------------------------------------------------------------
+MODULE 11 — RAG (Jour 3, 13:00–14:45)
+----------------------------------------------------------------
+OBJECTIF : construire un assistant qui répond en langage naturel à partir du
+catalogue réel.
+
+PRÉREQUIS : Module 10 terminé ; déploiement de chat Azure OpenAI actif (0.10).
+
+ÉTAPES :
+  1. Créer le modèle externe de chat (adapter l'URL et le nom de déploiement) :
+       CREATE EXTERNAL MODEL AzureOpenAIChat
+       WITH (
+         LOCATION = 'https://VOTRE-RESSOURCE.openai.azure.com/openai/deployments/chat-dp800',
+         API_FORMAT = 'Azure OpenAI', MODEL_TYPE = CHAT, MODEL = 'gpt-4o-mini',
+         CREDENTIAL = [https://VOTRE-RESSOURCE.openai.azure.com]
+       );
+  2. Exécuter le reste du bloc /* === Module 11 — RAG === */ pour créer
+     SalesLT.usp_AskProductAssistant.
+  3. TESTER D'ABORD SANS LA PROCÉDURE (pour la comparaison pédagogique) : dans
+     Azure OpenAI Studio → Chat playground, poser directement « Avez-vous le
+     vélo de route XR-500 en stock, à quel prix ? » sans donner de contexte →
+     noter la réponse inventée.
+  4. Exécuter la procédure complète :
+       EXEC SalesLT.usp_AskProductAssistant
+         @Question = N'Quel vélo de route recommandez-vous sous 1500 € avec de bons avis ?';
+  5. Comparer la réponse de l'étape 4 (basée sur le vrai catalogue) avec celle
+     de l'étape 3 (potentiellement inventée).
+
+RÉSULTAT ATTENDU : la réponse de l'étape 4 cite un produit réellement présent
+dans SalesLT.Product, avec son vrai ListPrice.
+
+DÉPANNAGE :
+  - Erreur sur sp_invoke_external_rest_endpoint (procédure introuvable) →
+    vérifier que la configuration EXTERNAL REST ENDPOINT est activée :
+       EXEC sp_configure 'external rest endpoint enabled', 1;
+       RECONFIGURE;
+  - Réponse vide ou tronquée → vérifier la taille du contexte JSON généré (ne
+    pas dépasser TOP 5 à TOP 10 produits dans la sous-requête FOR JSON PATH
+    pour rester dans les limites de tokens du modèle).
+
+----------------------------------------------------------------
+MODULE 12 — Cas d'usage intégré & révision (Jour 3, 14:55–17:00)
+----------------------------------------------------------------
+OBJECTIF : rejouer la chaîne complète des 3 jours en une seule démonstration.
+
+PRÉREQUIS : Modules 1 à 11 exécutés sur le même environnement, sans avoir
+fermé/réinitialisé la base entre-temps.
+
+ÉTAPES :
+  1. Vérifier rapidement, dans l'ordre, que chaque brique répond toujours :
+       SELECT TOP 1 * FROM SalesLT.vw_CustomerOrderSummary; -- Module 2
+       SELECT COUNT(*) FROM SalesLT.Product WHERE DescriptionEmbedding IS NULL; -- Module 9, doit être 0
+  2. Exécuter la démonstration finale :
+       EXEC SalesLT.usp_AskProductAssistant
+         @Question = N'Quel vélo de route recommandez-vous sous 1500 € avec de bons avis ?';
+  3. Si le temps le permet, inviter un participant à proposer sa propre
+     question et l'exécuter en direct avec le même appel de procédure, en
+     substituant simplement le texte de @Question.
+
+RÉSULTAT ATTENDU : une réponse cohérente, ancrée sur le catalogue réel,
+s'affiche pour n'importe quelle question posée sur les produits.
+
+DÉPANNAGE : si une étape antérieure a été sautée ou a échoué pendant les 3
+jours, revenir au module concerné dans ce guide et rejouer uniquement le bloc
+manquant avant de relancer la démonstration finale.
+
+================================================================
+PARTIE 3 — NETTOYAGE APRÈS LA FORMATION (optionnel)
+================================================================
+  - Pour repartir de zéro avant une nouvelle session : supprimer la base
+    (DROP DATABASE AdventureWorksLT2025;) et la restaurer à nouveau depuis le
+    fichier .bak d'origine (revoir section 0.4).
+  - Arrêter Data API Builder (Ctrl+C dans le terminal où dab start tourne).
+  - Supprimer les déploiements Azure OpenAI si la ressource n'est plus utilisée,
+    pour éviter des coûts résiduels (portail Azure → ressource → Deployments →
+    supprimer), ou conserver la ressource si d'autres sessions sont prévues.
