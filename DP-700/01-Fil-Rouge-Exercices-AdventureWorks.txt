@@ -1,0 +1,335 @@
+Data Days · Microsoft Fabric Data Engineer (DP-700)
+
+Fil rouge des exercices | AdventureWorks
+
+Un exercice guidé par session, du Jour 1 au Jour 3 : nous construisons progressivement une solution Fabric complète | ingestion, transformation, sécurité, temps réel, supervision et optimisation | autour du jeu de données AdventureWorks.
+
+Le jeu de données : AdventureWorksLT
+
+AdventureWorks est la base d'exemple de Microsoft pour un fabricant de vélos fictif. Nous utilisons la version allégée AdventureWorksLT, disponible en base Azure SQL d'exemple ou en export CSV, avec ses tables principales :
+
+- SalesLT.Customer | clients (nom, email, téléphone, territoire)
+
+- SalesLT.Product / SalesLT.ProductCategory | catalogue produits
+
+- SalesLT.SalesOrderHeader / SalesLT.SalesOrderDetail | commandes et lignes de commande
+
+- SalesLT.Address / SalesLT.CustomerAddress | adresses de livraison
+
+Scénario fil rouge : nous jouons le rôle de l'équipe data d'AdventureWorks Cycles, chargée de construire la plateforme analytique de l'entreprise dans Microsoft Fabric.
+
+Prérequis communs
+
+- Un locataire Microsoft 365 avec une capacité Fabric d'essai (Trial) activée.
+
+- Un accès à la base d'exemple AdventureWorksLT (Azure SQL Database exemple, ou export CSV fourni par le formateur).
+
+- Les droits nécessaires pour créer des espaces de travail dans le locataire de formation.
+
+========================================
+
+Jour 1 · Session 1 · Configure Fabric Workspace
+
+Configurer l'espace de travail AdventureWorks
+
+> Exercice | Créer et sécuriser l'espace de travail du projet
+
+Durée : 20 minutesFormat : binôme
+Mettre en place l'espace de travail Fabric qui accueillera toute la solution AdventureWorks pour le reste du parcours.
+
+- Dans app.fabric.microsoft.com, créer un espace de travail nommé AdventureWorks-[vosinitiales].
+
+- Dans les paramètres de l'espace de travail, l'affecter à votre capacité Fabric d'essai.
+
+- Créer un domaine Ventes & Analytique (ou rejoindre un domaine existant) et y rattacher l'espace de travail.
+
+- Dans l'onglet Accès, attribuer les rôles : vous-même en Administrateur, votre binôme en Membre, un troisième profil fictif en Observateur.
+
+- Créer un lakehouse nommé AdvWorksLakehouse | il servira de socle à toutes les sessions suivantes.
+
+Resultat : Résultat attendu : un espace de travail actif, rattaché à une capacité et à un domaine, avec trois rôles distincts attribués et un lakehouse vide prêt à être alimenté.
+
+========================================
+
+Jour 1 · Session 2 · Lifecycle Management
+
+Mettre en place le cycle de vie Dev / Test / Prod
+
+> Exercice | Pipeline de déploiement et intégration Git
+
+Durée : 20 minutesFormat : binôme
+Faire évoluer le lakehouse AdventureWorks à travers trois environnements, avec un historique versionné.
+
+- Créer deux espaces de travail supplémentaires : AdventureWorks-Test et AdventureWorks-Prod.
+
+- Depuis l'espace AdventureWorks-[vosinitiales] (rôle Dev), ouvrir Pipelines de déploiement et créer un pipeline à trois étapes : Dev, Test, Prod.
+
+- Affecter chaque espace de travail à son étape correspondante.
+
+- Déployer le lakehouse AdvWorksLakehouse de Dev vers Test, puis comparer les deux étapes dans l'interface.
+
+- Connecter l'espace Dev à un dépôt Git (Azure DevOps ou GitHub) et committer l'état initial du lakehouse.
+
+Resultat : Résultat attendu : un pipeline de déploiement à trois étapes fonctionnel, avec le lakehouse promu jusqu'en Test et l'espace Dev connecté à Git.
+
+========================================
+
+Jour 1 · Session 3 · Security & Gouvernance | Partie 1
+
+Sécuriser l'accès aux données clients et commandes
+
+> Exercice | Rôles, permissions et accès granulaire T-SQL
+
+Durée : 25 minutesFormat : binôme
+Restreindre l'accès aux tables sensibles d'AdventureWorks selon le profil de l'utilisateur.
+
+- Charger (ou vérifier la présence de) SalesLT.Customer et SalesLT.SalesOrderHeader dans AdvWorksLakehouse.
+
+- Ouvrir le point de terminaison d'analytique SQL du lakehouse.
+
+- Exécuter la commande suivante pour restreindre l'accès à la table clients à un rôle applicatif dédié :
+
+----
+GRANT SELECT ON SalesLT.Customer TO [role_analystes_ventes];
+DENY SELECT ON SalesLT.Customer TO [role_stagiaires];
+----
+
+- Vérifier l'accès en se connectant avec un compte membre de chaque rôle et en observant le résultat.
+
+- Documenter dans un court paragraphe les rôles créés et les tables concernées.
+
+Resultat : Résultat attendu : un accès en lecture fonctionnel pour les analystes ventes et refusé pour les stagiaires sur la table Customer.
+
+========================================
+
+Jour 1 · Session 4 · Security & Gouvernance | Partie 2
+
+Masquer les données sensibles et gouverner le lakehouse
+
+> Exercice | DDM, sécurité au niveau ligne et catalogue
+
+Durée : 25 minutesFormat : groupe
+Protéger l'email et le téléphone des clients, et restreindre les commandes visibles par territoire commercial.
+
+- Appliquer un masquage dynamique sur les colonnes sensibles de SalesLT.Customer :
+
+----
+ALTER TABLE SalesLT.Customer
+ALTER COLUMN EmailAddress ADD MASKED WITH (FUNCTION = 'email()');
+ALTER TABLE SalesLT.Customer
+ALTER COLUMN Phone ADD MASKED WITH (FUNCTION = 'default()');
+GRANT UNMASK TO [role_analystes_ventes];
+----
+
+- Créer une fonction de prédicat de sécurité au niveau ligne limitant chaque commercial aux commandes de son propre territoire dans SalesLT.SalesOrderHeader.
+
+- Tester la requête avec deux utilisateurs de territoires différents et comparer les résultats.
+
+- Dans le catalogue Fabric, ajouter une étiquette de sensibilité Confidentiel au lakehouse et marquer l'élément comme approuvé.
+
+Resultat : Résultat attendu : emails et téléphones masqués pour les non-autorisés, commandes filtrées par territoire, lakehouse étiqueté et approuvé dans le catalogue.
+
+========================================
+
+Jour 2 · Session 1 · Loading Patterns
+
+Ingérer AdventureWorks et modéliser les dimensions
+
+> Exercice | Pipeline d'ingestion et dimension produit en SCD Type 2
+
+Durée : 25 minutesFormat : binôme
+Charger les données sources AdventureWorks et construire une dimension produit avec historique.
+
+- Dans AdvWorksLakehouse, créer un dossier bronze pour les données brutes.
+
+- Créer un pipeline avec une activité Copier des données : source = base AdventureWorksLT, destination = bronze/Product, bronze/ProductCategory, bronze/SalesOrderHeader, bronze/SalesOrderDetail, bronze/Customer.
+
+- Exécuter le pipeline et vérifier dans l'historique des exécutions que chaque copie a réussi.
+
+- Créer une table DimProduct avec une clé de substitution ProductKey (entier auto-incrémenté) en plus de ProductID source.
+
+- Ajouter les colonnes IsActive, ValidFrom, ValidTo pour implémenter un SCD de Type 2 sur le prix (ListPrice).
+
+Resultat : Résultat attendu : les cinq tables sources copiées en zone bronze, et une dimension produit prête à suivre l'historique des changements de prix.
+
+========================================
+
+Jour 2 · Session 2 · Batch Transformation
+
+Transformer les commandes avec Spark
+
+> Exercice | Notebook Spark et table Delta optimisée
+
+Durée : 20 minutesFormat : binôme
+Nettoyer et agréger les commandes AdventureWorks avec PySpark.
+
+- Créer un notebook dans l'espace de travail, attaché à AdvWorksLakehouse.
+
+- Charger bronze/SalesOrderHeader et bronze/SalesOrderDetail dans deux DataFrames.
+
+----
+orders = spark.read.load("Files/bronze/SalesOrderHeader")
+lines  = spark.read.load("Files/bronze/SalesOrderDetail")
+sales = (lines.join(orders, "SalesOrderID")
+.groupBy("ProductID")
+.agg({"LineTotal": "sum", "OrderQty": "sum"}))
+sales.write.format("delta").mode("overwrite").saveAsTable("silver_sales_by_product")
+----
+
+- Exécuter le notebook et vérifier la table silver_sales_by_product créée.
+
+- Activer OptimizeWrite sur cette table et relancer une écriture pour observer la réduction du nombre de fichiers.
+
+Resultat : Résultat attendu : une table Delta silver_sales_by_product agrégée par produit, écrite avec OptimizeWrite activé.
+
+========================================
+
+Jour 2 · Session 3 · Batch Transformation | Suite
+
+Organiser AdventureWorks en architecture médaillon
+
+> Exercice | Couches Bronze, Silver, Gold et rapport
+
+Durée : 25 minutesFormat : binôme
+Finaliser la couche Gold prête pour l'analyse commerciale.
+
+- Vérifier que bronze (brut) et silver_sales_by_product (nettoyé) existent déjà.
+
+- Créer la couche Gold avec une table gold_sales_summary combinant produits, catégories et ventes :
+
+----
+CREATE TABLE gold_sales_summary AS
+SELECT c.Name AS Category, p.Name AS Product,
+s.sum_LineTotal AS Revenue, s.sum_OrderQty AS UnitsSold
+FROM silver_sales_by_product s
+JOIN Product p ON p.ProductID = s.ProductID
+JOIN ProductCategory c ON c.ProductCategoryID = p.ProductCategoryID;
+----
+
+- Restreindre l'accès à bronze aux ingénieurs données uniquement (rôle Fabric OneLake).
+
+- Créer un rapport Power BI simple sur gold_sales_summary montrant le revenu par catégorie.
+
+Resultat : Résultat attendu : une couche Gold interrogeable, un accès Bronze restreint, et un premier rapport de revenu par catégorie.
+
+========================================
+
+Jour 2 · Session 4 · Real-Time Transformation
+
+Simuler un flux de commandes en temps réel
+
+> Exercice | Eventstream, Eventhouse et requêtes KQL
+
+Durée : 25 minutesFormat : binôme
+Simuler l'arrivée de nouvelles commandes AdventureWorks en flux continu.
+
+- Créer un Eventstream nommé AdvWorksOrdersStream avec la source d'exemple Générateur d'événements de test, ou publier manuellement des lignes de SalesOrderHeader comme événements JSON.
+
+- Ajouter une transformation Filtre pour ne garder que les commandes dont le montant total dépasse 500 $.
+
+- Ajouter une fenêtre bascule de 1 minute agrégeant le nombre de commandes et le montant total.
+
+- Router la sortie vers un nouvel Eventhouse nommé AdvWorksRealtime, table OrdersLive.
+
+- Écrire une requête KQL isolant les commandes des 10 dernières minutes :
+
+----
+OrdersLive
+| where ingestion_time() &gt; ago(10m)
+| summarize TotalRevenue = sum(TotalDue), Orders = count() by bin(ingestion_time(), 1m)
+----
+
+Resultat : Résultat attendu : un flux de commandes filtré et agrégé, stocké dans un Eventhouse, interrogeable en KQL.
+
+========================================
+
+Jour 3 · Session 1 · Monitoring & Alerts
+
+Superviser la plateforme AdventureWorks
+
+> Exercice | Hub de surveillance et alerte Activator
+
+Durée : 20 minutesFormat : binôme
+Mettre en place une supervision proactive des pipelines et du flux de commandes.
+
+- Dans le hub de surveillance, consulter l'historique des exécutions du pipeline d'ingestion de la session J2-S1.
+
+- Interroger la vue sys.dm_exec_sessions sur le point de terminaison SQL pour lister les sessions actives.
+
+- Créer une règle Activator sur AdvWorksRealtime qui se déclenche si TotalRevenue dépasse 5000 $ sur une fenêtre de 1 minute.
+
+- Configurer une action e-mail pour cette règle et la tester avec un pic simulé de commandes.
+
+Resultat : Résultat attendu : une règle Activator opérationnelle qui notifie l'équipe en cas de pic de revenu anormal.
+
+========================================
+
+Jour 3 · Session 2 · Error Identification & Resolution | Partie 1
+
+Diagnostiquer un pipeline d'ingestion en échec
+
+> Exercice | Casser puis réparer le pipeline AdventureWorks
+
+Durée : 20 minutesFormat : binôme
+S'entraîner à diagnostiquer un échec réel sur le pipeline construit en J2-S1.
+
+- Modifier volontairement la connexion source du pipeline d'ingestion (mauvais nom de table ou identifiants invalides).
+
+- Exécuter le pipeline et observer l'échec dans le hub de surveillance.
+
+- Ouvrir les sorties de l'activité en échec et lire le message d'erreur précis.
+
+- Corriger la configuration source et rejouer uniquement l'activité en échec (pas tout le pipeline).
+
+- Créer une règle Activator qui alerte en cas de nouvel échec de ce pipeline.
+
+Resultat : Résultat attendu : le pipeline corrigé et ré-exécuté avec succès, et une alerte de sécurité en place pour un futur échec.
+
+========================================
+
+Jour 3 · Session 3 · Error Identification & Resolution | Partie 2
+
+Diagnostiquer une requête lente et un accès refusé
+
+> Exercice | Query Insights et vérification RLS
+
+Durée : 25 minutesFormat : binôme
+Résoudre un incident de performance et un incident d'autorisation sur gold_sales_summary.
+
+- Exécuter une requête volontairement coûteuse joignant SalesOrderDetail, Product et Customer sans filtre.
+
+- Interroger queryinsights.long_running_queries pour la retrouver et mesurer sa durée.
+
+- Proposer une optimisation (filtre sur une plage de dates, ou lecture depuis gold_sales_summary déjà agrégée).
+
+- Se connecter avec un compte commercial d'un autre territoire que le vôtre et constater l'absence de lignes visibles.
+
+- Vérifier la fonction de prédicat RLS créée en J1-S4 et corriger le filtre si nécessaire.
+
+Resultat : Résultat attendu : une requête optimisée mesurablement plus rapide, et un accès RLS vérifié et corrigé.
+
+========================================
+
+Jour 3 · Session 4 · Performance Optimization
+
+Optimiser les tables Delta AdventureWorks
+
+> Exercice | Optimize, V-Order, Vacuum et partitionnement
+
+Durée : 25 minutesFormat : binôme
+Finaliser la solution en optimisant les tables les plus sollicitées.
+
+- Sur silver_sales_by_product, exécuter la commande Optimize pour compacter les petits fichiers.
+
+----
+OPTIMIZE silver_sales_by_product;
+VACUUM silver_sales_by_product RETAIN 168 HOURS;
+----
+
+- Activer V-Order sur gold_sales_summary et comparer le temps d'une requête de lecture avant/après.
+
+- Repartitionner bronze/SalesOrderHeader par mois de commande (OrderDate) pour accélérer les filtres temporels.
+
+- Documenter en une phrase, pour chacune des trois tables clés du projet (bronze, silver, gold), le levier de performance appliqué.
+
+Resultat : Résultat attendu : des tables compactées, ordonnées et partitionnées, avec une amélioration mesurable du temps de lecture | la solution AdventureWorks est prête pour la production.
