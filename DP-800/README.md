@@ -12,6 +12,14 @@ Supports de la formation **DP-800** (SQL AI Developer) : slides formateur, scrip
 
 Fil rouge : **AdventureWorks Commerce Cloud** (SQL Server 2025).
 
+### Base de données de démonstration
+
+| Fichier | Description |
+|---------|-------------|
+| `AdventureWorks2025.bak` | Sauvegarde SQL Server **AdventureWorks2025** provenant du [site officiel Microsoft](https://learn.microsoft.com/sql/samples/adventureworks-install-configure) — sert à alimenter les démos et ateliers de la formation |
+
+Restauration typique (SSMS ou `RESTORE DATABASE`) à partir de ce fichier `.bak`, conformément au guide pas à pas.
+
 ### Prérequis & guide pas à pas
 
 | Fichier | Description |
