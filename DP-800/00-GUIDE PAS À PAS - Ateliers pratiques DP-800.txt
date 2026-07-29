@@ -20,8 +20,10 @@ PARTIE 0 — PRÉREQUIS GÉNÉRAUX (à faire AVANT le Jour 1)
   d'entreprise, demandez à votre service IT d'autoriser les domaines
   *.openai.azure.com avant la formation.
 
-0.2 Installer SQL Server 2025
+0.2 Installer SQL Server 2025 : 
 ----------------------------------
+
+
 Option A — SQL Server 2025 en local (Windows) :
   1. Télécharger SQL Server 2025 Developer Edition (gratuite) depuis le site
      Microsoft (rechercher « SQL Server 2025 Developer Edition download »).
@@ -73,6 +75,9 @@ Option C — Azure SQL Database (si pas d'installation locale possible) :
   1. Télécharger le fichier de sauvegarde AdventureWorksLT2025.bak (ou la
      version compatible SQL Server 2025 la plus récente) depuis le dépôt
      GitHub officiel Microsoft SQL Server Samples.
+	 URL : 
+		- https://learn.microsoft.com/en-us/sql/samples/adventureworks-install-configure?view=sql-server-ver17&tabs=ssms
+		- https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2025.bak
   2. Copier ce fichier .bak dans un dossier accessible par le service SQL
      Server (par exemple C:\Backups sur Windows, ou dans le volume monté du
      conteneur Docker).
