@@ -22,6 +22,14 @@ Dossier [`OLTP/`](./OLTP/) :
 
 Restauration typique (SSMS ou `RESTORE DATABASE`) à partir de ce fichier `.bak`, conformément au guide pas à pas.
 
+### Base de données légère (Lightweight)
+
+Dossier [`Lightweight/`](./Lightweight/) :
+
+| Fichier | Description |
+|---------|-------------|
+| `Lightweight/AdventureWorksLT2025.bak` | Sauvegarde SQL Server **AdventureWorksLT2025** (version légère) provenant du [site officiel Microsoft](https://learn.microsoft.com/sql/samples/adventureworks-install-configure) — base utilisée pour les ateliers et le fil rouge Commerce Cloud |
+
 ### Prérequis & guide pas à pas
 
 | Fichier | Description |
