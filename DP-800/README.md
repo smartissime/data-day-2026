@@ -29,6 +29,7 @@ Dossier [`Lightweight/`](./Lightweight/) :
 | Fichier | Description |
 |---------|-------------|
 | `Lightweight/AdventureWorksLT2025.bak` | Sauvegarde SQL Server **AdventureWorksLT2025** (version légère) provenant du [site officiel Microsoft](https://learn.microsoft.com/sql/samples/adventureworks-install-configure) — base utilisée pour les ateliers et le fil rouge Commerce Cloud |
+| `Lightweight/AdventureWorksLT2025.bacpac` | Export **BACPAC** AdventureWorksLT2025 — import possible via SSMS / Azure Data Studio / Azure SQL (utile hors restauration `.bak`) |
 
 ### Prérequis & guide pas à pas
 
