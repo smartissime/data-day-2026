@@ -1,0 +1,1068 @@
+MICROSOFT FABRIC - RÉFÉRENTIEL DES PARAMÈTRES D'ADMINISTRATION
+Rodrigue YENGO - ADRCHIA365 - ARCHIALEARN  - DATA & AI FRANCE
+Date de préparation : 08/08/2026
+
+Objet
+Ce document présente les paramètres de tenant visibles dans l'administration Microsoft Fabric fournis dans la source, avec leur état observé, une description fonctionnelle et un cas d'utilisation type.
+
+Important
+Les états Activé ou Désactivé correspondent à l'état de notre Tenant de test et peuvent différer d'un autre tenant. Les descriptions s'appuient sur les intitulés du fichier et sur l index Microsoft Learn des tenant settings consulté le 08/08/2026. Pour les fonctions en préversion, une validation sécurité, conformité et exploitation'est recommandée avant généralisation.
+
+Lecture des états
+Activé pour toute l'organisation : fonctionnalité disponible pour tous les utilisateurs éligibles.
+Désactivé pour toute l'organisation : fonctionnalité bloquée au niveau du tenant.
+Activé pour un sous-ensemble de l'organisation : fonctionnalité limitée à des groupes ou populations définis.
+
+
+==============================================================================
+Paramètres généraux Microsoft Fabric
+==============================================================================
+
+1. Users can create Fabric items
+État observé : Activé pour toute l'organisation
+Description : Autorise les utilisateurs à créer des éléments Microsoft Fabric de production, sans affecter la création d'éléments Power BI lorsque le paramètre est désactivé.
+Cas d'utilisation : Activer pour les groupes qui doivent créer des lakehouses, warehouses, notebooks, pipelines et autres éléments Fabric. Restreindre pour un déploiement progressif.
+
+2. Users can create Ontology (preview) items
+État observé : Désactivé pour toute l'organisation
+Description : Autorise la création d ontologies afin d unifier la sémantique métier entre données, modèles et logique, notamment pour des usages d'IA contextuelle.
+Cas d'utilisation : Activer pour des équipes qui construisent un modèle sémantique d'entreprise ou des agents IA ayant besoin de concepts et relations métier.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+3. Users can create Digital Twin Builder (preview) items
+État observé : Désactivé pour toute l'organisation
+Description : Autorise la création d'éléments Digital Twin Builder pour modéliser des environnements ou processus réels sous forme de jumeaux numériques.
+Cas d'utilisation : Activer pour des scénarios industriels, bâtiments, énergie, logistique ou opérations nécessitant une représentation numérique cohérente du monde réel.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+4. Product Feedback
+État observé : Activé pour toute l'organisation
+Description : Autorise Microsoft a proposer des enquêtes de satisfaction dans Fabric et Power BI. La participation des utilisateurs reste volontaire.
+Cas d'utilisation : Activer pour contribuer aux retours produit. Désactiver si la politique interne limite les sollicitations ou remontées d'expérience vers l'éditeur.
+
+5. Users can be informed of upcoming conferences featuring Microsoft Fabric when they are logged in to Fabric
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Users can be informed of upcoming conferences featuring Microsoft Fabric when they are logged in to Fabric.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+6. ML models can serve real-time predictions from API endpoints (preview)
+État observé : Activé pour toute l'organisation
+Description : Contrôle l'accès à une API Fabric ou Power BI et le niveau d'information ou d'action exposé par cette API.
+Cas d'utilisation : Activer pour l'automatisation et la gouvernance lorsque les applications appelantes sont approuvées et correctement sécurisées.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+7. Detect anomalies in Real-Time Intelligence (Preview)
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Detect anomalies in Real-Time Intelligence (Preview).
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+8. Enable Event Schema Sets in Real-Time Hub (preview)
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Enable Event Schema Sets in Real-Time Hub.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+9. Users can create dbt job items (preview)
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Users can create dbt job items.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+10. All Power BI users can see "Set alert" button to create Fabric Activator alerts
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : All Power BI users can see "Set alert" button to create Fabric Activator alerts.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+11. Enable new mirrored catalog items (preview)
+État observé : Désactivé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Enable new mirrored catalog items.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+12. Enable Fabric App Items (preview)
+État observé : Désactivé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Enable Fabric App Items.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+13. Enable anonymous data access for Fabric Apps (Preview)
+État observé : Désactivé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Enable anonymous data accèss for Fabric Apps.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+14. Users can create Azure Databricks Storage items (preview)
+État observé : Désactivé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Users can create Azure Databricks Storage items.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+15. Enable sending Operations Agents observability data to Agent 365 (preview)
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle une fonctionnalité d'intelligence artificielle ou d'agent dans Fabric, ainsi que son accès ou certains flux de données associés.
+Cas d'utilisation : Activer pour des groupes autorisés après validation des exigences de sécurité, de confidentialité, de résidence des données et de gouvernance IA.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+16. Insights for operations agents (preview)
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité d'intelligence artificielle ou d'agent dans Fabric, ainsi que son accès ou certains flux de données associés.
+Cas d'utilisation : Activer pour des groupes autorisés après validation des exigences de sécurité, de confidentialité, de résidence des données et de gouvernance IA.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+17. Fabric data agents can send operational metadata for observability in Microsoft Foundry
+État observé : Activé pour un sous-ensemble de l'organisation
+Description : Contrôle une fonctionnalité d'intelligence artificielle ou d'agent dans Fabric, ainsi que son accès ou certains flux de données associés.
+Cas d'utilisation : Activer pour des groupes autorisés après validation des exigences de sécurité, de confidentialité, de résidence des données et de gouvernance IA.
+
+
+==============================================================================
+Aide et support
+==============================================================================
+
+18. Publish "Get Help" information
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Publish "Get Help" information.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+19. Receive email and Teams notifications for service outages or incidents
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Receive email and Teams notifications for service outages or incidents.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+20. Receive In-product notifications for service outages or incidents
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Receive In-product notifications for service outages or incidents.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+21. Users can try Microsoft Fabric paid features
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Users can try Microsoft Fabric paid features.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+22. Show a custom message before publishing reports
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Show a custom message before publishing reports.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+
+==============================================================================
+Gestion des domaines
+==============================================================================
+
+23. Allow tenant and domain admins to override workspace assignments (preview)
+État observé : Activé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+
+==============================================================================
+Espaces de travail
+==============================================================================
+
+24. Create workspaces
+État observé : Activé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+
+25. Use semantic models across workspaces
+État observé : Activé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+
+26. Block users from reassigning personal workspaces (My Workspace)
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+
+27. Define workspace retention period
+État observé : Activé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+
+28. Automatically convert and store reports using Power BI enhanced metadata format (PBIR) (preview)
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Automatically convert and store reports using Power BI enhanced metadata format (PBIR) (preview).
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+29. Fabric item recovery
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Fabric item recovery.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+
+==============================================================================
+Protection de l'information
+==============================================================================
+
+30. Allow users to apply sensitivity labels for content
+État observé : Désactivé pour toute l'organisation
+Description : Autorise l'application d etiquettes de confidentialité Microsoft Purview aux contenus Fabric et Power BI pris en charge.
+Cas d'utilisation : Activer pour classifier les données et appliquer une politique de protection selon leur sensibilité.
+
+31. Apply sensitivity labels from data sources to their data in Power BI
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle l'application ou la propagation des mécanismes Microsoft Purview de classification et de protection des contenus.
+Cas d'utilisation : Activer pour renforcer la gouvernance des données sensibles et aligner Fabric avec les politiques de conformité de l'organisation.
+
+32. Automatically apply sensitivity labels to downstream content
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle l'application ou la propagation des mécanismes Microsoft Purview de classification et de protection des contenus.
+Cas d'utilisation : Activer pour renforcer la gouvernance des données sensibles et aligner Fabric avec les politiques de conformité de l'organisation.
+
+33. Allow workspace admins to override automatically applied sensitivity labels
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle l'application ou la propagation des mécanismes Microsoft Purview de classification et de protection des contenus.
+Cas d'utilisation : Activer pour renforcer la gouvernance des données sensibles et aligner Fabric avec les politiques de conformité de l'organisation.
+
+34. Restrict content with protected labels from being shared via link with everyone in your organization
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+35. Domain admins can set default sensitivity labels for their domains (preview)
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle l'application ou la propagation des mécanismes Microsoft Purview de classification et de protection des contenus.
+Cas d'utilisation : Activer pour renforcer la gouvernance des données sensibles et aligner Fabric avec les politiques de conformité de l'organisation.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+36. Allow Microsoft Purview to secure AI interactions
+État observé : Activé pour toute l'organisation
+Description : Autorise l integration de Microsoft Purview afin d appliquer des contrôles de sécurité et de conformité aux interactions IA prises en charge.
+Cas d'utilisation : Activer lorsque Copilot ou des agents IA sont utilises avec des exigences de protection des données, d'audit ou de conformité.
+
+
+==============================================================================
+Export et partage
+==============================================================================
+
+37. External data sharing
+État observé : Désactivé pour toute l'organisation
+Description : Autorise le partage de données Fabric avec des utilisateurs ou organisations externes au tenant selon les mécanismes de partage pris en charge.
+Cas d'utilisation : Activer pour des partenariats inter entreprises ou des echanges de données gouvernes avec des tiers. Limiter à des groupes approuvés.
+
+38. Users can accept external data shares
+État observé : Désactivé pour toute l'organisation
+Description : Autorise les utilisateurs à accepter des partages de données en lecture provenant d'autres tenants Fabric.
+Cas d'utilisation : Activer si les équipes doivent consommer des données de partenaires externes tout en maintenant un cadre de gouvernance.
+
+39. Guest users can access Microsoft Fabric
+État observé : Activé pour toute l'organisation
+Description : Autorise les comptes invites presents dans Microsoft Entra ID a acceder a Fabric et aux éléments pour lesquels ils disposent de permissions.
+Cas d'utilisation : Activer pour la collaboration B2B. Combiner avec des groupes, des politiques d'accès conditionnel et des revues d'accès.
+
+40. Users can invite guest users to collaborate through item sharing and permissions
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+41. Guest users can browse and access Fabric content
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+42. Users can see guest users in lists of suggested people
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+43. Publish to web
+État observé : Activé pour toute l'organisation
+Description : Autorise la publication de rapports Power BI sur Internet sans authentification. Le contenu publie devient accèssible publiquement vià un code d incorporation.
+Cas d'utilisation : A reserver aux rapports explicitement publics, sans données confidentielles ou personnelles. A désactivér dans les environnements sensibles.
+
+44. Copy and paste visuals
+État observé : Activé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+45. Export to Excel
+État observé : Activé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+46. Export to .csv
+État observé : Activé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+47. Download reports
+État observé : Activé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+48. Users can work with semantic models in Excel using a live connection
+État observé : Activé pour toute l'organisation
+Description : Contrôle une capacité liée aux modèles sémantiques Power BI, à leur interrogation, leur édition ou leur réutilisation.
+Cas d'utilisation : Activer pour les équipes BI et analytiques qui ont besoin de réutiliser, automatiser ou administrer les modèles sémantiques.
+
+49. Export reports as PowerPoint presentations or PDF documents
+État observé : Activé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+50. Export reports as MHTML documents
+État observé : Activé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+51. Export reports as Word documents
+État observé : Activé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+52. Export reports as XML documents
+État observé : Activé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+53. Export reports as image files
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+54. Print dashboards and reports
+État observé : Activé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+55. Certification
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Certification.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+56. Endorse master data
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Endorse master data.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+57. Users can set up email subscriptions
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Users can set up email subscriptions.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+58. B2B guest users can set up and be subscribed to email subscriptions
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+59. Users can send email subscriptions to external users
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+60. Featured content
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Featured content.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+61. Allow shareable links to grant access to everyone in your organization
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+62. Enable Microsoft Teams integration
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Enable Microsoft Teams integration.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+63. Install Power BI app for Microsoft Teams automatically
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Install Power BI app for Microsoft Teams automatically.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+64. Enable Power BI add-in for PowerPoint
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Enable Power BI add-in for PowerPoint.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+65. Allow DirectQuery connections to Power BI semantic models
+État observé : Activé pour toute l'organisation
+Description : Contrôle une capacité liée aux modèles sémantiques Power BI, à leur interrogation, leur édition ou leur réutilisation.
+Cas d'utilisation : Activer pour les équipes BI et analytiques qui ont besoin de réutiliser, automatiser ou administrer les modèles sémantiques.
+
+66. Guest users can work with shared semantic models in their own tenants
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+67. Allow specific users to turn on external data sharing
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+68. Users with read or write permission can download data from notebooks
+État observé : Activé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+
+==============================================================================
+Découverte
+==============================================================================
+
+69. Make promoted content discoverable
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Make promoted content discoverable.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+70. Make certified content discoverable
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Make certified content discoverable.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+71. Discover content
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Discover content.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+
+==============================================================================
+Applications Power BI
+==============================================================================
+
+72. Create template organizational apps
+État observé : Désactivé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Create template organizational apps.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+73. Push apps to end users
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Push apps to end users.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+74. Publish apps to the entire organization
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Publish apps to the entire organization.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+
+==============================================================================
+Intégrations
+==============================================================================
+
+75. Allow XMLA endpoints and Analyze in Excel with on-premises semantic models
+État observé : Activé pour toute l'organisation
+Description : Contrôle une capacité liée aux modèles sémantiques Power BI, à leur interrogation, leur édition ou leur réutilisation.
+Cas d'utilisation : Activer pour les équipes BI et analytiques qui ont besoin de réutiliser, automatiser ou administrer les modèles sémantiques.
+
+76. Semantic Model Execute Queries REST API
+État observé : Activé pour toute l'organisation
+Description : Contrôle une capacité liée aux modèles sémantiques Power BI, à leur interrogation, leur édition ou leur réutilisation.
+Cas d'utilisation : Activer pour les équipes BI et analytiques qui ont besoin de réutiliser, automatiser ou administrer les modèles sémantiques.
+
+77. Users can use the Power BI Model Context Protocol server endpoint (preview)
+État observé : Désactivé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Users can use the Power BI Model Context Protocol server endpoint.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+78. Use ArcGIS Maps for Power BI
+État observé : Activé pour toute l'organisation
+Description : Contrôle l utilisation du service ou du visuel géospatial indiqué dans Fabric ou Power BI, avec les flux de données associés.
+Cas d'utilisation : Activer pour les analyses géographiques et cartographiques après validation des contraintes de traitement, de résidence et de sous-traitance des données.
+
+79. Use global search for Power BI
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Use global search for Power BI.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+80. Users can use the Azure Maps visual
+État observé : Activé pour toute l'organisation
+Description : Contrôle l utilisation du service ou du visuel géospatial indiqué dans Fabric ou Power BI, avec les flux de données associés.
+Cas d'utilisation : Activer pour les analyses géographiques et cartographiques après validation des contraintes de traitement, de résidence et de sous-traitance des données.
+
+81. Data sent to Azure Maps can be processed outside your tenant's geographic region, compliance boundary, or national cloud instance
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle l utilisation du service ou du visuel géospatial indiqué dans Fabric ou Power BI, avec les flux de données associés.
+Cas d'utilisation : Activer pour les analyses géographiques et cartographiques après validation des contraintes de traitement, de résidence et de sous-traitance des données.
+
+82. Data sent to Azure Maps can be processed by Microsoft Online Services Subprocessors
+État observé : Désactivé pour toute l'organisation
+Description : Autorise l'authentification unique Microsoft Entra ID vers la source ou le service indiqué afin de propager l'identité utilisateur.
+Cas d'utilisation : Activer pour eviter des identifiants partages et appliquer les droits de la source de données au niveau utilisateur.
+
+83. Map and filled map visuals
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle l utilisation du service ou du visuel géospatial indiqué dans Fabric ou Power BI, avec les flux de données associés.
+Cas d'utilisation : Activer pour les analyses géographiques et cartographiques après validation des contraintes de traitement, de résidence et de sous-traitance des données.
+
+84. Integration with SharePoint and Microsoft Lists
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+85. Dremio SSO
+État observé : Désactivé pour toute l'organisation
+Description : Autorise l'authentification unique Microsoft Entra ID vers la source ou le service indiqué afin de propager l'identité utilisateur.
+Cas d'utilisation : Activer pour eviter des identifiants partages et appliquer les droits de la source de données au niveau utilisateur.
+
+86. Snowflake SSO
+État observé : Désactivé pour toute l'organisation
+Description : Autorise l'authentification unique Microsoft Entra ID vers la source ou le service indiqué afin de propager l'identité utilisateur.
+Cas d'utilisation : Activer pour eviter des identifiants partages et appliquer les droits de la source de données au niveau utilisateur.
+
+87. Redshift SSO
+État observé : Désactivé pour toute l'organisation
+Description : Autorise l'authentification unique Microsoft Entra ID vers la source ou le service indiqué afin de propager l'identité utilisateur.
+Cas d'utilisation : Activer pour eviter des identifiants partages et appliquer les droits de la source de données au niveau utilisateur.
+
+88. Google BigQuery SSO
+État observé : Désactivé pour toute l'organisation
+Description : Autorise l'authentification unique Microsoft Entra ID vers la source ou le service indiqué afin de propager l'identité utilisateur.
+Cas d'utilisation : Activer pour eviter des identifiants partages et appliquer les droits de la source de données au niveau utilisateur.
+
+89. Enable Denodo SSO
+État observé : Désactivé pour toute l'organisation
+Description : Autorise l'authentification unique Microsoft Entra ID vers la source ou le service indiqué afin de propager l'identité utilisateur.
+Cas d'utilisation : Activer pour eviter des identifiants partages et appliquer les droits de la source de données au niveau utilisateur.
+
+90. Enable Starburst SSO
+État observé : Désactivé pour toute l'organisation
+Description : Autorise l'authentification unique Microsoft Entra ID vers la source ou le service indiqué afin de propager l'identité utilisateur.
+Cas d'utilisation : Activer pour eviter des identifiants partages et appliquer les droits de la source de données au niveau utilisateur.
+
+91. Microsoft Entra single sign-on for data gateway
+État observé : Désactivé pour toute l'organisation
+Description : Autorise l'authentification unique Microsoft Entra ID vers la source ou le service indiqué afin de propager l'identité utilisateur.
+Cas d'utilisation : Activer pour eviter des identifiants partages et appliquer les droits de la source de données au niveau utilisateur.
+
+92. Microsoft Entra single sign-on for virtual network (VNet) data gateway
+État observé : Désactivé pour toute l'organisation
+Description : Autorise l'authentification unique Microsoft Entra ID vers la source ou le service indiqué afin de propager l'identité utilisateur.
+Cas d'utilisation : Activer pour eviter des identifiants partages et appliquer les droits de la source de données au niveau utilisateur.
+
+93. Users can view Power BI files saved in OneDrive and SharePoint (preview)
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+94. Users can share links to Power BI files stored in OneDrive and SharePoint through Power BI Desktop (preview)
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+95. Enable granular access control for all data connections
+État observé : Désactivé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Enable granular accèss control for all data connections.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+96. Semantic models can export data to OneLake
+État observé : Activé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+97. Semantic model owners can choose to automatically update semantic models from files imported from OneDrive or SharePoint
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+98. ArcGIS GeoAnalytics for Fabric Runtime
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle l utilisation du service ou du visuel géospatial indiqué dans Fabric ou Power BI, avec les flux de données associés.
+Cas d'utilisation : Activer pour les analyses géographiques et cartographiques après validation des contraintes de traitement, de résidence et de sous-traitance des données.
+
+99. Allow non-Entra ID auth in Eventstream
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Allow non-Entra ID auth in Eventstream.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+100. Users can connect to data sources by using Apache Arrow database connectivity (ADBC)
+État observé : Désactivé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Users can connect to data sources by using Apache Arrow database connectivity (ADBC).
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+
+==============================================================================
+Visuels Power BI
+==============================================================================
+
+101. Allow visuals created using the Power BI SDK
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Allow visuals created using the Power BI SDK.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+102. Add and use certified visuals only (block uncertified)
+État observé : Désactivé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Add and use certified visuals only (block uncertified).
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+103. Allow downloads from custom visuals
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+104. AppSource Custom Visuals SSO
+État observé : Désactivé pour toute l'organisation
+Description : Autorise l'authentification unique Microsoft Entra ID vers la source ou le service indiqué afin de propager l'identité utilisateur.
+Cas d'utilisation : Activer pour eviter des identifiants partages et appliquer les droits de la source de données au niveau utilisateur.
+
+105. Allow access to the browser's local storage
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Allow accèss to the browser's local storage.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+
+==============================================================================
+Visuels R et Python
+==============================================================================
+
+106. Interact with and share R and Python visuals
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+
+==============================================================================
+Audit et utilisation
+==============================================================================
+
+107. Usage metrics for content creators
+État observé : Activé pour toute l'organisation
+Description : Contrôle la collecte, l'exposition ou l'exploitation d'informations de supervision, d'usage ou de diagnostic Fabric.
+Cas d'utilisation : Activer pour l observabilite, le capacity management, l audit et le support, en cadrant l'accès aux données nominatives ou techniques.
+
+108. Per-user data in usage metrics for content creators
+État observé : Activé pour toute l'organisation
+Description : Contrôle la collecte, l'exposition ou l'exploitation d'informations de supervision, d'usage ou de diagnostic Fabric.
+Cas d'utilisation : Activer pour l observabilite, le capacity management, l audit et le support, en cadrant l'accès aux données nominatives ou techniques.
+
+109. Show user data in the Fabric Capacity Metrics app and reports
+État observé : Activé pour toute l'organisation
+Description : Contrôle la collecte, l'exposition ou l'exploitation d'informations de supervision, d'usage ou de diagnostic Fabric.
+Cas d'utilisation : Activer pour l observabilite, le capacity management, l audit et le support, en cadrant l'accès aux données nominatives ou techniques.
+
+110. Azure Log Analytics connections for workspace administrators
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+
+111. Workspace admins can turn on monitoring for their workspaces (preview)
+État observé : Activé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+112. Microsoft can store query text to aid in support investigations
+État observé : Activé pour toute l'organisation
+Description : Contrôle la collecte, l'exposition ou l'exploitation d'informations de supervision, d'usage ou de diagnostic Fabric.
+Cas d'utilisation : Activer pour l observabilite, le capacity management, l audit et le support, en cadrant l'accès aux données nominatives ou techniques.
+
+
+==============================================================================
+Tableaux de bord
+==============================================================================
+
+113. Web content on dashboard tiles
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Web content on dashboard tiles.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+
+==============================================================================
+Développeurs
+==============================================================================
+
+114. Embed content in apps
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Embed content in apps.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+115. Service principals can create workspaces, connections, and deployment pipelines
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle les capacités accordees aux principaux de service Microsoft Entra ID pour automatiser les opérations Fabric concernees.
+Cas d'utilisation : Activer pour des scénarios machine a machine et CI CD, avec groupes dédiés, moindre privilège et supervision des identités applicatives.
+
+116. Service principals can call Fabric public APIs
+État observé : Activé pour toute l'organisation
+Description : Autorise les principaux de service disposant des permissions nécessaires à appeler les API publiques Fabric.
+Cas d'utilisation : Activer pour l'automatisation, le provisioning, l integration CI CD et les traitements sans utilisateur interactif.
+
+117. Allow service principals to create and use profiles
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle les capacités accordees aux principaux de service Microsoft Entra ID pour automatiser les opérations Fabric concernees.
+Cas d'utilisation : Activer pour des scénarios machine a machine et CI CD, avec groupes dédiés, moindre privilège et supervision des identités applicatives.
+
+118. Block ResourceKey Authentication
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Block ResourceKey Authentication.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+119. Define maximum number of Fabric identities in a tenant
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Define maximum number of Fabric identities in a tenant.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+
+==============================================================================
+API d'administration
+==============================================================================
+
+120. Service principals can access read-only admin APIs
+État observé : Désactivé pour toute l'organisation
+Description : Autorise des applications Entra ID à utiliser un principal de service pour appeler les API d'administration en lecture seule.
+Cas d'utilisation : Activer pour l inventaire, l audit, la supervision et la gouvernance automatisee du tenant.
+
+121. Service principals can access admin APIs used for updates
+État observé : Désactivé pour toute l'organisation
+Description : Autorise des applications à utiliser un principal de service pour appeler les API d'administration qui modifient des ressources ou métadonnées.
+Cas d'utilisation : Activer uniquement pour des automatisations d'administration approuvées, avec groupes dédiés, moindre privilège et journalisation.
+
+122. Enhance admin APIs responses with detailed metadata
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle l'accès à une API Fabric ou Power BI et le niveau d'information ou d'action exposé par cette API.
+Cas d'utilisation : Activer pour l'automatisation et la gouvernance lorsque les applications appelantes sont approuvées et correctement sécurisées.
+
+123. Enhance admin APIs responses with DAX and mashup expressions
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle une capacité liée aux modèles sémantiques Power BI, à leur interrogation, leur édition ou leur réutilisation.
+Cas d'utilisation : Activer pour les équipes BI et analytiques qui ont besoin de réutiliser, automatiser ou administrer les modèles sémantiques.
+
+
+==============================================================================
+Dataflows Gen1
+==============================================================================
+
+124. Create and use Gen1 dataflows
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Create and use Gen1 dataflows.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+
+==============================================================================
+Applications modèles
+==============================================================================
+
+125. Publish template apps
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Publish template apps.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+126. Install template apps
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Install template apps.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+127. Install template apps not listed in AppSource
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Install template apps not listed in AppSource.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+
+==============================================================================
+Questions et réponses
+==============================================================================
+
+128. Review questions
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Review questions.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+129. Synonym sharing
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+
+==============================================================================
+Explore en préversion
+==============================================================================
+
+130. Users with view permission can launch Explore
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Users with view permission can launch Explore.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+
+==============================================================================
+Sécurité des modèles sémantiques
+==============================================================================
+
+131. Block republish and disable package refresh
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Block republish and disable package refresh.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+
+==============================================================================
+Réseau avancé
+==============================================================================
+
+132. Tenant-level Private Link
+État observé : Désactivé pour toute l'organisation
+Description : Autorise l'accès au tenant Fabric via Azure Private Link afin de reduire l'exposition au reseau public.
+Cas d'utilisation : Activer pour les environnements soumis à des exigences fortes de segmentation reseau ou de trafic prive.
+
+133. Block Public Internet Access
+État observé : Désactivé pour toute l'organisation
+Description : Bloque l'accès au tenant Fabric depuis Internet public, ce qui impose un chemin reseau prive compatible.
+Cas d'utilisation : Activer dans une architecture Private Link après validation des dependances, de l'administration et des scénarios utilisateurs.
+
+134. Configure workspace-level inbound network rules
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+
+135. Configure workspace-level outbound network rules
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+
+136. Configure workspace-level IP firewall rules and trusted resource instances
+État observé : Activé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+
+
+==============================================================================
+Chiffrement
+==============================================================================
+
+137. Apply customer-managed keys
+État observé : Désactivé pour toute l'organisation
+Description : Autorise le chiffrement au niveau des espaces de travail avec des clés gérées par le client plutot qu uniquement par Microsoft.
+Cas d'utilisation : Activer lorsque la politique de sécurité exige le contrôle du cycle de vie des clés et une separation des responsabilités cryptographiques.
+
+
+==============================================================================
+Scorecards
+==============================================================================
+
+138. Create and use Scorecards
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Create and use Scorecards.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+
+==============================================================================
+Expériences utilisateur
+==============================================================================
+
+139. Help Power BI optimize your experience
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Help Power BI optimize your expérience.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+
+==============================================================================
+Partage avec Microsoft 365
+==============================================================================
+
+140. Share Fabric data with your Microsoft 365 services
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité de partage, de collaboration ou d'accès impliquant des destinataires internes ou externes au tenant.
+Cas d'utilisation : Configurer selon la politique de collaboration B2B, la sensibilité des données et les exigences de contrôle des accès.
+
+
+==============================================================================
+Insights
+==============================================================================
+
+141. Receive notifications for top insights (preview)
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Receive notifications for top insights (preview).
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+142. Show entry points for insights (preview)
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Show entry points for insights (preview).
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+
+==============================================================================
+Datamarts
+==============================================================================
+
+143. Create Datamarts (preview)
+État observé : Activé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Create Datamarts.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+
+==============================================================================
+Modèles sémantiques
+==============================================================================
+
+144. Users can edit semantic models in the Power BI service
+État observé : Activé pour toute l'organisation
+Description : Contrôle une capacité liée aux modèles sémantiques Power BI, à leur interrogation, leur édition ou leur réutilisation.
+Cas d'utilisation : Activer pour les équipes BI et analytiques qui ont besoin de réutiliser, automatiser ou administrer les modèles sémantiques.
+
+
+==============================================================================
+Kusto et Real Time
+==============================================================================
+
+145. Allow Real-Time Dashboards to include embedded app visuals
+État observé : Désactivé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Allow Real-Time Dashboards to include embedded app visuals.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+
+==============================================================================
+Mise à l échelle
+==============================================================================
+
+146. Scale out queries for large semantic models
+État observé : Activé pour toute l'organisation
+Description : Contrôle une capacité liée aux modèles sémantiques Power BI, à leur interrogation, leur édition ou leur réutilisation.
+Cas d'utilisation : Activer pour les équipes BI et analytiques qui ont besoin de réutiliser, automatiser ou administrer les modèles sémantiques.
+
+
+==============================================================================
+OneLake
+==============================================================================
+
+147. Users can access data stored in OneLake with apps external to Fabric
+État observé : Activé pour toute l'organisation
+Description : Autorise l'accès aux données OneLake depuis des applications externes a Fabric utilisant des interfaces compatibles.
+Cas d'utilisation : Activer pour l interoperation avec des outils tels que Databricks, applications personnalisées ou explorateurs de fichiers OneLake.
+
+148. Use short-lived user-delegated SAS tokens
+État observé : Activé pour toute l'organisation
+Description : Autorise la generation de jetons SAS OneLake delegues par utilisateur et a durée de vie courte.
+Cas d'utilisation : Activer pour donner un accès temporaire et borné à des applications sans exposer des identifiants longue durée.
+
+149. Authenticate with OneLake user-delegated SAS tokens
+État observé : Désactivé pour toute l'organisation
+Description : Autorise les applications a s'authentifier a OneLake avec des jetons SAS delegues par utilisateur.
+Cas d'utilisation : Activer lorsque des integrations applicatives ont besoin d'un accès temporaire OneLake fonde sur les droits de l'utilisateur.
+
+150. Users can sync data in OneLake with the OneLake File Explorer app
+État observé : Activé pour toute l'organisation
+Description : Autorise la synchronisation des données OneLake avec l'application OneLake File Explorer sur les postes utilisateurs.
+Cas d'utilisation : Activer pour les utilisateurs qui doivent parcourir et synchroniser OneLake depuis l explorateur de fichiers Windows.
+
+151. Include end-user identifiers in OneLake diagnostic logs
+État observé : Activé pour toute l'organisation
+Description : Inclut des identifiants d'utilisateurs finaux dans les journaux de diagnostic OneLake afin d ameliorer la traçabilité.
+Cas d'utilisation : Activer pour faciliter les investigations de sécurité et de support, en tenant compte des exigences de confidentialité des journaux.
+
+
+==============================================================================
+Intégration Git
+==============================================================================
+
+152. Users can synchronize workspace items with their Git repositories
+État observé : Activé pour toute l'organisation
+Description : Autorise la synchronisation des éléments d espace de travail Fabric avec un dépôt Git pour le contrôle de version et le cycle de développement.
+Cas d'utilisation : Activer pour les équipes DataOps et BI qui utilisent des branches, revues de code, CI CD et promotion entre environnements.
+
+153. Users can export items to Git repositories in other geographical locations
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+154. Users can export workspace items with applied sensitivity labels to Git repositories
+État observé : Activé pour toute l'organisation
+Description : Contrôle la possibilité pour les utilisateurs d extraire, télécharger, imprimer ou copier du contenu Fabric ou Power BI dans le format indiqué.
+Cas d'utilisation : Activer lorsque l'usage métier exige une réutilisation hors Fabric. Restreindre pour limiter les risques de fuite ou de duplication des données.
+
+155. Users can sync workspace items with GitHub repositories
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+
+
+==============================================================================
+Copilot et Azure OpenAI
+==============================================================================
+
+156. Users can use Copilot and other features powered by Azure OpenAI
+État observé : Activé pour toute l'organisation
+Description : Autorise l utilisation de Copilot et d'autres fonctionnalités Fabric reposant sur Azure OpenAI, sous reserve des capacités et prerequis applicables.
+Cas d'utilisation : Activer pour les populations autorisees à utiliser l IA générative dans Fabric. Restreindre par groupe lors d'un pilote ou pour des raisons de conformité.
+
+157. Users can access a standalone, cross-item Power BI Copilot experience (preview)
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité d'intelligence artificielle ou d'agent dans Fabric, ainsi que son accès ou certains flux de données associés.
+Cas d'utilisation : Activer pour des groupes autorisés après validation des exigences de sécurité, de confidentialité, de résidence des données et de gouvernance IA.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+158. Data sent to Azure OpenAI can be processed outside your capacity's geographic region, compliance boundary, or national cloud instance
+État observé : Désactivé pour toute l'organisation
+Description : Autorise le traitement de certaines données envoyees aux fonctions Azure OpenAI hors de la région géographique, de la frontière de conformité ou du cloud national de la capacité.
+Cas d'utilisation : N activer qu après validation juridique, sécurité et conformité lorsque la disponibilité du service l exige.
+
+159. Capacities can be designated as Fabric Copilot capacities
+État observé : Activé pour toute l'organisation
+Description : Contrôle une fonctionnalité d'intelligence artificielle ou d'agent dans Fabric, ainsi que son accès ou certains flux de données associés.
+Cas d'utilisation : Activer pour des groupes autorisés après validation des exigences de sécurité, de confidentialité, de résidence des données et de gouvernance IA.
+
+160. Data sent to Azure OpenAI can be stored outside your capacity's geographic region, compliance boundary, or national cloud instance
+État observé : Désactivé pour toute l'organisation
+Description : Autorise le stockage de certaines données liées aux fonctions Azure OpenAI hors de la région ou frontière de conformité de la capacité.
+Cas d'utilisation : N activer qu après analyse des exigences de résidence des données et approbation des équipes conformité.
+
+161. Only show approved items in the standalone Copilot in Power BI experience (preview)
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle une fonctionnalité d'intelligence artificielle ou d'agent dans Fabric, ainsi que son accès ou certains flux de données associés.
+Cas d'utilisation : Activer pour des groupes autorisés après validation des exigences de sécurité, de confidentialité, de résidence des données et de gouvernance IA.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+
+==============================================================================
+Services Azure Maps
+==============================================================================
+
+162. Users can use Azure Maps services
+État observé : Activé pour toute l'organisation
+Description : Contrôle l utilisation du service ou du visuel géospatial indiqué dans Fabric ou Power BI, avec les flux de données associés.
+Cas d'utilisation : Activer pour les analyses géographiques et cartographiques après validation des contraintes de traitement, de résidence et de sous-traitance des données.
+
+163. Data sent to Azure Maps can be processed outside your capacity's geographic region, compliance boundary or national cloud instance
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle l utilisation du service ou du visuel géospatial indiqué dans Fabric ou Power BI, avec les flux de données associés.
+Cas d'utilisation : Activer pour les analyses géographiques et cartographiques après validation des contraintes de traitement, de résidence et de sous-traitance des données.
+
+164. Users can use Azure Maps Weather Services (Preview)
+État observé : Activé pour toute l'organisation
+Description : Contrôle l utilisation du service ou du visuel géospatial indiqué dans Fabric ou Power BI, avec les flux de données associés.
+Cas d'utilisation : Activer pour les analyses géographiques et cartographiques après validation des contraintes de traitement, de résidence et de sous-traitance des données.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+
+==============================================================================
+Charges de travail additionnelles
+==============================================================================
+
+165. Workspace admins can add and remove additional workloads (preview)
+État observé : Activé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+Point d attention : fonctionnalité en préversion. Évaluer les limitations, le support et les exigences de conformité avant un déploiement large.
+
+166. Capacity admins and contributors can add and remove additional workloads
+État observé : Activé pour toute l'organisation
+Description : Contrôle au niveau du tenant le comportement associé à : Capacity admins and contributors can add and remove additional workloads.
+Cas d'utilisation : Configurer selon les besoins métier, les exigences de gouvernance, de sécurité et de conformité de l'organisation.
+
+167. Workspace admins can develop partner workloads
+État observé : Désactivé pour toute l'organisation
+Description : Contrôle un comportement d'administration, de création, de conservation ou de sécurité des espaces de travail Fabric.
+Cas d'utilisation : Configurer pour standardiser le cycle de vie des espaces de travail et limiter les ecarts de gouvernance entre équipes.
+
+168. Users can see and work with additional workloads not validated by Microsoft
+État observé : Désactivé pour toute l'organisation
+Description : Autorise ou bloque la fonctionnalité suivante au niveau du tenant : Users can see and work with additional workloads not validated by Microsoft.
+Cas d'utilisation : Activer pour les populations qui ont un besoin métier valide. Restreindre à des groupes pilotes ou approuvés lorsque la fonctionnalité est nouvelle, sensible ou en préversion.
+
+
+==============================================================================
+Azure AI Service
+==============================================================================
+
+169. Allow data processing outside geographic region for Azure AI services
+État observé : Activé pour un sous-ensemble de l'organisation
+Description : Contrôle une fonctionnalité d'intelligence artificielle ou d'agent dans Fabric, ainsi que son accès ou certains flux de données associés.
+Cas d'utilisation : Activer pour des groupes autorisés après validation des exigences de sécurité, de confidentialité, de résidence des données et de gouvernance IA.
+
+
+FIN DU DOCUMENT
