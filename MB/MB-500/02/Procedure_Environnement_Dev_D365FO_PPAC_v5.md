@@ -528,7 +528,7 @@ Les environnements de type `Sandbox` et `Production` consomment la capacité du 
 
 Sur un tenant neuf alimenté uniquement par des essais, le pool de capacité est donc **insuffisant**. Le Power Platform Admin Center refusera la création d'un environnement `Sandbox`, généralement avec un message du type `You don't have enough capacity to create this environment` (Vous ne disposez pas d'une capacité suffisante pour créer cet environnement), ou en grisant purement et simplement le type `Sandbox`.
 
-#### 4.1.2 Pourquoi cela bloque le développement
+####4.1.2 Pourquoi cela bloque le développement
 
 L'**expérience de développement unifiée**, celle qui permet à Visual Studio de se connecter à l'environnement, de déployer des modèles X++ et de synchroniser la base, n'est disponible **que sur un environnement `Sandbox`**. La `Finance and Operations Provisioning App`, qui installe les outils de développement, n'est elle-même prise en charge que sur les types `Sandbox` et `Trial (subscription-based)` (Version d'évaluation basée sur un abonnement), jamais sur `Production`.
 
