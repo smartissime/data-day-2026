@@ -13,8 +13,8 @@
 | Objet | Création de bout en bout d'un environnement de développement D365 F&O sur un tenant Microsoft neuf |
 | Public visé | Consultant, développeur ou administrateur débutant sur la plateforme |
 | Méthode | Provisionnement via Power Platform Admin Center, en remplacement de Lifecycle Services |
-| Durée totale | 6 à 8 heures, dont environ 3 heures d'attente automatisée |
-| Version du document | 4.0 |
+| Durée totale | 8 à 11 heures, dont environ 4 heures d'attente automatisée |
+| Version du document | 5.0 |
 | Date | 25 août 2026 |
 | Contact | contact@archia365.fr |
 
@@ -33,14 +33,15 @@
 5. Phase 4 : Environnement Sandbox et applications Finance and Operations
 6. Phase 5 : Poste de développement local
 7. Phase 6 : Métadonnées, modèle et projet
-8. Phase 7 : Azure DevOps et contrôle de source
-9. Phase 8 : Accès direct à la base de données
-10. Annexe A : Dépannage
-11. Annexe B : Checklist séquentielle d'exhaustivité, de bout en bout
-12. Annexe C : Checklist thématique de validation
-13. Annexe D : Fin d'essai, coûts et nettoyage
-14. Annexe E : Références officielles
-15. À propos, contact et communauté
+8. Phase 7 : Azure DevOps et dépôt Git
+9. Phase 8 : Intégration continue et déploiement automatisé
+10. Phase 9 : Accès direct à la base de données
+11. Annexe A : Dépannage
+12. Annexe B : Checklist séquentielle d'exhaustivité, de bout en bout
+13. Annexe C : Checklist thématique de validation
+14. Annexe D : Fin d'essai, coûts et nettoyage
+15. Annexe E : Références officielles
+16. À propos, contact et communauté
 
 ## 1. À lire avant de commencer
 
@@ -55,7 +56,8 @@
 - un **Billing plan** (plan de facturation) de type `Pay-as-you-go` (paiement à l'usage) reliant le Power Platform à cette Subscription ;
 - un **environnement Sandbox** contenant une instance complète de Dynamics 365 Finance and Operations, avec les outils de développement et les données de démonstration Contoso ;
 - un **poste de développement local** opérationnel : Visual Studio 2022 Professional, extensions requises, environ 24 Go de métadonnées de référence, un modèle et un projet X++ ;
-- une **organisation Azure DevOps** dotée d'un projet d'équipe et d'un dépôt configuré, avec le mapping du contrôle de source établi dans Visual Studio et votre premier modèle archivé ;
+- une **organisation Azure DevOps** dotée d'un projet d'équipe et d'un dépôt Git structuré, contenant votre modèle et vos fichiers de pipeline ;
+- une **chaîne d'intégration continue et de déploiement** qui compile automatiquement votre code X++ sur un `Managed DevOps Pool` (pool DevOps managé) et déploie le package unifié sur votre environnement Sandbox ;
 - un **accès SQL direct** à la base de données produit via SQL Server Management Studio.
 
 ### 1.2 Pourquoi le Power Platform Admin Center et non Lifecycle Services
@@ -80,10 +82,11 @@ Trois points sont à retenir :
 | 4 | Environnement Sandbox et applications F&O | 20 min | 1 h à 2 h |
 | 5 | SSMS, Visual Studio, extensions et assets | 45 min | 1 h à 2 h |
 | 6 | Configuration des métadonnées, modèle et projet | 20 min | Aucun |
-| 7 | Azure DevOps, dépôt et mapping du contrôle de source | 40 min | Aucun |
-| 8 | Accès SQL direct | 10 min | Aucun |
+| 7 | Azure DevOps, dépôt Git et structuration | 40 min | Aucun |
+| 8 | Intégration continue, Managed DevOps Pool et déploiement | 2 h | 30 min à 1 h par exécution |
+| 9 | Accès SQL direct | 10 min | Aucun |
 
-**Conseil d'organisation.** Les phases 4 et 5 peuvent être menées en parallèle. Lancez l'installation de la `Finance and Operations Provisioning App` (application de provisionnement Finance and Operations), puis installez Visual Studio pendant que le provisionnement se déroule. La création de l'organisation et du projet Azure DevOps, décrite en 8.3 à 8.5, est également indépendante du reste et peut être réalisée à tout moment pendant ces temps d'attente. Seules les étapes de mapping, à partir de 8.7, exigent que les phases 5 et 6 soient achevées.
+**Conseil d'organisation.** Les phases 4 et 5 peuvent être menées en parallèle. Lancez l'installation de la `Finance and Operations Provisioning App` (application de provisionnement Finance and Operations), puis installez Visual Studio pendant que le provisionnement se déroule. La création de l'organisation et du projet Azure DevOps, décrite en 8.3 à 8.5, est également indépendante du reste et peut être réalisée à tout moment pendant ces temps d'attente. Seules les étapes de clonage et de réorganisation locale, à partir de 8.6, exigent que les phases 5 et 6 soient achevées.
 
 ### 1.4 Glossaire
 
@@ -140,6 +143,8 @@ Cette procédure repose sur des offres d'essai, mais elle n'est pas gratuite en 
 | Compte Azure | 200 USD de crédit sur 30 jours | Le crédit ne couvre pas toutes les consommations. Passé les 30 jours, la Subscription bascule en paiement à l'usage. |
 | Billing plan Power Platform | Aucun coût d'activation | La consommation de l'environnement au-delà de la capacité incluse est facturée sur la Subscription Azure, donc sur votre carte bancaire. |
 | Visual Studio Professional | Essai d'environ 90 jours via Dev Essentials | Une licence est requise ensuite. Visual Studio Community constitue une alternative gratuite pour les usages éligibles. |
+| Azure DevOps | Gratuit jusqu'à cinq utilisateurs `Basic` | Dépôts Git privés illimités. Le quota mensuel de minutes de génération sur agent Microsoft-hosted est en revanche limité. |
+| Managed DevOps Pool | Aucun coût d'activation | La puissance de calcul consommée par chaque exécution du pipeline est **facturée sur votre Subscription Azure**, au tarif des machines virtuelles. Voir la section 9.6.5. |
 
 **Trois règles de prudence.**
 
@@ -158,7 +163,7 @@ La question des droits est la deuxième cause de blocage de cette procédure, ju
 | **Microsoft Entra ID et Microsoft 365** | Microsoft 365 Admin Center, ou Microsoft Entra admin center | Achat des abonnements, création et gestion des utilisateurs, affectation des licences |
 | **Azure** | Portail Azure, au niveau du compte de facturation, de la Subscription ou du groupe de ressources | Création de Subscriptions, création de ressources, enregistrement des fournisseurs de ressources, gestion des budgets |
 | **Power Platform et Dynamics 365** | Power Platform Admin Center, puis application Finance and Operations | Création d'environnements, plans de facturation, installation d'applications, administration fonctionnelle |
-| **Azure DevOps** | Portail `dev.azure.com`, au niveau de l'organisation ou du projet | Création de l'organisation et des projets, paramétrage des dépôts, droits d'archivage du code |
+| **Azure DevOps** | Portail `dev.azure.com`, au niveau de l'organisation ou du projet | Création de l'organisation et des projets, paramétrage des dépôts, flux d'artefacts, pools d'agents, pipelines et connexions de service |
 
 Un même compte peut cumuler les trois. C'est d'ailleurs le cas du compte créé en phase 1, qui devient automatiquement `Global admin` (Administrateur général) du tenant et `Owner` (Propriétaire) du compte de facturation Azure. C'est la configuration la plus simple pour dérouler cette procédure. En entreprise, ces droits sont en revanche répartis entre plusieurs personnes, et la matrice ci-dessous devient un outil de coordination.
 
@@ -184,11 +189,17 @@ Un même compte peut cumuler les trois. C'est d'ailleurs le cas du compte créé
 | 5 | Connecter Visual Studio à l'environnement | `System administrator` (Administrateur système) dans l'environnement Finance and Operations | Dynamics 365 |
 | 6 | Créer un modèle et un projet, générer et déployer | `System administrator` (Administrateur système) dans l'environnement | Dynamics 365 |
 | 7 | Créer une organisation Azure DevOps | Aucun rôle préalable. Le créateur devient `Organization Owner` (Propriétaire de l'organisation) | Azure DevOps |
-| 7 | Autoriser la création de dépôts TFVC au niveau de l'organisation | `Project Collection Administrators` (Administrateurs de collection de projets) ou `Organization Owner` | Azure DevOps |
-| 7 | Créer un projet d'équipe | `Project Collection Administrators` (Administrateurs de collection de projets) | Azure DevOps |
-| 7 | Créer l'arborescence de contrôle de source et mapper l'espace de travail | `Contributors` (Contributeurs) du projet, niveau d'accès `Basic` (De base) | Azure DevOps |
-| 7 | Archiver du code, `Check In` | `Contributors` (Contributeurs) du projet | Azure DevOps |
-| 8 | Demander des identifiants SQL temporaires | `System administrator` (Administrateur système) dans l'environnement | Dynamics 365 |
+| 7 | Créer un projet d'équipe avec un dépôt Git | `Project Collection Administrators` (Administrateurs de collection de projets) | Azure DevOps |
+| 7 | Cloner le dépôt, valider et publier du code | `Contributors` (Contributeurs) du projet, niveau d'accès `Basic` (De base) | Azure DevOps |
+| 8 | Installer les extensions de l'organisation | `Project Collection Administrators` (Administrateurs de collection de projets) | Azure DevOps |
+| 8 | Créer un flux Azure Artifacts et y publier des packages | `Project Collection Administrators` pour le flux, `Contributors` du flux pour la publication | Azure DevOps |
+| 8 | Enregistrer les fournisseurs `Microsoft.DevOpsInfrastructure` et `Microsoft.DevCenter` | `Owner` (Propriétaire) ou `Contributor` (Contributeur) sur la Subscription | Azure |
+| 8 | Créer un `Managed DevOps Pool` (pool DevOps managé) | `DevOps Infrastructure Contributor` (Contributeur d'infrastructure DevOps) au minimum, `Contributor` si le dev center est créé au passage | Azure |
+| 8 | Utiliser un pool d'agents dans un projet | Permission `Administrator` (Administrateur) ou `Creator` (Créateur) sur les pools d'agents du projet | Azure DevOps |
+| 8 | Créer un principal de service et lui attribuer ses droits | `System administrator` (Administrateur système) dans l'environnement, et droit de créer une inscription d'application dans Entra ID | Les deux |
+| 8 | Créer une connexion de service et un groupe de variables | `Project Administrators` (Administrateurs de projet) pour la connexion, `Contributors` pour le groupe | Azure DevOps |
+| 8 | Créer et exécuter un pipeline | `Contributors` (Contributeurs) du projet | Azure DevOps |
+| 9 | Demander des identifiants SQL temporaires | `System administrator` (Administrateur système) dans l'environnement | Dynamics 365 |
 
 #### 1.7.3 Point d'attention sur la double exigence de la phase 3
 
@@ -1030,43 +1041,37 @@ Trois actions principales sont désormais disponibles.
 - [ ] La structure de fichiers sur disque correspond à la configuration.
 - [ ] Une génération du projet vide se termine sans erreur.
 
-## 8. Phase 7 : Azure DevOps et contrôle de source
+## 8. Phase 7 : Azure DevOps et dépôt Git
 
-**Objectif de la phase.** Disposer d'une organisation Azure DevOps, d'un projet d'équipe doté d'un dépôt configuré, et d'un mapping du contrôle de source opérationnel dans Visual Studio, de sorte que votre modèle et votre projet X++ soient archivés et versionnés.
+**Objectif de la phase.** Disposer d'une organisation Azure DevOps, d'un projet d'équipe doté d'un dépôt Git, et d'un dépôt structuré de telle sorte que le pipeline d'intégration continue de la phase 8 puisse le compiler sans adaptation.
 
-**Rôles requis pour cette phase.** La création d'une organisation Azure DevOps ne requiert aucun rôle préalable : le créateur en devient `Organization Owner` (Propriétaire de l'organisation). La modification des paramètres d'organisation, notamment l'autorisation des dépôts TFVC, exige l'appartenance au groupe `Project Collection Administrators` (Administrateurs de collection de projets). La création d'un projet d'équipe exige ce même groupe. L'archivage du code exige l'appartenance au groupe `Contributors` (Contributeurs) du projet, avec un niveau d'accès `Basic` (De base).
+**Rôles requis pour cette phase.** La création d'une organisation Azure DevOps ne requiert aucun rôle préalable : le créateur en devient `Organization Owner` (Propriétaire de l'organisation). La création d'un projet d'équipe exige l'appartenance au groupe `Project Collection Administrators` (Administrateurs de collection de projets). La publication de code exige l'appartenance au groupe `Contributors` (Contributeurs) du projet, avec un niveau d'accès `Basic` (De base).
 
-### 8.1 Pourquoi mettre en place le contrôle de source dès le premier jour
+### 8.1 Pourquoi le contrôle de source dès le premier jour
 
 Dans un environnement de développement unifié, votre code X++ n'existe qu'à deux endroits : le dossier de métadonnées personnalisées de votre poste, et l'environnement cloud sur lequel vous déployez. Ni l'un ni l'autre ne constitue une sauvegarde.
 
 Le poste peut être réinstallé. L'environnement `Sandbox` peut être supprimé, réinitialisé, ou perdu à l'expiration de l'essai. Sans contrôle de source, un développement de plusieurs semaines disparaît avec lui.
 
-La documentation Microsoft relative à l'expérience de développement unifiée est explicite sur ce point : le contrôle de source est le seul moyen de garantir la cohérence entre les environnements et de disposer d'un enregistrement fiable de ce qui a été déployé. Il fournit l'historique, les points de contrôle et les points de synchronisation qui rendent le travail reproductible.
+La documentation Microsoft relative à l'expérience de développement unifiée est explicite : le contrôle de source est le seul moyen de garantir la cohérence entre les environnements et de disposer d'un enregistrement fiable de ce qui a été déployé. Il fournit l'historique, les points de contrôle et les points de synchronisation qui rendent le travail reproductible.
 
-Trois bénéfices immédiats, même pour un développeur isolé :
+S'y ajoute une raison décisive dans le contexte de cette procédure : **le dépôt est la source du pipeline d'intégration continue**. Sans dépôt correctement structuré, il n'y a pas de compilation automatisée, donc pas de package déployable, donc pas de chaîne de livraison.
 
-1. **Traçabilité.** Chaque modification est horodatée, attribuée et commentée. Vous pouvez revenir à un état antérieur.
-2. **Portabilité.** Vous pouvez reconstruire votre poste, ou en changer, sans perdre votre travail.
-3. **Préparation à l'industrialisation.** Les chaînes de génération et de déploiement automatisées s'appuient sur ce dépôt. Le mettre en place maintenant évite une reprise complète plus tard.
+### 8.2 Git, et ce qu'il faut savoir de TFVC
 
-### 8.2 Choisir entre TFVC et Git
+**Git est la voie retenue par cette procédure**, sans alternative. C'est le standard recommandé par Microsoft, le seul mode natif des dépôts Azure DevOps créés aujourd'hui, et celui que les pipelines de l'écosystème Power Platform consomment sans configuration particulière.
 
-Deux systèmes de gestion de version coexistent dans Azure DevOps. Le choix conditionne toute la suite de la phase.
+**Encart héritage : ce qu'était TFVC et pourquoi il disparaît.**
 
-| Critère | TFVC | Git |
-| :-- | :-- | :-- |
-| Nom complet | `Team Foundation Version Control` (Contrôle de version Team Foundation) | Git, gestion distribuée |
-| Modèle | Centralisé, un seul espace de travail serveur | Distribué, dépôt local complet |
-| Position historique dans l'écosystème Finance and Operations | Option par défaut depuis l'origine, très majoritaire chez les clients existants | Prise en charge officielle, recommandée par Microsoft comme standard moderne |
-| Intégration dans Visual Studio | `Team Explorer` (Explorateur d'équipe), avec mapping d'espace de travail | Fenêtre `Git Changes` (Modifications Git) |
-| Disponibilité sur une organisation Azure DevOps créée aujourd'hui | **Désactivée par défaut**, doit être réactivée par un paramètre d'organisation | Disponible immédiatement |
-| Configuration du dossier de métadonnées | Directe, par mapping de dossier | Nécessite une configuration supplémentaire |
-| Environnements de génération liés à Lifecycle Services | Exigent un dépôt TFVC | Nécessitent malgré tout un dépôt TFVC d'amorçage |
+`Team Foundation Version Control` (Contrôle de version Team Foundation), abrégé TFVC, est le système de gestion de version centralisé historique de l'écosystème Microsoft. Pendant une décennie, il a été l'option par défaut des projets Finance and Operations : le développeur mappait un dossier serveur sur un dossier local via `Team Explorer` (Explorateur d'équipe), extrayait les fichiers pour les modifier, puis les archivait.
 
-**La procédure retenue ci-dessous utilise TFVC**, car c'est le mode qui correspond au mapping de contrôle de source dans `Team Explorer`, le plus répandu dans les projets Finance and Operations existants, et le plus direct à configurer pour un dossier de métadonnées. La variante Git est décrite en 8.11.
+Trois évolutions ont mis fin à ce modèle.
 
-**Avertissement important.** Depuis juin 2024, Azure DevOps applique un paramètre nommé `Disable creation of TFVC repositories` (Désactiver la création de dépôts TFVC), **activé par défaut** sur les nouvelles organisations. Créer un projet TFVC sans avoir désactivé ce paramètre est impossible : l'option n'apparaît tout simplement pas dans l'assistant. Microsoft indique par ailleurs qu'à terme, la possibilité de désactiver ce paramètre sera elle-même retirée. Si vous démarrez un projet neuf sans contrainte de compatibilité, Git est le choix qui vous exposera le moins à cette échéance.
+1. **Azure DevOps le désactive par défaut.** Depuis juin 2024, le paramètre `Disable creation of TFVC repositories` (Désactiver la création de dépôts TFVC) est actif par défaut sur les nouvelles organisations. Microsoft indique qu'à terme, la possibilité de le désactiver sera elle-même retirée.
+2. **Lifecycle Services se retire.** Le mapping TFVC était étroitement lié aux environnements de génération provisionnés depuis LCS. Le gel de la création de projets LCS, effectif depuis février 2026, prive ce montage de sa raison d'être.
+3. **Les agents de build ne sont plus des machines virtuelles.** La compilation X++ s'effectue désormais sur des agents éphémères, à partir de packages NuGet de compilation. Ce modèle suppose un dépôt Git que l'agent clone, et non un espace de travail centralisé qu'il faudrait mapper.
+
+**Si vous héritez d'un projet en TFVC**, trois options se présentent : conserver l'existant tel quel, la prise en charge n'étant pas supprimée pour les dépôts déjà créés ; migrer l'historique vers Git à l'aide des outils de migration Azure DevOps ; ou repartir d'un dépôt Git neuf en y important l'état courant du code, en conservant le dépôt TFVC en lecture seule à titre d'archive. La troisième option est la plus fréquente, car l'historique X++ ancien est rarement consulté.
 
 ### 8.3 Créer l'organisation Azure DevOps
 
@@ -1074,7 +1079,7 @@ Deux systèmes de gestion de version coexistent dans Azure DevOps. Le choix cond
 
 **Étape 1.** Ouvrez `https://dev.azure.com` dans le navigateur, en étant connecté avec le compte `@votresociete.onmicrosoft.com` créé en phase 1.
 
-**Point de vigilance.** Comme pour Azure, l'identité utilisée détermine le rattachement. Une organisation créée avec une identité personnelle ne bénéficiera pas de la gouvernance du tenant et compliquera inutilement la gestion des accès.
+**Point de vigilance.** Comme pour Azure, l'identité utilisée détermine le rattachement. L'organisation doit être **connectée à l'annuaire Microsoft Entra ID du tenant** : c'est une condition obligatoire du Managed DevOps Pool mis en place en phase 8. Une organisation créée avec une identité personnelle ne satisfait pas cette condition et devra être recréée.
 
 **Étape 2.** Cliquez sur `Start free` (Commencer gratuitement) ou, si vous êtes déjà connecté, sur `New organization` (Nouvelle organisation).
 
@@ -1087,27 +1092,11 @@ Deux systèmes de gestion de version coexistent dans Azure DevOps. Le choix cond
 
 **Étape 4.** Validez le contrôle de sécurité, puis cliquez sur `Continue` (Continuer).
 
-**Note sur le coût.** Le niveau gratuit d'Azure DevOps inclut cinq utilisateurs `Basic` (De base), un nombre illimité de dépôts privés, et un quota mensuel de minutes de génération hébergée. Pour l'usage décrit dans cette procédure, aucun coût n'est engagé.
+**Étape 5.** Vérification du rattachement à Entra ID. Ouvrez `Organization settings` (Paramètres de l'organisation) puis `Microsoft Entra`. L'annuaire de votre tenant doit y être indiqué. S'il ne l'est pas, connectez-le avant de poursuivre.
 
-### 8.4 Autoriser la création de dépôts TFVC
+**Note sur le coût.** Le niveau gratuit d'Azure DevOps inclut cinq utilisateurs `Basic` (De base), un nombre illimité de dépôts Git privés, et deux gigaoctets de stockage d'artefacts. Ces quotas suffisent largement à la présente procédure.
 
-**Rôle requis.** Appartenance au groupe `Project Collection Administrators` (Administrateurs de collection de projets), ou `Organization Owner` (Propriétaire de l'organisation).
-
-Cette étape doit être réalisée **avant** la création du projet. Une fois le projet créé en Git, il n'est pas possible de le convertir en TFVC.
-
-**Étape 1.** En bas à gauche de la page de l'organisation, cliquez sur `Organization settings` (Paramètres de l'organisation).
-
-**Étape 2.** Dans le volet de navigation, ouvrez `Repos` (Dépôts), puis `Settings` (Paramètres).
-
-**Étape 3.** Repérez le paramètre `Disable creation of TFVC repositories` (Désactiver la création de dépôts TFVC).
-
-**Étape 4.** **Désactivez ce paramètre**, c'est-à-dire positionnez-le sur `Off` (Désactivé). Ce double négatif prête à confusion : désactiver le paramètre revient à **autoriser** la création de dépôts TFVC.
-
-**Étape 5.** Enregistrez si l'interface le demande, puis rafraîchissez la page.
-
-**Note.** Ce paramètre existe également au niveau du projet, mais le paramètre d'organisation est prioritaire. Le régler à l'échelle de l'organisation est donc suffisant.
-
-### 8.5 Créer le projet d'équipe avec un dépôt TFVC
+### 8.4 Créer le projet d'équipe avec un dépôt Git
 
 **Rôle requis.** `Project Collection Administrators` (Administrateurs de collection de projets).
 
@@ -1117,182 +1106,709 @@ Cette étape doit être réalisée **avant** la création du projet. Une fois le
 
 | Champ | Valeur | Commentaire |
 | :-- | :-- | :-- |
-| `Project name` (Nom du projet) | Par exemple `D365FO-DEV` | Sans espace ni caractère accentué, afin d'éviter les problèmes d'encodage dans les chemins de contrôle de source |
+| `Project name` (Nom du projet) | Par exemple `D365FO-DEV` | Sans espace ni caractère accentué, afin d'éviter les problèmes d'encodage dans les adresses de dépôt |
 | `Description` | Texte libre | Recommandé |
 | `Visibility` (Visibilité) | `Private` (Privé) | Obligatoire pour du code client |
 
-**Étape 3.** Développez la section `Advanced` (Avancé).
+**Étape 3.** Développez la section `Advanced` (Avancé) et vérifiez que `Version control` (Contrôle de version) est positionné sur **`Git`**. C'est la valeur par défaut.
 
-**Étape 4.** Dans `Version control` (Contrôle de version), sélectionnez **`Team Foundation Version Control`**.
+**Étape 4.** Dans `Work item process` (Processus des éléments de travail), conservez `Agile` ou choisissez le processus adapté à votre organisation. Ce choix est sans incidence sur la chaîne de livraison.
 
-**Point de vigilance.** Si cette option n'apparaît pas, l'étape 8.4 n'a pas été appliquée ou n'a pas encore été propagée. Rafraîchissez la page, déconnectez-vous puis reconnectez-vous, et vérifiez de nouveau le paramètre d'organisation.
+**Étape 5.** Cliquez sur `Create` (Créer).
 
-**Étape 5.** Dans `Work item process` (Processus des éléments de travail), conservez `Agile` ou choisissez le processus adapté à votre organisation. Ce choix n'a pas d'incidence sur le contrôle de source.
+**Étape 6.** Le projet est créé. Notez l'adresse du dépôt, de la forme `https://dev.azure.com/<organisation>/<projet>/_git/<projet>`.
 
-**Étape 6.** Cliquez sur `Create` (Créer).
+### 8.5 La structure de dépôt attendue
 
-**Étape 7.** Le projet est créé. Notez son adresse, de la forme `https://dev.azure.com/<organisation>/<projet>`.
-
-### 8.6 Créer l'arborescence de contrôle de source
-
-La convention la plus répandue dans les projets Finance and Operations sépare les métadonnées des fichiers de projet Visual Studio, sous une racine de branche.
-
-Arborescence cible sur le serveur :
+Cette structure n'est pas une convention esthétique : c'est celle que le pipeline de la phase 8 attend. Chaque chemin déclaré dans le fichier YAML y fait référence. La respecter dès maintenant évite une reprise complète du pipeline.
 
 ```
-$/D365FO-DEV
-  Trunk
-    Main
-      Metadata
-      Projects
+D365FO-DEV
+  BuildPipeline
+    nuget.config
+    packages.config
+    ci-build.yml
+  XppMetadata
+    ArchiaExtensions
+      Descriptor
+      AxClass
+      AxTable
+  VS_Solutions
+    ArchiaExtensions
+      ArchiaExtensions.sln
+      ArchiaExtensions.rnrproj
+  DataverseSolutions
+  .gitignore
+  README.md
 ```
 
-| Dossier serveur | Contenu | Dossier local correspondant |
+| Dossier | Contenu | Rôle dans le pipeline |
 | :-- | :-- | :-- |
-| `$/D365FO-DEV/Trunk/Main/Metadata` | Les fichiers XML de vos modèles et packages personnalisés | Le dossier de métadonnées personnalisées défini en 7.1, par exemple `C:\D365\CustomMetadata` |
-| `$/D365FO-DEV/Trunk/Main/Projects` | Les fichiers de solution et de projet Visual Studio | Le dossier défini en 7.3, par exemple `C:\D365\Projects` |
+| `BuildPipeline` | `nuget.config`, `packages.config` et le fichier YAML du pipeline | Fournit à l'agent la liste des packages de compilation et leur source |
+| `XppMetadata` | Vos modèles et packages X++ personnalisés, fichiers descripteurs compris | Répertoire de métadonnées passé au compilateur |
+| `VS_Solutions` | Les fichiers de solution `.sln` et de projet `.rnrproj` | Cible de la compilation |
+| `DataverseSolutions` | Optionnel : les solutions Dataverse exportées, au format `.zip` | Ajoutées au package unifié si présentes |
 
-**Point de vigilance majeur, propre à l'expérience de développement unifiée.** Ne placez **jamais** le dossier `PackagesLocalDirectory` sous contrôle de source. Il contient les métadonnées de référence de l'application standard Microsoft, soit environ 24 Go de fichiers que vous ne modifiez pas et qui sont retéléchargés à la demande. Les archiver saturerait le dépôt sans aucun bénéfice. Seul votre dossier de métadonnées personnalisées est concerné.
+**Point de vigilance majeur, propre à l'expérience de développement unifiée.** Ne placez **jamais** le dossier `PackagesLocalDirectory` sous contrôle de source. Il contient les métadonnées de référence de l'application standard Microsoft, soit environ 24 Go de fichiers que vous ne modifiez pas et que le poste retélécharge à la demande. Les versionner saturerait le dépôt sans aucun bénéfice, et l'agent de build n'en a pas besoin : il obtient les références par les packages NuGet de compilation.
 
-Les dossiers serveur seront créés depuis Visual Studio à l'étape 8.8, une fois la connexion établie.
+**Deuxième point de vigilance.** Le **fichier descripteur du modèle**, un fichier XML portant le nom du modèle et situé dans le dossier `Descriptor` du package, doit impérativement être versionné. Sans lui, le compilateur ne reconnaît pas le modèle et la compilation échoue avec un message peu explicite.
 
-### 8.7 Connecter Visual Studio à Azure DevOps
+### 8.6 Cloner le dépôt et aligner la configuration locale
 
-**Rôle requis.** Appartenance au projet, avec le niveau d'accès `Basic` (De base) et l'appartenance au groupe `Contributors` (Contributeurs).
+**Rôle requis.** `Contributors` (Contributeurs) du projet, niveau d'accès `Basic` (De base).
 
-**Étape 1.** Ouvrez Visual Studio 2022.
+Contrairement à TFVC, Git ne dispose pas de mécanisme de mapping : c'est **l'emplacement physique des fichiers** qui détermine ce qui est versionné. Vos métadonnées personnalisées et vos projets doivent donc résider à l'intérieur du dépôt cloné.
 
-**Étape 2.** Sélectionnez le fournisseur de contrôle de source. Ouvrez `Tools` (Outils) > `Options` > `Source Control` (Contrôle de code source) > `Plug-in Selection` (Sélection du plug-in).
+**Étape 1.** Dans Visual Studio, ouvrez `Git` > `Clone Repository` (Cloner un dépôt).
 
-**Étape 3.** Dans la liste `Current source control plug-in` (Plug-in de contrôle de code source actuel), sélectionnez **`Visual Studio Team Foundation Server`**, puis validez par `OK`.
+**Étape 2.** Saisissez l'adresse du dépôt relevée en 8.4, et choisissez un dossier local court, par exemple `C:\D365\Repos\D365FO-DEV`.
 
-**Point de vigilance.** Cette sélection est indispensable. Tant qu'elle n'est pas faite, les commandes TFVC et la fenêtre `Source Control Explorer` (Explorateur de contrôle de code source) restent inaccessibles.
+**Point de vigilance.** Les chemins X++ sont longs. Un dossier de clonage profond expose à la limite de longueur de chemin de Windows. Restez proche de la racine du disque.
 
-**Étape 4.** Ouvrez `View` (Affichage) > `Team Explorer` (Explorateur d'équipe).
+**Étape 3.** Cliquez sur `Clone` (Cloner). Le dépôt est vide à ce stade.
 
-**Étape 5.** Dans le volet `Team Explorer`, cliquez sur `Manage Connections` (Gérer les connexions), puis sur `Connect to a Project` (Se connecter à un projet).
+**Étape 4.** Créez à la main les quatre dossiers de la structure décrite en 8.5, à la racine du dépôt cloné.
 
-**Étape 6.** Si votre organisation n'apparaît pas dans la liste, cliquez sur `Add Azure DevOps Server` (Ajouter un serveur Azure DevOps) et saisissez l'adresse `https://dev.azure.com/<organisation>`. Authentifiez-vous avec le compte du tenant.
+**Étape 5.** Reconfigurez l'emplacement des métadonnées. Dans Visual Studio, ouvrez `Dynamics 365` > `Configure Metadata` (Configurer les métadonnées), puis modifiez le champ `Folder for your own custom metadata` (Dossier de vos métadonnées personnalisées) pour le faire pointer sur :
 
-**Étape 7.** Sélectionnez le projet `D365FO-DEV`, puis cliquez sur `Connect` (Se connecter).
+```
+C:\D365\Repos\D365FO-DEV\XppMetadata
+```
 
-**Étape 8.** Le volet `Team Explorer` affiche désormais les sections `Work Items` (Éléments de travail), `Builds` (Générations), `Source Control Explorer` (Explorateur de contrôle de code source) et `Settings` (Paramètres).
+**Étape 6.** Si vous aviez déjà créé un modèle en phase 6 dans un autre dossier, déplacez son contenu vers ce nouvel emplacement, puis exécutez `Dynamics 365` > `Model Management` (Gestion des modèles) > `Refresh models` (Actualiser les modèles).
 
-### 8.8 Mapper l'espace de travail
+**Étape 7.** Déplacez de même vos fichiers `.sln` et `.rnrproj` vers `VS_Solutions`, puis rouvrez la solution depuis son nouvel emplacement.
 
-Le mapping, ou association d'espace de travail, établit la correspondance entre un dossier du serveur et un dossier de votre disque. C'est l'opération centrale de cette phase.
+**Vérification déterminante.** Le chemin déclaré dans `Configure Metadata` et le chemin réel de vos modèles à l'intérieur du dépôt doivent être identiques. Une divergence produit une situation trompeuse : le dépôt se remplit normalement, mais il ne contient pas le code que Visual Studio compile réellement, et le pipeline compilera une version obsolète.
+
+### 8.7 Créer le fichier .gitignore
+
+Certains fichiers ne doivent jamais rejoindre le dépôt : sorties de compilation, fichiers temporaires de Visual Studio, et tout élément contenant des secrets.
+
+**Étape 1.** Créez un fichier nommé `.gitignore` à la racine du dépôt.
+
+**Étape 2.** Renseignez-le avec le contenu suivant :
+
+```
+# Sorties de compilation
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.dll
+*.pdb
+
+# Fichiers temporaires Visual Studio
+.vs/
+*.user
+*.suo
+*.userprefs
+
+# Packages NuGet restaurés localement
+NuGets/
+packages/
+
+# Metadonnees de reference Microsoft, jamais versionnees
+PackagesLocalDirectory/
+
+# Secrets
+*.env
+appsettings.*.json
+```
+
+**Point de vigilance.** L'exclusion de `*.dll` est volontaire pour les sorties de compilation. Si votre modèle référence des bibliothèques tierces sous forme de fichiers `.dll` qui doivent être versionnées, ajoutez une exception explicite pour leur dossier, au moyen d'une ligne commençant par un point d'exclamation.
+
+### 8.8 Premier commit et publication
 
 **Rôle requis.** `Contributors` (Contributeurs) du projet.
 
-#### 8.8.1 Créer les dossiers sur le serveur
+**Étape 1.** Dans Visual Studio, ouvrez la fenêtre `Git Changes` (Modifications Git), accessible par `View` (Affichage) > `Git Changes`.
 
-**Étape 1.** Dans `Team Explorer`, ouvrez `Source Control Explorer` (Explorateur de contrôle de code source).
+**Étape 2.** Vérifiez la liste des fichiers détectés. Contrôlez que `PackagesLocalDirectory` n'y figure pas, et que le dossier `Descriptor` de votre modèle y figure bien.
 
-**Étape 2.** Dans l'arborescence de gauche, sélectionnez la racine `$/D365FO-DEV`.
+**Étape 3.** Saisissez un message de commit explicite, par exemple `Initialisation du depot : modele ArchiaExtensions, solution et structure de build`.
 
-**Étape 3.** Créez le dossier `Trunk` par un clic droit, puis `New Folder` (Nouveau dossier).
+**Étape 4.** Cliquez sur `Commit All` (Valider tout), puis sur `Push` (Envoyer).
 
-**Étape 4.** Répétez l'opération pour créer successivement `Main` sous `Trunk`, puis `Metadata` et `Projects` sous `Main`.
+**Étape 5.** Vérification. Dans le portail Azure DevOps, ouvrez `Repos` (Dépôts) > `Files` (Fichiers). L'arborescence complète doit apparaître, avec l'auteur et l'horodatage du commit.
 
-**Étape 5.** Archivez cette arborescence : cliquez sur `Check In` (Archiver), saisissez un commentaire tel que `Initialisation de l'arborescence de contrôle de source`, puis validez.
+### 8.9 Le cycle de travail quotidien
 
-#### 8.8.2 Définir les deux mappings
-
-**Étape 1.** Dans `Source Control Explorer`, ouvrez la liste `Workspace` (Espace de travail) en haut de la fenêtre, puis sélectionnez `Workspaces` (Espaces de travail).
-
-**Étape 2.** Sélectionnez votre espace de travail, généralement nommé d'après votre poste, puis cliquez sur `Edit` (Modifier).
-
-**Étape 3.** Dans la grille `Working folders` (Dossiers de travail), renseignez deux lignes :
-
-| Statut | Dossier source, sur le serveur | Dossier local |
+| Commande | Emplacement dans Visual Studio | Usage |
 | :-- | :-- | :-- |
-| `Active` (Actif) | `$/D365FO-DEV/Trunk/Main/Metadata` | `C:\D365\CustomMetadata` |
-| `Active` (Actif) | `$/D365FO-DEV/Trunk/Main/Projects` | `C:\D365\Projects` |
+| `Pull` (Extraire) | `Git Changes` | Récupère les modifications publiées par les autres développeurs, à faire en début de session |
+| `Refresh models` (Actualiser les modèles) | `Dynamics 365` > `Model Management` | Indispensable après un `Pull` ayant apporté de nouveaux modèles |
+| `Commit All` (Valider tout) | `Git Changes` | Enregistre un jalon local, avec un message décrivant l'intention |
+| `Push` (Envoyer) | `Git Changes` | Publie sur le dépôt distant et **déclenche le pipeline d'intégration continue** |
 
-**Point de vigilance.** Le dossier local des métadonnées doit être **exactement** celui déclaré dans `Configure Metadata` en 7.1, au champ `Folder for your own custom metadata`. Un mapping vers un dossier différent produit une situation trompeuse : le contrôle de source fonctionne, mais il ne versionne pas le code que Visual Studio utilise réellement.
+**Ordre de travail recommandé.** En début de session : `Pull`, puis `Refresh models` si de nouveaux modèles sont arrivés. Après chaque évolution fonctionnelle achevée : générer le projet localement, vérifier l'absence d'erreur, puis `Commit` et `Push`. À partir de la phase 8, ce `Push` déclenche automatiquement la compilation sur l'agent, et une notification vous parviendra en cas d'échec.
 
-**Étape 4.** Cliquez sur `OK`. Visual Studio propose de récupérer le contenu du serveur : acceptez.
-
-**Étape 5.** Vérification. Dans `Source Control Explorer`, les dossiers `Metadata` et `Projects` ne doivent plus afficher la mention `Not mapped` (Non mappé), mais le chemin local correspondant.
-
-### 8.9 Premier archivage du modèle et du projet
-
-**Rôle requis.** `Contributors` (Contributeurs) du projet.
-
-**Étape 1.** Dans `Source Control Explorer`, sélectionnez le dossier `$/D365FO-DEV/Trunk/Main/Metadata`.
-
-**Étape 2.** Cliquez sur `Add Items to Folder` (Ajouter des éléments au dossier).
-
-**Étape 3.** Sélectionnez le dossier de votre modèle, par exemple `ArchiaExtensions`, situé dans `C:\D365\CustomMetadata`.
-
-**Étape 4.** Dans l'assistant, vérifiez que les éléments suivants sont inclus :
-
-- le **fichier descripteur du modèle**, un fichier XML portant le nom du modèle et situé dans le dossier `Descriptor` du package ;
-- l'ensemble des dossiers de métadonnées du modèle, tels que `AxClass`, `AxTable` et `AxForm` ;
-- les fichiers `.xpp` correspondants.
-
-**Point de vigilance.** L'oubli du fichier descripteur est l'erreur la plus fréquente de cette étape. Sans lui, un collègue ou votre poste réinstallé récupérera des objets orphelins que Visual Studio ne reconnaîtra pas comme un modèle.
-
-**Étape 5.** Répétez l'opération pour le dossier `Projects`, en y ajoutant les fichiers `.sln` et `.rnrproj`.
-
-**Étape 6.** Ouvrez la vue `Pending Changes` (Modifications en attente) dans `Team Explorer`, saisissez un commentaire explicite, par exemple `Création du modèle ArchiaExtensions et du projet associé`, puis cliquez sur `Check In` (Archiver).
-
-**Étape 7.** Vérification. Dans le portail Azure DevOps, ouvrez `Repos` (Dépôts) > `Files` (Fichiers). L'arborescence et vos fichiers doivent y apparaître, avec l'auteur et l'horodatage de l'archivage.
-
-### 8.10 Opérations courantes
-
-Une fois le mapping en place, le cycle de travail quotidien repose sur quatre commandes.
-
-| Commande | Emplacement | Usage |
-| :-- | :-- | :-- |
-| `Get Latest Version` (Obtenir la dernière version) | `Source Control Explorer`, clic droit sur un dossier | Synchronise votre dossier local avec la dernière version du serveur, avant de commencer à travailler |
-| `Check Out for Edit` (Extraire pour modification) | Automatique lors de la modification d'un objet | Verrouille ou marque l'élément comme modifié |
-| `Check In` (Archiver) | `Team Explorer` > `Pending Changes` | Publie vos modifications sur le serveur, avec un commentaire |
-| `Refresh models` (Actualiser les modèles) | `Dynamics 365` > `Model Management` (Gestion des modèles) | Indispensable après avoir récupéré des modèles créés par un tiers, afin que Visual Studio les prenne en compte |
-
-**Ordre de travail recommandé.** En début de session : `Get Latest Version`, puis `Refresh models` si de nouveaux modèles sont arrivés. En fin de session ou après chaque évolution fonctionnelle achevée : générer le projet, vérifier l'absence d'erreur, puis `Check In` avec un commentaire décrivant l'intention et non le contenu technique.
-
-**Ce qui ne doit pas être archivé.** Outre `PackagesLocalDirectory`, excluez les dossiers de sortie de génération, les fichiers temporaires de Visual Studio, ainsi que tout fichier contenant des identifiants ou des chaînes de connexion.
-
-### 8.11 Variante Git
-
-Si vous retenez Git plutôt que TFVC, la logique reste identique mais les commandes diffèrent.
-
-**Étape 1.** À l'étape 8.5, laissez `Version control` (Contrôle de version) sur `Git`. L'étape 8.4 devient inutile.
-
-**Étape 2.** Dans Visual Studio, ouvrez `Git` > `Clone Repository` (Cloner un dépôt) et saisissez l'adresse du dépôt.
-
-**Étape 3.** Clonez le dépôt dans un dossier racine, par exemple `C:\D365\Git\D365FO-DEV`.
-
-**Étape 4.** Placez-y vos dossiers `Metadata` et `Projects`, puis faites pointer `Configure Metadata` sur `C:\D365\Git\D365FO-DEV\Metadata`. Contrairement à TFVC, Git ne dispose pas d'un mécanisme de mapping : c'est l'emplacement physique des fichiers qui détermine ce qui est versionné.
-
-**Étape 5.** Ajoutez un fichier `.gitignore` à la racine du dépôt, excluant a minima les dossiers de sortie de génération et les fichiers temporaires de Visual Studio.
-
-**Étape 6.** Utilisez la fenêtre `Git Changes` (Modifications Git) pour valider, `Commit` (Valider), puis publier, `Push` (Envoyer).
-
-**Limite à connaître.** Si vous devez ultérieurement utiliser un environnement de génération rattaché à Lifecycle Services, un dépôt TFVC reste exigé, même s'il n'est pas activement utilisé.
-
-### 8.12 Checklist de validation de la phase 7
+### 8.10 Checklist de validation de la phase 7
 
 - [ ] L'organisation Azure DevOps est créée avec l'identité du tenant.
-- [ ] Le paramètre `Disable creation of TFVC repositories` a été désactivé, si la voie TFVC est retenue.
-- [ ] Le projet d'équipe est créé, en visibilité `Private`, avec le contrôle de version voulu.
-- [ ] L'arborescence `Trunk/Main/Metadata` et `Trunk/Main/Projects` existe sur le serveur.
-- [ ] Le plug-in de contrôle de source est réglé sur `Visual Studio Team Foundation Server`.
-- [ ] Visual Studio est connecté au projet via `Team Explorer`.
-- [ ] Le dossier `Metadata` est mappé sur le dossier de métadonnées personnalisées **déclaré dans `Configure Metadata`**.
-- [ ] Le dossier `Projects` est mappé sur le dossier des solutions Visual Studio.
-- [ ] `PackagesLocalDirectory` n'est **pas** sous contrôle de source.
-- [ ] Le modèle, son fichier descripteur et le projet sont archivés.
-- [ ] Les fichiers sont visibles dans `Repos` (Dépôts) du portail Azure DevOps.
+- [ ] L'organisation est connectée à l'annuaire Microsoft Entra ID du tenant.
+- [ ] Le projet d'équipe est créé, en visibilité `Private`, avec un dépôt `Git`.
+- [ ] Le dépôt est cloné localement dans un chemin court.
+- [ ] Les quatre dossiers `BuildPipeline`, `XppMetadata`, `VS_Solutions` et `DataverseSolutions` existent.
+- [ ] `Configure Metadata` pointe sur le dossier `XppMetadata` **à l'intérieur du dépôt**.
+- [ ] Les fichiers de solution et de projet résident dans `VS_Solutions`.
+- [ ] Le fichier descripteur du modèle est présent et versionné.
+- [ ] `PackagesLocalDirectory` n'est **pas** dans le dépôt.
+- [ ] Le fichier `.gitignore` est en place.
+- [ ] Le premier commit est publié et visible dans `Repos` du portail Azure DevOps.
 
-## 9. Phase 8 : Accès direct à la base de données
+## 9. Phase 8 : Intégration continue et déploiement automatisé
+
+**Objectif de la phase.** Mettre en place une chaîne complète qui, à chaque publication de code, compile automatiquement vos modèles X++ sur un agent hébergé, produit un package unifié Power Platform, et le déploie sur votre environnement Sandbox.
+
+**Rôles requis pour cette phase.** Côté Azure DevOps : `Project Collection Administrators` (Administrateurs de collection de projets) pour installer les extensions et créer le flux d'artefacts, `Contributors` (Contributeurs) pour créer et exécuter le pipeline, et la permission `Administrator` (Administrateur) ou `Creator` (Créateur) sur les pools d'agents du projet. Côté Azure : `DevOps Infrastructure Contributor` (Contributeur d'infrastructure DevOps) au minimum pour le Managed DevOps Pool, ou `Contributor` (Contributeur) si le dev center doit être créé au passage. Côté Power Platform : `System administrator` (Administrateur système) dans l'environnement cible, afin de créer le principal de service et de lui attribuer ses droits.
+
+### 9.1 Vue d'ensemble de la chaîne
+
+La chaîne comporte deux étages, orchestrés par un seul fichier YAML versionné dans le dépôt.
+
+| Étage | Nom courant | Ce qu'il fait | Résultat |
+| :-- | :-- | :-- | :-- |
+| 1 | `Build` (Génération), ou intégration continue | Restaure les packages NuGet de compilation, compile le code X++, produit un package unifié Power Platform | Un artefact `UnifiedPackage.zip` |
+| 2 | `Deploy` (Déploiement), ou livraison continue | Authentifie un principal de service, déploie l'artefact sur l'environnement Sandbox | Le code compilé est installé sur l'environnement |
+
+Séquence complète, du poste au cloud :
+
+1. Le développeur exécute `Push` depuis Visual Studio.
+2. Azure DevOps détecte la mise à jour de la branche principale et déclenche le pipeline.
+3. Un agent est provisionné à la demande sur le Managed DevOps Pool.
+4. L'agent clone le dépôt et restaure les cinq packages NuGet de compilation depuis le flux Azure Artifacts.
+5. Le compilateur X++ compile les modèles et produit les binaires.
+6. La tâche de packaging assemble le package unifié Power Platform.
+7. L'artefact est publié et conservé.
+8. L'étage de déploiement authentifie le principal de service et installe le package sur l'environnement Sandbox.
+9. L'agent est détruit.
+
+**Ce que cette chaîne remplace.** Dans le modèle antérieur, la compilation exigeait une machine virtuelle de build dédiée, provisionnée depuis Lifecycle Services, maintenue et facturée en permanence. Ce modèle n'existe plus pour les nouveaux projets. La compilation s'effectue désormais sur des agents éphémères, à partir de packages NuGet, sans aucune machine virtuelle à maintenir.
+
+### 9.2 Installer les extensions Azure DevOps
+
+**Rôle requis.** `Project Collection Administrators` (Administrateurs de collection de projets).
+
+Deux extensions sont nécessaires. Elles s'installent une seule fois, à l'échelle de l'organisation.
+
+**Étape 1.** Dans Azure DevOps, cliquez sur l'icône de sac de courses en haut à droite, puis sur `Browse marketplace` (Parcourir la place de marché).
+
+**Étape 2.** Recherchez et installez `Dynamics 365 Finance and Operations Tools`. Cette extension fournit la tâche de création du package déployable.
+
+**Étape 3.** Recherchez et installez `Power Platform Build Tools`. Cette extension fournit l'outillage `pac` et les tâches de déploiement vers les environnements Power Platform.
+
+**Étape 4.** Pour chaque extension, sélectionnez l'organisation cible puis cliquez sur `Install` (Installer).
+
+**Étape 5.** Vérification. Ouvrez `Organization settings` (Paramètres de l'organisation) > `Extensions`. Les deux extensions doivent apparaître dans la liste des extensions installées.
+
+### 9.3 Récupérer les packages NuGet de compilation
+
+L'agent de build ne dispose ni de l'application standard, ni du compilateur X++. Il les obtient sous la forme de cinq packages NuGet.
+
+| Package | Contenu |
+| :-- | :-- |
+| `Microsoft.Dynamics.AX.Platform.CompilerPackage` | Le compilateur X++ et les tâches de génération |
+| `Microsoft.Dynamics.AX.Platform.DevALM.BuildXpp` | Les références compilées du module Platform |
+| `Microsoft.Dynamics.AX.Application1.DevALM.BuildXpp` | Les références compilées du module Application, première partie |
+| `Microsoft.Dynamics.AX.Application2.DevALM.BuildXpp` | Les références compilées du module Application, seconde partie |
+| `Microsoft.Dynamics.AX.ApplicationSuite.DevALM.BuildXpp` | Les références compilées du module Application Suite |
+
+**Point important sur la provenance.** Ces packages étaient historiquement téléchargés depuis la bibliothèque d'actifs partagés de Lifecycle Services. Cette voie n'est plus adaptée à un tenant neuf, LCS n'étant plus accessible pour les nouveaux projets. **Visual Studio les met désormais à disposition directement**, à partir de la version installée sur votre poste, ce qui garantit en outre la cohérence entre la version de votre environnement et celle des packages de compilation.
+
+**Étape 1.** Dans Visual Studio, ouvrez `Tools` (Outils) > `Options` > `Power Platform Tools`.
+
+**Étape 2.** Activez l'option `Download Dynamics 365 FnO NuGets for CI/CD` (Télécharger les NuGets Dynamics 365 FnO pour CI/CD), puis validez par `OK`.
+
+**Étape 3.** Ouvrez `Tools` (Outils) > `Download Dynamics 365 FnO NuGets for CI/CD` (Télécharger les NuGets Dynamics 365 FnO pour CI/CD).
+
+**Étape 4.** Patientez pendant le téléchargement. Les cinq fichiers `.nupkg` sont déposés dans un dossier local dont le chemin est indiqué à la fin de l'opération.
+
+**Étape 5.** Relevez les **numéros de version exacts** des packages. Ils figurent dans le nom des fichiers. Notez séparément :
+
+- la version **plateforme**, au format `7.0.XXXX.XX` ;
+- la version **application**, au format `10.0.XXXX.XX`.
+
+Ces deux valeurs seront reprises telles quelles dans le fichier `packages.config` et dans les variables du pipeline. Une divergence entre les deux est la cause d'échec la plus fréquente de cette phase.
+
+### 9.4 Publier les packages dans un flux Azure Artifacts
+
+**Rôle requis.** `Project Collection Administrators` (Administrateurs de collection de projets) pour créer le flux.
+
+L'agent de build doit pouvoir récupérer ces packages. Un flux Azure Artifacts privé, hébergé dans votre projet, remplit ce rôle.
+
+**Étape 1.** Dans Azure DevOps, ouvrez `Artifacts` (Artefacts) puis cliquez sur `Create Feed` (Créer un flux).
+
+**Étape 2.** Renseignez :
+
+| Champ | Valeur |
+| :-- | :-- |
+| `Name` (Nom) | `FinOpsNuGet` |
+| `Visibility` (Visibilité) | `Members of <organisation>` (Membres de l'organisation) |
+| `Upstream sources` (Sources en amont) | Décoché, ces packages n'étant pas publics |
+| `Scope` (Portée) | `Project` (Projet) |
+
+**Étape 3.** Cliquez sur `Create` (Créer).
+
+**Étape 4.** Ouvrez le flux, cliquez sur `Connect to feed` (Se connecter au flux) puis sur `NuGet.exe`. Relevez l'adresse du flux, de la forme `https://pkgs.dev.azure.com/<organisation>/<projet>/_packaging/FinOpsNuGet/nuget/v3/index.json`.
+
+**Étape 5.** Sur votre poste, téléchargez `nuget.exe` depuis le site officiel NuGet, et placez-le dans le dossier contenant les cinq fichiers `.nupkg`.
+
+**Étape 6.** Ouvrez une invite de commandes dans ce dossier et publiez les cinq packages, en remplaçant les valeurs entre chevrons :
+
+```
+nuget.exe push -Source "https://pkgs.dev.azure.com/<organisation>/<projet>/_packaging/FinOpsNuGet/nuget/v3/index.json" -ApiKey AZ Microsoft.Dynamics.AX.Platform.CompilerPackage.nupkg
+nuget.exe push -Source "https://pkgs.dev.azure.com/<organisation>/<projet>/_packaging/FinOpsNuGet/nuget/v3/index.json" -ApiKey AZ Microsoft.Dynamics.AX.Platform.DevALM.BuildXpp.nupkg
+nuget.exe push -Source "https://pkgs.dev.azure.com/<organisation>/<projet>/_packaging/FinOpsNuGet/nuget/v3/index.json" -ApiKey AZ Microsoft.Dynamics.AX.Application1.DevALM.BuildXpp.nupkg
+nuget.exe push -Source "https://pkgs.dev.azure.com/<organisation>/<projet>/_packaging/FinOpsNuGet/nuget/v3/index.json" -ApiKey AZ Microsoft.Dynamics.AX.Application2.DevALM.BuildXpp.nupkg
+nuget.exe push -Source "https://pkgs.dev.azure.com/<organisation>/<projet>/_packaging/FinOpsNuGet/nuget/v3/index.json" -ApiKey AZ Microsoft.Dynamics.AX.ApplicationSuite.DevALM.BuildXpp.nupkg
+```
+
+**Note sur l'authentification.** La valeur `AZ` de l'argument `-ApiKey` est une valeur factice attendue par Azure Artifacts. L'authentification réelle s'effectue de façon interactive à la première commande, ou par un jeton d'accès personnel si vous préférez.
+
+**Étape 7.** Vérification. Dans `Artifacts` (Artefacts), les cinq packages doivent apparaître avec leur numéro de version.
+
+### 9.5 Déclarer les fichiers nuget.config et packages.config
+
+Ces deux fichiers indiquent à l'agent où trouver les packages et lesquels installer. Ils vivent dans le dossier `BuildPipeline` du dépôt.
+
+**Étape 1.** Créez `BuildPipeline/nuget.config` avec le contenu suivant, en remplaçant les valeurs entre chevrons :
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packageSources>
+    <clear />
+    <add key="FinOpsNuGet" value="https://pkgs.dev.azure.com/<organisation>/<projet>/_packaging/FinOpsNuGet/nuget/v3/index.json" />
+  </packageSources>
+</configuration>
+```
+
+**Étape 2.** Créez `BuildPipeline/packages.config`, en reportant les **numéros de version exacts** relevés en 9.3 :
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<packages>
+  <package id="Microsoft.Dynamics.AX.Platform.CompilerPackage" version="7.0.7367.146" targetFramework="net40" />
+  <package id="Microsoft.Dynamics.AX.Platform.DevALM.BuildXpp" version="7.0.7367.146" targetFramework="net40" />
+  <package id="Microsoft.Dynamics.AX.Application1.DevALM.BuildXpp" version="10.0.1935.21" targetFramework="net40" />
+  <package id="Microsoft.Dynamics.AX.Application2.DevALM.BuildXpp" version="10.0.1935.21" targetFramework="net40" />
+  <package id="Microsoft.Dynamics.AX.ApplicationSuite.DevALM.BuildXpp" version="10.0.1935.21" targetFramework="net40" />
+</packages>
+```
+
+**Point de vigilance.** Les deux premières lignes portent une version plateforme en `7.0`, les trois suivantes une version application en `10.0`. Les valeurs ci-dessus sont des exemples : substituez impérativement celles de votre environnement.
+
+### 9.6 Mettre en place le Managed DevOps Pool
+
+#### 9.6.1 Ce qu'est un Managed DevOps Pool
+
+Un pipeline s'exécute sur un **agent**, c'est-à-dire une machine qui reçoit les instructions et effectue le travail. Trois modèles coexistent.
+
+| Modèle | Qui gère la machine | Avantages | Limites |
+| :-- | :-- | :-- | :-- |
+| Agent Microsoft-hosted | Microsoft | Aucun paramétrage, quota mensuel gratuit | Machine générique, pas de réseau privé, quota mensuel limité |
+| Agent auto-hébergé | Vous | Contrôle total, réseau privé | Machine à provisionner, mettre à jour, sécuriser et payer en continu |
+| **Managed DevOps Pool** | Microsoft, dans **votre** souscription Azure | Agents éphémères provisionnés à la demande, taille choisie, réseau privé possible, aucune maintenance | Consommation Azure facturée, quota de cœurs à demander |
+
+Le Managed DevOps Pool combine les avantages des deux autres : la machine appartient à votre souscription Azure, donc à votre périmètre de sécurité et de conformité, mais son cycle de vie est entièrement géré par Microsoft. L'agent est créé au démarrage du pipeline et détruit à la fin.
+
+#### 9.6.2 Prérequis
+
+**Rôles requis.** `DevOps Infrastructure Contributor` (Contributeur d'infrastructure DevOps) au minimum sur la souscription, ou `Contributor` (Contributeur) si le dev center et son projet doivent être créés au passage. Côté Azure DevOps : appartenance au projet et permission `Administrator` (Administrateur) ou `Creator` (Créateur) sur les pools d'agents.
+
+Quatre conditions doivent être réunies avant de commencer.
+
+| Condition | Vérification |
+| :-- | :-- |
+| Les fournisseurs de ressources `Microsoft.DevOpsInfrastructure` et `Microsoft.DevCenter` sont enregistrés sur la souscription | Portail Azure > `Subscriptions` (Abonnements) > votre souscription > `Resource providers` (Fournisseurs de ressources) |
+| L'organisation Azure DevOps est connectée à Microsoft Entra ID | Azure DevOps > `Organization settings` > `Microsoft Entra` |
+| Votre compte appartient au même annuaire que la souscription et que l'organisation | Vérifié implicitement si vous avez suivi les phases 2 et 7 avec la même identité |
+| Le quota de cœurs est suffisant dans la région retenue | Par défaut, cinq cœurs par famille de références de machine virtuelle et par région |
+
+**Sur le quota.** La taille d'agent par défaut, `Standard D2ads v5`, consomme deux cœurs. Le quota par défaut de cinq cœurs autorise donc deux agents simultanés, ce qui suffit à cette procédure. Un besoin supérieur passe par une demande d'augmentation de quota depuis le portail Azure, traitée sous quelques heures à quelques jours.
+
+**Étape 1.** Enregistrez les deux fournisseurs de ressources. Portail Azure > `Subscriptions` (Abonnements) > votre souscription > `Resource providers` (Fournisseurs de ressources). Recherchez `Microsoft.DevOpsInfrastructure`, sélectionnez-le et cliquez sur `Register` (Enregistrer). Répétez pour `Microsoft.DevCenter`.
+
+**Étape 2.** Patientez deux à trois minutes, puis rafraîchissez. Les deux statuts doivent afficher `Registered` (Enregistré).
+
+**Étape 3.** Accordez à votre compte les permissions sur les pools d'agents du projet. Azure DevOps > `Project settings` (Paramètres du projet) > `Agent pools` (Pools d'agents) > `Security` (Sécurité). Vérifiez votre présence en tant que `Administrator` (Administrateur) ou `Creator` (Créateur).
+
+#### 9.6.3 Créer le pool dans le portail Azure
+
+**Étape 1.** Dans le portail Azure, recherchez `Managed DevOps Pools` et cliquez sur `Create` (Créer).
+
+**Étape 2.** Sous l'onglet `Basics` (Informations de base), renseignez :
+
+| Champ | Valeur recommandée |
+| :-- | :-- |
+| `Subscription` (Abonnement) | La Subscription créée en phase 2 |
+| `Resource group` (Groupe de ressources) | `rg-d365fo-dev`, créé en phase 2 |
+| `Dev center` (Centre de développement) | `Create new` (Créer), par exemple `dc-d365fo` |
+| `Dev center project` (Projet du centre de développement) | `Create new` (Créer), par exemple `dcp-d365fo` |
+| `Name` (Nom) | `mdp-d365fo-build`, globalement unique |
+| `Region` (Région) | La même que le groupe de ressources |
+| `Maximum agents` (Nombre maximal d'agents) | `2`, cohérent avec le quota par défaut |
+
+**Étape 3.** Sous `Azure DevOps organization` (Organisation Azure DevOps), sélectionnez l'organisation créée en phase 7.
+
+**Étape 4.** Sous l'onglet `Images`, cliquez sur `Add from Image Library` (Ajouter depuis la bibliothèque d'images) et sélectionnez une image **Windows** récente, `windows-2022` ou plus récente, incluant Visual Studio.
+
+**Point de vigilance déterminant.** L'image doit être Windows et embarquer Visual Studio. La compilation X++ repose sur MSBuild et sur les tâches du package compilateur, qui n'existent pas sur les images Linux. Une image Linux produit un échec au premier appel de la tâche de génération.
+
+**Étape 5.** Sous l'onglet `Agent size` (Taille de l'agent), conservez `Standard D2ads v5` sauf besoin particulier. La compilation X++ étant gourmande en mémoire sur des modèles volumineux, une taille supérieure peut se justifier ultérieurement.
+
+**Étape 6.** Sous l'onglet `Scaling` (Mise à l'échelle), conservez les valeurs par défaut : agents sans état, aucun agent en attente. Aucun coût n'est ainsi engagé entre deux exécutions.
+
+**Étape 7.** Sous l'onglet `Security` (Sécurité), conservez `All projects in the organization` (Tous les projets de l'organisation), ou restreignez au seul projet `D365FO-DEV`.
+
+**Étape 8.** Cliquez sur `Review + create` (Vérifier et créer), puis sur `Create` (Créer).
+
+**Étape 9.** Le provisionnement prend quelques minutes.
+
+#### 9.6.4 Vérifier le pool dans Azure DevOps
+
+**Étape 1.** Ouvrez `https://dev.azure.com/<organisation>`.
+
+**Étape 2.** Allez dans `Organization settings` (Paramètres de l'organisation) > `Pipelines` > `Agent pools` (Pools d'agents).
+
+**Étape 3.** Votre pool `mdp-d365fo-build` doit figurer dans la liste. Son apparition peut prendre quelques minutes.
+
+**Étape 4.** Notez son nom exact. Il sera référencé littéralement dans le fichier YAML du pipeline, sous la forme :
+
+```yaml
+pool:
+  name: mdp-d365fo-build
+```
+
+#### 9.6.5 Coût, et repli sur les agents Microsoft-hosted
+
+**Sur le coût.** Un Managed DevOps Pool consomme de la puissance de calcul Azure, facturée sur votre Subscription au tarif des machines virtuelles correspondantes, à la seconde d'exécution. Une compilation X++ dure typiquement de dix à trente minutes. À raison de quelques exécutions par jour, le montant reste modeste, mais il n'est pas nul et n'est pas couvert par le quota gratuit d'Azure DevOps. L'alerte de budget définie en phase 2 prend ici tout son sens.
+
+**Repli documenté.** Si la demande de quota de cœurs est refusée, si la région retenue n'est pas éligible, ou si vous souhaitez simplement démarrer sans engagement financier, les **agents Microsoft-hosted** constituent un repli parfaitement fonctionnel pour cette procédure. Le niveau gratuit d'Azure DevOps inclut un quota mensuel de minutes de génération sur un agent parallèle.
+
+Pour l'emprunter, remplacez dans le fichier YAML :
+
+```yaml
+pool:
+  name: mdp-d365fo-build
+```
+
+par :
+
+```yaml
+pool:
+  vmImage: 'windows-latest'
+```
+
+Aucune autre modification n'est nécessaire. Les limites de ce repli sont l'absence de réseau privé, l'impossibilité de dimensionner la machine, et le plafond mensuel de minutes. Elles sont sans conséquence sur un environnement de formation, mais deviennent bloquantes sur un projet réel.
+
+### 9.7 Créer le principal de service et la service connection
+
+Le pipeline doit pouvoir se connecter à l'environnement Sandbox sans intervention humaine. C'est le rôle d'un **principal de service**, c'est-à-dire une identité applicative dotée de ses propres droits.
+
+**Rôle requis.** `System administrator` (Administrateur système) dans l'environnement, et droit de créer une inscription d'application dans Microsoft Entra ID.
+
+**Étape 1.** Sur votre poste, installez l'interface en ligne de commande Power Platform si elle ne l'est pas déjà, au moyen de la commande suivante dans une invite de commandes :
+
+```
+dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+```
+
+**Étape 2.** Authentifiez-vous de façon interactive :
+
+```
+pac auth create --environment <adresse de votre environnement>
+```
+
+**Étape 3.** Créez le principal de service et attribuez-lui le rôle d'administrateur système sur l'environnement :
+
+```
+pac admin create-service-principal --environment <identifiant de votre environnement>
+```
+
+**Étape 4.** La commande retourne trois valeurs. **Consignez-les immédiatement en lieu sûr**, le secret n'étant affiché qu'une seule fois :
+
+| Valeur retournée | Usage |
+| :-- | :-- |
+| `Tenant ID` (Identifiant du locataire) | Paramètre de la service connection |
+| `Application ID` (Identifiant de l'application) | Paramètre de la service connection |
+| `Client Secret` (Secret client) | Paramètre de la service connection, à traiter comme un mot de passe |
+
+**Étape 5.** Dans Azure DevOps, ouvrez `Project settings` (Paramètres du projet) > `Service connections` (Connexions de service) > `New service connection` (Nouvelle connexion de service).
+
+**Étape 6.** Sélectionnez `Power Platform`, puis `Next` (Suivant).
+
+**Étape 7.** Renseignez :
+
+| Champ | Valeur |
+| :-- | :-- |
+| `Authentication method` (Méthode d'authentification) | `Service Principal and Client Secret` (Principal de service et secret client) |
+| `Server URL` (Adresse du serveur) | L'`Environment URL` relevée en phase 4 |
+| `Tenant ID` (Identifiant du locataire) | La valeur relevée à l'étape 4 |
+| `Application ID` (Identifiant de l'application) | La valeur relevée à l'étape 4 |
+| `Client secret` (Secret client) | La valeur relevée à l'étape 4 |
+| `Service connection name` (Nom de la connexion de service) | `PPAC-Sandbox-DEV` |
+
+**Étape 8.** Cochez `Grant access permission to all pipelines` (Accorder l'autorisation d'accès à tous les pipelines), puis cliquez sur `Save` (Enregistrer).
+
+**Note sur l'authentification fédérée.** Si votre organisation impose l'authentification multifacteur pour les identités applicatives, préférez la méthode `Workload Identity Federation` (Fédération d'identité de charge de travail), qui évite la gestion d'un secret. Le principe reste identique.
+
+### 9.8 Créer le pipeline
+
+**Rôle requis.** `Contributors` (Contributeurs) du projet.
+
+**Étape 1.** Créez dans le dépôt le fichier `BuildPipeline/ci-build.yml` avec le contenu ci-dessous.
+
+**Étape 2.** Adaptez les six valeurs signalées par un commentaire : les deux numéros de version, le nom du pool, le chemin de la solution, le nom de la connexion de service et l'adresse de l'environnement.
+
+```yaml
+# Pipeline d'integration continue et de deploiement
+# Dynamics 365 Finance and Operations, environnement de developpement unifie
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - XppMetadata/*
+      - VS_Solutions/*
+      - BuildPipeline/*
+
+schedules:
+  - cron: '0 3 * * *'
+    displayName: Build nocturne de securite
+    branches:
+      include:
+        - main
+    always: true
+
+pool:
+  name: mdp-d365fo-build        # A ADAPTER : nom du Managed DevOps Pool
+                                # Repli : remplacer par  vmImage: 'windows-latest'
+
+variables:
+  PlatformVersion: '7.0.7367.146'      # A ADAPTER : version plateforme relevee en 9.3
+  ApplicationVersion: '10.0.1935.21'   # A ADAPTER : version application relevee en 9.3
+
+  NuGetConfigPath: '$(Build.SourcesDirectory)/BuildPipeline'
+  NuGetInstallDir: '$(Build.SourcesDirectory)/NuGets'
+  MetadataPath: '$(Build.SourcesDirectory)/XppMetadata'
+  SolutionPath: '$(Build.SourcesDirectory)/VS_Solutions/ArchiaExtensions/ArchiaExtensions.sln'   # A ADAPTER
+  DataverseSolutionsPath: '$(Build.SourcesDirectory)/DataverseSolutions'
+
+  CompilerPackage: '$(NuGetInstallDir)/Microsoft.Dynamics.AX.Platform.CompilerPackage'
+  PlatformBuildRef: '$(NuGetInstallDir)/Microsoft.Dynamics.AX.Platform.DevALM.BuildXpp'
+  App1BuildRef: '$(NuGetInstallDir)/Microsoft.Dynamics.AX.Application1.DevALM.BuildXpp'
+  App2BuildRef: '$(NuGetInstallDir)/Microsoft.Dynamics.AX.Application2.DevALM.BuildXpp'
+  AppSuiteBuildRef: '$(NuGetInstallDir)/Microsoft.Dynamics.AX.ApplicationSuite.DevALM.BuildXpp'
+
+  UnifiedPackageOutput: '$(Build.ArtifactStagingDirectory)/UnifiedPackage'
+
+stages:
+
+  # ============================================================
+  # ETAGE 1 : INTEGRATION CONTINUE
+  # ============================================================
+  - stage: Build
+    displayName: Compilation X++ et creation du package unifie
+    jobs:
+      - job: BuildXpp
+        displayName: Compiler et empaqueter
+        timeoutInMinutes: 120
+        steps:
+
+          - checkout: self
+            displayName: Recuperer le code source
+            clean: true
+
+          - task: NuGetCommand@2
+            displayName: Restaurer les packages de compilation
+            inputs:
+              command: custom
+              arguments: >
+                install "$(NuGetConfigPath)/packages.config"
+                -ConfigFile "$(NuGetConfigPath)/nuget.config"
+                -OutputDirectory "$(NuGetInstallDir)"
+                -ExcludeVersion
+                -Verbosity Detailed
+                -Noninteractive
+
+          - task: VSBuild@1
+            displayName: Compiler le code X++
+            inputs:
+              solution: '$(SolutionPath)'
+              vsVersion: '17.0'
+              msbuildArgs: >
+                /p:BuildTasksDirectory="$(CompilerPackage)/DevAlm"
+                /p:MetadataDirectory="$(MetadataPath)"
+                /p:FrameworkDirectory="$(CompilerPackage)"
+                /p:ReferenceFolder="$(PlatformBuildRef)/ref/net40;$(App1BuildRef)/ref/net40;$(App2BuildRef)/ref/net40;$(AppSuiteBuildRef)/ref/net40;$(MetadataPath);$(Build.BinariesDirectory)"
+                /p:ReferencePath="$(CompilerPackage)"
+                /p:OutputDirectory="$(Build.BinariesDirectory)"
+                /p:CompilerMetadata="$(Build.BinariesDirectory)"
+
+          - task: NuGetToolInstaller@1
+            displayName: Installer NuGet 3.3.0 pour l empaquetage
+            inputs:
+              versionSpec: '3.3.0'
+
+          - task: XppCreatePackage@3
+            displayName: Creer le package unifie Power Platform
+            inputs:
+              XppToolsPath: '$(CompilerPackage)'
+              CreateCloudPackage: true
+              CloudPackagePlatVersion: '$(PlatformVersion)'
+              CloudPackageAppVersion: '$(ApplicationVersion)'
+              CloudPackageOutputLocation: '$(UnifiedPackageOutput)'
+              DeployablePackagePath: '$(Build.ArtifactStagingDirectory)/AXDeployableRuntime.zip'
+
+          - task: ArchiveFiles@2
+            displayName: Compresser le package unifie
+            inputs:
+              rootFolderOrFile: '$(UnifiedPackageOutput)'
+              includeRootFolder: false
+              archiveType: zip
+              archiveFile: '$(Build.ArtifactStagingDirectory)/UnifiedPackage.zip'
+
+          - task: PublishBuildArtifacts@1
+            displayName: Publier l artefact
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/UnifiedPackage.zip'
+              ArtifactName: UnifiedPackage
+
+  # ============================================================
+  # ETAGE 2 : DEPLOIEMENT VERS LA SANDBOX
+  # ============================================================
+  - stage: Deploy
+    displayName: Deploiement sur l environnement Sandbox
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - deployment: DeploySandbox
+        displayName: Deployer le package unifie
+        environment: 'D365FO-Sandbox'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+
+                - task: PowerPlatformToolInstaller@2
+                  displayName: Installer l outillage Power Platform
+                  inputs:
+                    DefaultVersion: true
+                    AddToolsToPath: true
+
+                - task: PowerPlatformWhoAmi@2
+                  displayName: Verifier la connexion a l environnement
+                  inputs:
+                    authenticationType: PowerPlatformSPN
+                    PowerPlatformSPN: 'PPAC-Sandbox-DEV'      # A ADAPTER : nom de la connexion de service
+
+                - task: PowerShell@2
+                  displayName: Deployer le package unifie
+                  inputs:
+                    targetType: inline
+                    script: |
+                      $ErrorActionPreference = 'Stop'
+                      $package = "$(Pipeline.Workspace)/UnifiedPackage/UnifiedPackage.zip"
+                      Write-Host "Package a deployer : $package"
+                      pac auth create `
+                        --applicationId "$(PP_APP_ID)" `
+                        --clientSecret "$(PP_CLIENT_SECRET)" `
+                        --tenant "$(PP_TENANT_ID)" `
+                        --environment "$(PP_ENVIRONMENT_URL)"
+                      pac package deploy --package $package
+```
+
+**Étape 3.** Créez le groupe de variables portant les secrets. Azure DevOps > `Pipelines` > `Library` (Bibliothèque) > `+ Variable group` (Groupe de variables). Nommez-le `PowerPlatform-Sandbox` et déclarez :
+
+| Variable | Valeur | Secret |
+| :-- | :-- | :-- |
+| `PP_TENANT_ID` | L'identifiant de locataire relevé en 9.7 | Non |
+| `PP_APP_ID` | L'identifiant d'application relevé en 9.7 | Non |
+| `PP_CLIENT_SECRET` | Le secret client relevé en 9.7 | **Oui**, activez le cadenas |
+| `PP_ENVIRONMENT_URL` | L'`Environment URL` de l'environnement Sandbox | Non |
+
+**Étape 4.** Rattachez ce groupe au pipeline en ajoutant, juste sous la clé `variables` du fichier YAML, les deux lignes suivantes, en conservant l'indentation :
+
+```yaml
+variables:
+  - group: PowerPlatform-Sandbox
+  - name: PlatformVersion
+    value: '7.0.7367.146'
+```
+
+**Note.** L'ajout d'un groupe de variables impose de convertir l'ensemble du bloc `variables` en liste, chaque variable devenant une paire `name` et `value`. C'est une contrainte de syntaxe YAML d'Azure Pipelines, et une source d'erreur classique à la première mise en place.
+
+**Étape 5.** Publiez le fichier sur la branche principale, par un `Commit` puis un `Push` depuis Visual Studio.
+
+**Étape 6.** Dans Azure DevOps, ouvrez `Pipelines` > `New pipeline` (Nouveau pipeline).
+
+**Étape 7.** Sélectionnez `Azure Repos Git`, puis votre dépôt.
+
+**Étape 8.** Choisissez `Existing Azure Pipelines YAML file` (Fichier YAML Azure Pipelines existant).
+
+**Étape 9.** Sélectionnez la branche `main` et le chemin `/BuildPipeline/ci-build.yml`, puis cliquez sur `Continue` (Continuer).
+
+**Étape 10.** Cliquez sur `Run` (Exécuter) pour lancer la première exécution.
+
+### 9.9 Suivre et valider la première exécution
+
+**Étape 1.** Dans `Pipelines`, ouvrez l'exécution en cours. Chaque étage et chaque tâche s'affichent avec leur journal en temps réel.
+
+**Étape 2.** Surveillez particulièrement trois tâches.
+
+| Tâche | Durée typique | Ce qui peut échouer |
+| :-- | :-- | :-- |
+| `Restaurer les packages de compilation` | 2 à 5 min | Adresse de flux erronée, droits insuffisants du compte de service de build sur le flux, versions absentes |
+| `Compiler le code X++` | 10 à 30 min | Erreurs de compilation réelles, fichier descripteur manquant, chemins de métadonnées erronés |
+| `Deployer le package unifie` | 20 à 60 min | Secret expiré, droits du principal de service, environnement indisponible |
+
+**Étape 3.** À la première exécution, une autorisation est demandée pour que le pipeline accède à la connexion de service et à l'environnement de déploiement. Cliquez sur `View` (Afficher) puis sur `Permit` (Autoriser).
+
+**Étape 4.** Vérification finale. Une fois l'étage de déploiement terminé, ouvrez l'application Finance and Operations dans le navigateur et contrôlez que votre personnalisation y est présente.
+
+**Étape 5.** Vérification complémentaire. Dans le Power Platform Admin Center, ouvrez votre environnement puis `History` (Historique) ou `Resources` (Ressources) > `Dynamics 365 apps`. L'opération de déploiement doit y figurer.
+
+### 9.10 Maintenance de la chaîne
+
+| Événement | Action requise |
+| :-- | :-- |
+| Mise à jour qualité de l'environnement | Retélécharger les NuGets depuis Visual Studio, les republier dans le flux, mettre à jour `packages.config` et les deux variables de version du YAML |
+| Expiration du secret client | Régénérer le principal de service et mettre à jour la variable `PP_CLIENT_SECRET` du groupe de variables |
+| Ajout d'un nouveau modèle | Ajouter le projet correspondant à la solution Visual Studio, aucun changement de pipeline n'étant nécessaire |
+| Ajout de solutions Dataverse | Déposer les fichiers `.zip` dans `DataverseSolutions` et ajouter l'étape d'intégration au package unifié |
+| Compilation trop lente | Augmenter la taille d'agent du Managed DevOps Pool, après demande de quota si nécessaire |
+
+**Bonne pratique de branche.** Dès que vous travaillez à plusieurs, protégez la branche `main` par une stratégie de branche exigeant une pull request et une compilation réussie avant fusion. Azure DevOps > `Repos` > `Branches` > menu de la branche > `Branch policies` (Stratégies de branche).
+
+### 9.11 Checklist de validation de la phase 8
+
+- [ ] Les extensions `Dynamics 365 Finance and Operations Tools` et `Power Platform Build Tools` sont installées.
+- [ ] Les cinq packages NuGet ont été téléchargés depuis Visual Studio.
+- [ ] Les numéros de version plateforme et application sont relevés et cohérents.
+- [ ] Le flux Azure Artifacts `FinOpsNuGet` contient les cinq packages.
+- [ ] Les fichiers `nuget.config` et `packages.config` sont versionnés dans `BuildPipeline`.
+- [ ] Les fournisseurs de ressources `Microsoft.DevOpsInfrastructure` et `Microsoft.DevCenter` sont enregistrés.
+- [ ] L'organisation Azure DevOps est connectée à Microsoft Entra ID.
+- [ ] Le Managed DevOps Pool est créé et visible dans les pools d'agents d'Azure DevOps.
+- [ ] L'image du pool est une image **Windows** incluant Visual Studio.
+- [ ] Le principal de service est créé et dispose du rôle d'administrateur système sur l'environnement.
+- [ ] La connexion de service Power Platform est créée et accessible aux pipelines.
+- [ ] Le groupe de variables contient le secret client, marqué comme secret.
+- [ ] Le fichier YAML est versionné et le pipeline est créé à partir de celui-ci.
+- [ ] Une exécution complète se termine avec succès sur les deux étages.
+- [ ] La personnalisation est visible dans l'application Finance and Operations après déploiement.
+
+## 10. Phase 9 : Accès direct à la base de données
 
 **Objectif de la phase.** Obtenir des identifiants temporaires afin d'interroger la base de données produit depuis SQL Server Management Studio.
 
 **Rôles requis pour cette phase.** `System administrator` (Administrateur système) dans l'environnement Finance and Operations. Ce rôle est strictement exigé : la demande d'identifiants est refusée pour tout autre profil, sans possibilité de dérogation.
 
-### 9.1 Comprendre le mécanisme
+### 10.1 Comprendre le mécanisme
 
 Contrairement à une machine virtuelle de développement classique, un environnement `Sandbox` cloud n'expose pas librement sa base de données. L'accès repose sur un mécanisme d'octroi ponctuel, dit `just-in-time` (juste à temps). Vous demandez des identifiants, vous en justifiez le motif, et vous recevez des accès temporaires restreints à votre adresse IP.
 
@@ -1305,7 +1821,7 @@ Conditions et limites :
 - l'octroi de nouveaux identifiants à un même utilisateur invalide les précédents sur le même environnement ;
 - plusieurs utilisateurs peuvent détenir simultanément des identifiants sur un même environnement, et un même utilisateur peut en détenir sur plusieurs environnements.
 
-### 9.2 Demander les identifiants SQL
+### 10.2 Demander les identifiants SQL
 
 **Rôle requis.** `System administrator` (Administrateur système) dans l'environnement Finance and Operations. Aucun autre rôle n'ouvre cet accès.
 
@@ -1319,7 +1835,7 @@ Conditions et limites :
 
 **Étape 5.** Les identifiants s'affichent : nom du serveur, nom de la base, nom d'utilisateur et mot de passe. Copiez-les immédiatement, ainsi que la date d'expiration indiquée.
 
-### 9.3 Se connecter depuis SSMS
+### 10.3 Se connecter depuis SSMS
 
 **Étape 1.** Ouvrez SQL Server Management Studio, installé en 6.1.
 
@@ -1341,16 +1857,16 @@ Conditions et limites :
 
 **Usage responsable.** Cet accès porte sur la base réelle de l'environnement. Limitez-vous à des opérations de lecture, de type `SELECT`, sauf nécessité impérieuse et maîtrisée. Toute modification directe contourne la logique applicative X++ et peut compromettre la cohérence fonctionnelle de l'environnement.
 
-### 9.4 Checklist de validation de la phase 8
+### 10.4 Checklist de validation de la phase 9
 
 - [ ] Les identifiants SQL ont été obtenus depuis Visual Studio.
 - [ ] La date d'expiration est notée.
 - [ ] La connexion SSMS aboutit.
 - [ ] Une requête `SELECT` simple retourne des données.
 
-## 10. Annexe A : Dépannage
+## 11. Annexe A : Dépannage
 
-### 10.1 Phase 1, licences
+### 11.1 Phase 1, licences
 
 | Symptôme | Cause probable | Résolution |
 | :-- | :-- | :-- |
@@ -1360,7 +1876,7 @@ Conditions et limites :
 | L'offre `Microsoft 365 E3` n'est pas proposée en essai | Disponibilité régionale ou parcours commercial différent | Passez par le Microsoft 365 Admin Center, `Marketplace`, et recherchez `Microsoft 365 E3` |
 | `Dynamics 365 Finance Premium` est absent du `Marketplace` | Filtre de recherche ou disponibilité régionale | Recherchez `Dynamics 365 Finance` sans le mot `Premium`, et vérifiez le pays du tenant |
 
-### 10.2 Phase 2, Azure et Subscription
+### 11.2 Phase 2, Azure et Subscription
 
 | Symptôme | Cause probable | Résolution |
 | :-- | :-- | :-- |
@@ -1370,7 +1886,7 @@ Conditions et limites :
 | La Subscription est créée dans le mauvais annuaire | Champ `Subscription directory` mal renseigné | Recréez la Subscription en sélectionnant l'annuaire du tenant |
 | `Microsoft.PowerPlatform` reste `NotRegistered` | Enregistrement non propagé | Patientez 5 minutes et rafraîchissez, puis relancez `Register` |
 
-### 10.3 Phase 3, capacité et Billing plan
+### 11.3 Phase 3, capacité et Billing plan
 
 | Symptôme | Cause probable | Résolution |
 | :-- | :-- | :-- |
@@ -1380,7 +1896,7 @@ Conditions et limites :
 | L'environnement n'apparaît pas à l'étape de sélection | La région sélectionnée diffère de celle de l'environnement | Sélectionnez la région exacte de l'environnement |
 | Le type `Sandbox` reste grisé après création du plan | Propagation non terminée | Patientez 15 à 30 minutes, rafraîchissez le navigateur, puis reconnectez-vous |
 
-### 10.4 Phase 4, environnement et applications
+### 11.4 Phase 4, environnement et applications
 
 | Symptôme | Cause probable | Résolution |
 | :-- | :-- | :-- |
@@ -1391,7 +1907,7 @@ Conditions et limites :
 | L'adresse Finance and Operations n'apparaît pas | Problème connu de synchronisation d'affichage | Modifiez la description de l'environnement et enregistrez, ce qui force la synchronisation |
 | Les outils de développement sont absents | Cases non cochées, ou modèle applicatif utilisé à la création | Recréez l'environnement en suivant strictement les sections 5.1 et 5.3 |
 
-### 10.5 Phase 5, poste local
+### 11.5 Phase 5, poste local
 
 | Symptôme | Cause probable | Résolution |
 | :-- | :-- | :-- |
@@ -1404,7 +1920,7 @@ Conditions et limites :
 | L'extraction de `PackagesLocalDirectory.zip` échoue | Limites de l'extracteur natif de Windows sur les archives volumineuses | Utilisez 7-Zip |
 | Les fichiers téléchargés sont bloqués par Windows | Marquage de provenance Internet | Clic droit, `Properties` (Propriétés), puis cochez `Unblock` (Débloquer) |
 
-### 10.6 Phase 6, métadonnées et modèle
+### 11.6 Phase 6, métadonnées et modèle
 
 | Symptôme | Cause probable | Résolution |
 | :-- | :-- | :-- |
@@ -1413,23 +1929,36 @@ Conditions et limites :
 | L'`Application Explorer` reste vide | Le chemin des métadonnées de référence est erroné | Vérifiez qu'il pointe sur le dossier décompressé `PackagesLocalDirectory` |
 | Le modèle n'apparaît pas après création | Rafraîchissement nécessaire | Fermez et rouvrez Visual Studio |
 
-### 10.7 Phase 7, Azure DevOps et contrôle de source
+### 11.7 Phase 7, Azure DevOps et dépôt Git
 
 | Symptôme | Cause probable | Résolution |
 | :-- | :-- | :-- |
-| L'option `Team Foundation Version Control` n'apparaît pas à la création du projet | Le paramètre `Disable creation of TFVC repositories` est actif sur l'organisation | Appliquez la section 8.4, rafraîchissez la page, puis reconnectez-vous |
-| Le paramètre TFVC est introuvable dans les paramètres d'organisation | Rôle insuffisant | Vérifiez votre appartenance au groupe `Project Collection Administrators` |
-| Le menu `Source Control Explorer` est absent de Visual Studio | Le plug-in de contrôle de source n'est pas sélectionné | Ouvrez `Tools` > `Options` > `Source Control` > `Plug-in Selection` et choisissez `Visual Studio Team Foundation Server` |
-| `Team Explorer` ne propose pas l'organisation | Organisation non enregistrée dans Visual Studio | Utilisez `Add Azure DevOps Server` et saisissez `https://dev.azure.com/<organisation>` |
-| L'authentification échoue en boucle | Session mélangée entre identité personnelle et compte du tenant | Fermez Visual Studio, effacez les comptes enregistrés via `File` > `Account Settings`, puis reconnectez-vous avec le compte du tenant |
-| Les dossiers restent marqués `Not mapped` | Espace de travail non modifié, ou mapping enregistré sur un autre espace de travail | Ouvrez `Workspaces` > `Edit` et vérifiez les deux lignes de la grille `Working folders` |
-| Le code archivé n'est pas celui utilisé par Visual Studio | Le dossier local mappé diffère du dossier déclaré dans `Configure Metadata` | Comparez les deux chemins et corrigez le mapping, conformément au point de vigilance de la section 8.8.2 |
-| Le dépôt grossit anormalement | `PackagesLocalDirectory` a été ajouté au contrôle de source | Supprimez ce mapping et retirez les éléments concernés du dépôt |
-| Un modèle récupéré depuis le serveur n'apparaît pas dans Visual Studio | Modèles non actualisés | Exécutez `Dynamics 365` > `Model Management` > `Refresh models` |
-| Un collègue récupère des objets orphelins | Le fichier descripteur du modèle n'a pas été archivé | Archivez le fichier XML du dossier `Descriptor` du package |
-| L'archivage est refusé | Niveau d'accès `Stakeholder` (Partie prenante), ou absence du groupe `Contributors` | Faites élever votre niveau d'accès à `Basic` et vérifier votre appartenance au groupe `Contributors` |
+| L'organisation n'est pas rattachée à Entra ID | Organisation créée avec une identité personnelle | Connectez l'annuaire via `Organization settings` > `Microsoft Entra`, ou recréez l'organisation avec le compte du tenant |
+| L'authentification Visual Studio échoue en boucle | Session mélangée entre identité personnelle et compte du tenant | Fermez Visual Studio, effacez les comptes enregistrés via `File` > `Account Settings`, puis reconnectez-vous |
+| Le clonage échoue avec une erreur de chemin trop long | Dossier de clonage trop profond | Clonez dans un chemin court, proche de la racine du disque |
+| Le dépôt se remplit mais le pipeline compile une version obsolète | `Configure Metadata` pointe hors du dépôt | Comparez le chemin déclaré et le chemin réel, puis corrigez conformément à la section 8.6 |
+| Le dépôt grossit anormalement | `PackagesLocalDirectory` a été ajouté | Retirez-le du suivi Git et vérifiez le fichier `.gitignore` |
+| Un modèle récupéré par `Pull` n'apparaît pas dans Visual Studio | Modèles non actualisés | Exécutez `Dynamics 365` > `Model Management` > `Refresh models` |
+| Le `Push` est refusé | Niveau d'accès `Stakeholder` (Partie prenante), ou absence du groupe `Contributors` | Faites élever votre niveau d'accès à `Basic` et vérifier votre appartenance au groupe `Contributors` |
 
-### 10.8 Phase 8, accès SQL
+### 11.8 Phase 8, intégration continue et déploiement
+
+| Symptôme | Cause probable | Résolution |
+| :-- | :-- | :-- |
+| La restauration NuGet retourne une erreur 401 | Le compte de service de build n'a pas accès au flux | Dans `Artifacts` > `Feed settings` > `Permissions`, ajoutez le compte de service de build du projet en `Reader` (Lecteur) |
+| La restauration ne trouve pas les packages | Adresse de flux erronée dans `nuget.config`, ou versions absentes du flux | Comparez l'adresse avec celle de `Connect to feed`, et les versions avec celles publiées |
+| Le pipeline reste en attente sans démarrer | Aucun agent disponible, quota de cœurs atteint | Vérifiez le pool dans `Agent pools`, le quota Azure, ou basculez temporairement sur `vmImage: 'windows-latest'` |
+| La tâche de compilation échoue immédiatement | Image Linux sélectionnée pour le pool | Recréez le pool avec une image Windows incluant Visual Studio, conformément à la section 9.6.3 |
+| Erreur de compilation mentionnant un modèle introuvable | Fichier descripteur non versionné | Ajoutez le fichier XML du dossier `Descriptor` au dépôt |
+| Erreur de versionnement sémantique lors de l'empaquetage | NuGet postérieur à la version 3.3.0 | Vérifiez la présence de la tâche `NuGetToolInstaller@1` avec `versionSpec: '3.3.0'` avant l'empaquetage |
+| Message `fnomoduledefinition.json not found` | Chemins `CloudPackageOutputLocation` ou `XppToolsPath` erronés | Contrôlez ces deux entrées de la tâche `XppCreatePackage@3` |
+| Les versions du package unifié ne correspondent pas | `CloudPackagePlatVersion` et `CloudPackageAppVersion` désynchronisées de `packages.config` | Alignez les quatre valeurs sur celles relevées en 9.3 |
+| Le pipeline échoue sur la syntaxe des variables | Groupe de variables ajouté sans convertir le bloc `variables` en liste | Reprenez la note de l'étape 4 de la section 9.8 |
+| La tâche `PowerPlatformWhoAmi` échoue | Principal de service sans droits, ou secret expiré | Réexécutez `pac admin create-service-principal` et mettez à jour la connexion de service |
+| Le déploiement échoue sans message explicite | Environnement indisponible ou opération concurrente en cours | Vérifiez l'état de l'environnement dans le Power Platform Admin Center et relancez |
+| Le pipeline demande une autorisation à chaque exécution | Autorisation d'accès aux ressources non accordée | Ouvrez l'exécution, cliquez sur `View` puis `Permit`, et cochez l'accès permanent |
+
+### 11.9 Phase 9, accès SQL
 
 | Symptôme | Cause probable | Résolution |
 | :-- | :-- | :-- |
@@ -1438,13 +1967,13 @@ Conditions et limites :
 | SSMS retourne une erreur de pare-feu | Adresse IP publique modifiée depuis la demande | Redemandez des identifiants avec l'adresse IP courante |
 | Message `Cannot open database requested by the login` | Base par défaut non définie pour l'utilisateur temporaire | Renseignez `Connect to database` dans `Options` > `Connection Properties` |
 
-## 11. Annexe B : Checklist séquentielle d'exhaustivité, de bout en bout
+## 12. Annexe B : Checklist séquentielle d'exhaustivité, de bout en bout
 
 Cette annexe existe pour répondre à une question précise : **ai-je oublié une étape ?**
 
 Contrairement à la checklist thématique de l'annexe C, qui vérifie des états, celle-ci suit l'**ordre chronologique exact** des actions à réaliser. Chaque ligne correspond à une action concrète, avec le rôle nécessaire pour l'exécuter et la section du document qui la détaille. Parcourez-la de haut en bas : si une case reste vide, l'étape correspondante n'a pas été faite, et les suivantes échoueront probablement.
 
-### 11.1 Préparation
+### 12.1 Préparation
 
 | Fait | Action | Rôle requis | Section |
 | :-- | :-- | :-- | :-- |
@@ -1454,7 +1983,7 @@ Contrairement à la checklist thématique de l'annexe C, qui vérifie des états
 | [ ] | Ouvrir un profil de navigateur dédié ou une fenêtre privée | Aucun | 1.5.3 |
 | [ ] | Prendre connaissance de la matrice des rôles | Aucun | 1.7.2 |
 
-### 11.2 Phase 1, licences et tenant
+### 12.2 Phase 1, licences et tenant
 
 | Fait | Action | Rôle requis | Section |
 | :-- | :-- | :-- | :-- |
@@ -1473,7 +2002,7 @@ Contrairement à la checklist thématique de l'annexe C, qui vérifie des états
 | [ ] | Affecter la licence Microsoft 365 E3 à votre compte | `License administrator` ou `Global admin` | 2.5 |
 | [ ] | Affecter la licence Dynamics 365 Finance Premium à votre compte | `License administrator` ou `Global admin` | 2.5 |
 
-### 11.3 Phase 2, Azure et Subscription
+### 12.3 Phase 2, Azure et Subscription
 
 | Fait | Action | Rôle requis | Section |
 | :-- | :-- | :-- | :-- |
@@ -1491,7 +2020,7 @@ Contrairement à la checklist thématique de l'annexe C, qui vérifie des états
 | [ ] | Créer le `Resource group` dans une région cohérente | `Owner` ou `Contributor` sur la Subscription | 3.6 |
 | [ ] | Créer un budget et configurer les alertes de coût | `Cost Management Contributor`, `Owner` ou `Contributor` | 3.7 |
 
-### 11.4 Phase 3, capacité et plan de facturation
+### 12.4 Phase 3, capacité et plan de facturation
 
 | Fait | Action | Rôle requis | Section |
 | :-- | :-- | :-- | :-- |
@@ -1504,7 +2033,7 @@ Contrairement à la checklist thématique de l'annexe C, qui vérifie des états
 | [ ] | Vérifier que le plan affiche le statut `Enabled` | `Power Platform admin` | 4.3 |
 | [ ] | Vérifier que le type `Sandbox` est devenu sélectionnable | `Power Platform admin` | 4.4 |
 
-### 11.5 Phase 4, environnement et applications
+### 12.5 Phase 4, environnement et applications
 
 | Fait | Action | Rôle requis | Section |
 | :-- | :-- | :-- | :-- |
@@ -1525,7 +2054,7 @@ Contrairement à la checklist thématique de l'annexe C, qui vérifie des états
 | [ ] | Ouvrir l'application dans le navigateur et vérifier les données Contoso | Licence Dynamics 365 affectée | 5.4 |
 | [ ] | Vérifier l'attribution du rôle `System administrator` | `System administrator` | 5.5 |
 
-### 11.6 Phase 5, poste de développement
+### 12.6 Phase 5, poste de développement
 
 | Fait | Action | Rôle requis | Section |
 | :-- | :-- | :-- | :-- |
@@ -1545,7 +2074,7 @@ Contrairement à la checklist thématique de l'annexe C, qui vérifie des états
 | [ ] | Lancer le téléchargement des assets Dynamics 365 | Idem | 6.7 |
 | [ ] | **Vérifier la présence d'environ 24 Go dans le dossier des assets** | Administrateur local | 6.7 |
 
-### 11.7 Phase 6, modèle et projet
+### 12.7 Phase 6, modèle et projet
 
 | Fait | Action | Rôle requis | Section |
 | :-- | :-- | :-- | :-- |
@@ -1561,50 +2090,79 @@ Contrairement à la checklist thématique de l'annexe C, qui vérifie des états
 | [ ] | Vérifier la structure de fichiers sur disque | Administrateur local | 7.3 |
 | [ ] | Lancer une génération du projet et confirmer l'absence d'erreur | Administrateur local | 7.4 |
 
-### 11.8 Phase 7, Azure DevOps et contrôle de source
+### 12.8 Phase 7, Azure DevOps et dépôt Git
 
 | Fait | Action | Rôle requis | Section |
 | :-- | :-- | :-- | :-- |
 | [ ] | Créer l'organisation Azure DevOps avec l'identité du tenant | Aucun, le créateur devient `Organization Owner` | 8.3 |
-| [ ] | **Désactiver le paramètre `Disable creation of TFVC repositories`**, si la voie TFVC est retenue | `Project Collection Administrators` | 8.4 |
-| [ ] | Créer le projet d'équipe en visibilité `Private` | `Project Collection Administrators` | 8.5 |
-| [ ] | Sélectionner `Team Foundation Version Control` dans `Advanced` | `Project Collection Administrators` | 8.5 |
-| [ ] | Régler le plug-in de contrôle de source dans `Tools` > `Options` | Administrateur local | 8.7 |
-| [ ] | Connecter Visual Studio au projet via `Team Explorer` | `Contributors`, accès `Basic` | 8.7 |
-| [ ] | Créer l'arborescence `Trunk/Main/Metadata` et `Trunk/Main/Projects` | `Contributors` | 8.8.1 |
-| [ ] | Archiver l'arborescence initiale | `Contributors` | 8.8.1 |
-| [ ] | Mapper `Metadata` sur le dossier de métadonnées personnalisées | `Contributors` | 8.8.2 |
-| [ ] | **Vérifier que ce dossier est identique à celui de `Configure Metadata`** | `Contributors` | 8.8.2 |
-| [ ] | Mapper `Projects` sur le dossier des solutions Visual Studio | `Contributors` | 8.8.2 |
-| [ ] | **Vérifier que `PackagesLocalDirectory` n'est pas mappé** | `Contributors` | 8.6 |
-| [ ] | Ajouter le modèle au contrôle de source, fichier descripteur inclus | `Contributors` | 8.9 |
-| [ ] | Ajouter la solution et le projet Visual Studio | `Contributors` | 8.9 |
-| [ ] | Réaliser le premier archivage avec un commentaire explicite | `Contributors` | 8.9 |
-| [ ] | Vérifier la présence des fichiers dans `Repos` du portail Azure DevOps | `Readers` au minimum | 8.9 |
+| [ ] | **Vérifier le rattachement de l'organisation à Microsoft Entra ID** | `Organization Owner` | 8.3 |
+| [ ] | Créer le projet d'équipe en visibilité `Private`, contrôle de version `Git` | `Project Collection Administrators` | 8.4 |
+| [ ] | Cloner le dépôt dans un chemin local court | `Contributors`, accès `Basic` | 8.6 |
+| [ ] | Créer les dossiers `BuildPipeline`, `XppMetadata`, `VS_Solutions`, `DataverseSolutions` | `Contributors` | 8.5 |
+| [ ] | **Repointer `Configure Metadata` sur `XppMetadata` dans le dépôt** | Administrateur local | 8.6 |
+| [ ] | Déplacer la solution et le projet vers `VS_Solutions` | Administrateur local | 8.6 |
+| [ ] | Exécuter `Refresh models` après déplacement | Administrateur local | 8.6 |
+| [ ] | Créer le fichier `.gitignore` | `Contributors` | 8.7 |
+| [ ] | **Vérifier que `PackagesLocalDirectory` n'est pas suivi** | `Contributors` | 8.7 |
+| [ ] | Vérifier la présence du fichier descripteur du modèle | `Contributors` | 8.5 |
+| [ ] | Réaliser le premier commit et le publier | `Contributors` | 8.8 |
+| [ ] | Vérifier l'arborescence dans `Repos` du portail Azure DevOps | `Readers` au minimum | 8.8 |
 
-### 11.9 Phase 8, accès à la base de données
+### 12.9 Phase 8, intégration continue et déploiement
 
 | Fait | Action | Rôle requis | Section |
 | :-- | :-- | :-- | :-- |
-| [ ] | Demander les identifiants SQL depuis `Tools` > `SQL Credentials for Dynamics 365 FinOps` | `System administrator` dans l'environnement | 9.2 |
-| [ ] | Saisir un motif d'accès explicite | Idem | 9.2 |
-| [ ] | Vérifier la plage d'adresses IPv4 proposée | Idem | 9.2 |
-| [ ] | Copier les identifiants et noter la date d'expiration | Idem | 9.2 |
-| [ ] | Se connecter depuis SSMS en authentification SQL Server | Aucun rôle supplémentaire | 9.3 |
-| [ ] | Renseigner `Connect to database` dans les propriétés de connexion | Aucun | 9.3 |
-| [ ] | Exécuter une requête de lecture pour valider l'accès | Aucun | 9.3 |
+| [ ] | Installer l'extension `Dynamics 365 Finance and Operations Tools` | `Project Collection Administrators` | 10.2 |
+| [ ] | Installer l'extension `Power Platform Build Tools` | `Project Collection Administrators` | 10.2 |
+| [ ] | Activer l'option de téléchargement des NuGets dans Visual Studio | Administrateur local | 10.3 |
+| [ ] | Télécharger les cinq packages NuGet de compilation | Administrateur local | 10.3 |
+| [ ] | **Relever les versions plateforme et application** | Aucun | 10.3 |
+| [ ] | Créer le flux Azure Artifacts `FinOpsNuGet` | `Project Collection Administrators` | 9.4 |
+| [ ] | Publier les cinq packages dans le flux | `Contributors` du flux | 9.4 |
+| [ ] | Créer `BuildPipeline/nuget.config` | `Contributors` | 9.5 |
+| [ ] | Créer `BuildPipeline/packages.config` avec les versions relevées | `Contributors` | 9.5 |
+| [ ] | Enregistrer `Microsoft.DevOpsInfrastructure` sur la Subscription | `Owner` ou `Contributor` Azure | 9.6.2 |
+| [ ] | Enregistrer `Microsoft.DevCenter` sur la Subscription | `Owner` ou `Contributor` Azure | 9.6.2 |
+| [ ] | Vérifier la permission `Administrator` ou `Creator` sur les pools d'agents | `Project Administrators` | 9.6.2 |
+| [ ] | Créer le dev center et son projet | `Contributor` Azure | 9.6.3 |
+| [ ] | Créer le Managed DevOps Pool | `DevOps Infrastructure Contributor` au minimum | 9.6.3 |
+| [ ] | **Sélectionner une image Windows incluant Visual Studio** | Idem | 9.6.3 |
+| [ ] | Vérifier l'apparition du pool dans `Agent pools` d'Azure DevOps | `Project Administrators` | 9.6.4 |
+| [ ] | Vérifier que l'alerte de budget Azure couvre la consommation du pool | `Cost Management Contributor` | 9.6.5 |
+| [ ] | Installer l'interface en ligne de commande `pac` | Administrateur local | 9.7 |
+| [ ] | Créer le principal de service et relever les trois valeurs | `System administrator` dans l'environnement | 9.7 |
+| [ ] | Créer la connexion de service `Power Platform` | `Project Administrators` | 9.7 |
+| [ ] | Créer le groupe de variables et marquer le secret comme secret | `Contributors` | 9.8 |
+| [ ] | Créer le fichier `BuildPipeline/ci-build.yml` et adapter les six valeurs | `Contributors` | 9.8 |
+| [ ] | Créer le pipeline à partir du fichier YAML existant | `Contributors` | 9.8 |
+| [ ] | Autoriser l'accès aux ressources à la première exécution | `Contributors` | 9.9 |
+| [ ] | Obtenir une exécution réussie de l'étage de compilation | `Contributors` | 9.9 |
+| [ ] | Obtenir une exécution réussie de l'étage de déploiement | `Contributors` | 9.9 |
+| [ ] | **Vérifier la présence de la personnalisation dans l'application** | Licence Dynamics 365 | 9.9 |
 
-### 11.10 Clôture
+### 12.10 Phase 9, accès à la base de données
 
 | Fait | Action | Rôle requis | Section |
 | :-- | :-- | :-- | :-- |
-| [ ] | Noter les dates d'expiration des essais dans un agenda | Aucun | 13.1 |
-| [ ] | Vérifier que l'alerte de budget Azure est active | `Cost Management Contributor` ou équivalent | 13.2 |
-| [ ] | Vérifier qu'un archivage récent existe dans Azure DevOps | `Contributors` | 8.10 |
-| [ ] | Dérouler la checklist thématique de l'annexe C | Variable | 12 |
-| [ ] | **Signaler tout point de blocage rencontré à contact@archia365.fr** | Aucun | 15 |
+| [ ] | Demander les identifiants SQL depuis `Tools` > `SQL Credentials for Dynamics 365 FinOps` | `System administrator` dans l'environnement | 10.2 |
+| [ ] | Saisir un motif d'accès explicite | Idem | 10.2 |
+| [ ] | Vérifier la plage d'adresses IPv4 proposée | Idem | 10.2 |
+| [ ] | Copier les identifiants et noter la date d'expiration | Idem | 10.2 |
+| [ ] | Se connecter depuis SSMS en authentification SQL Server | Aucun rôle supplémentaire | 10.3 |
+| [ ] | Renseigner `Connect to database` dans les propriétés de connexion | Aucun | 10.3 |
+| [ ] | Exécuter une requête de lecture pour valider l'accès | Aucun | 10.3 |
 
-## 12. Annexe C : Checklist thématique de validation
+### 12.11 Clôture
+
+| Fait | Action | Rôle requis | Section |
+| :-- | :-- | :-- | :-- |
+| [ ] | Noter les dates d'expiration des essais dans un agenda | Aucun | 14.1 |
+| [ ] | Vérifier que l'alerte de budget Azure est active | `Cost Management Contributor` ou équivalent | 14.2 |
+| [ ] | Vérifier que la dernière exécution du pipeline est réussie | `Contributors` | 9.9 |
+| [ ] | Dérouler la checklist thématique de l'annexe C | Variable | 13 |
+| [ ] | **Signaler tout point de blocage rencontré à contact@archia365.fr** | Aucun | 16 |
+
+## 13. Annexe C : Checklist thématique de validation
 
 Cette checklist regroupe les points de contrôle par domaine. Elle complète la checklist séquentielle de l'annexe B, qui suit l'ordre chronologique des opérations.
 
@@ -1648,15 +2206,30 @@ Cette checklist regroupe les points de contrôle par domaine. Elle complète la 
 **Contrôle de source**
 
 - [ ] Organisation Azure DevOps créée avec l'identité du tenant
-- [ ] Projet d'équipe créé en visibilité `Private`
-- [ ] Dépôt configuré, TFVC ou Git selon le choix retenu
-- [ ] Plug-in de contrôle de source sélectionné dans Visual Studio
-- [ ] Connexion établie via `Team Explorer`
-- [ ] Mapping du dossier `Metadata` cohérent avec `Configure Metadata`
-- [ ] Mapping du dossier `Projects` établi
-- [ ] `PackagesLocalDirectory` exclu du contrôle de source
-- [ ] Modèle, fichier descripteur et projet archivés
-- [ ] Fichiers visibles dans le portail Azure DevOps
+- [ ] Organisation connectée à Microsoft Entra ID
+- [ ] Projet d'équipe créé en visibilité `Private`, avec un dépôt `Git`
+- [ ] Dépôt cloné localement dans un chemin court
+- [ ] Structure `BuildPipeline`, `XppMetadata`, `VS_Solutions`, `DataverseSolutions` en place
+- [ ] `Configure Metadata` pointe dans le dépôt
+- [ ] Fichier `.gitignore` en place
+- [ ] `PackagesLocalDirectory` exclu du dépôt
+- [ ] Fichier descripteur du modèle versionné
+- [ ] Premier commit publié et visible dans le portail Azure DevOps
+
+**Intégration continue et déploiement**
+
+- [ ] Extensions `Dynamics 365 Finance and Operations Tools` et `Power Platform Build Tools` installées
+- [ ] Cinq packages NuGet publiés dans le flux Azure Artifacts
+- [ ] `nuget.config` et `packages.config` versionnés, versions cohérentes
+- [ ] Fournisseurs de ressources `Microsoft.DevOpsInfrastructure` et `Microsoft.DevCenter` enregistrés
+- [ ] Managed DevOps Pool créé, avec une image Windows incluant Visual Studio
+- [ ] Pool visible dans les pools d'agents d'Azure DevOps
+- [ ] Principal de service créé, avec le rôle d'administrateur système sur l'environnement
+- [ ] Connexion de service Power Platform créée
+- [ ] Groupe de variables créé, secret client marqué comme secret
+- [ ] Pipeline créé à partir du fichier YAML versionné
+- [ ] Une exécution complète réussie sur les deux étages
+- [ ] Personnalisation visible dans l'application après déploiement
 
 **Développement**
 
@@ -1666,9 +2239,9 @@ Cette checklist regroupe les points de contrôle par domaine. Elle complète la 
 - [ ] Projet créé et compilable
 - [ ] Identifiants SQL obtenus et connexion SSMS validée
 
-## 13. Annexe D : Fin d'essai, coûts et nettoyage
+## 14. Annexe D : Fin d'essai, coûts et nettoyage
 
-### 13.1 Calendrier à anticiper
+### 14.1 Calendrier à anticiper
 
 | Échéance | Élément | Action requise |
 | :-- | :-- | :-- |
@@ -1676,8 +2249,10 @@ Cette checklist regroupe les points de contrôle par domaine. Elle complète la 
 | J+30 | Dynamics 365 Finance Premium | Annulation automatique si l'option a été retenue |
 | J+30 | Crédit Azure | Le crédit expire. La Subscription bascule en paiement à l'usage |
 | J+90 | Visual Studio Professional | Acquérir une licence, ou basculer sur Visual Studio Community |
+| Continu | Managed DevOps Pool | Chaque exécution du pipeline consomme de la puissance de calcul facturée. Surveiller via l'alerte de budget |
+| Selon la politique du tenant | Secret client du principal de service | Régénérer avant expiration, sous peine d'échec de l'étage de déploiement |
 
-### 13.2 Surveiller les coûts
+### 14.2 Surveiller les coûts
 
 **Étape 1.** Dans le portail Azure, ouvrez `Cost Management + Billing` (Gestion des coûts et facturation).
 
@@ -1687,23 +2262,27 @@ Cette checklist regroupe les points de contrôle par domaine. Elle complète la 
 
 La consommation liée au `Billing plan` du Power Platform apparaît sous la Subscription et le `Resource group` déclarés.
 
-### 13.3 Démanteler proprement l'environnement
+### 14.3 Démanteler proprement l'environnement
 
 Lorsque l'environnement n'est plus nécessaire, procédez dans cet ordre :
 
 1. **Supprimer l'environnement** : PPAC > `Manage` > `Environments`, sélection, puis `Delete` (Supprimer). Cette action stoppe la consommation de capacité.
 2. **Supprimer le Billing plan** : PPAC > `Licensing` > `Pay-as-you-go plans`, sélection, puis suppression.
-3. **Supprimer le Resource group** dans le portail Azure.
-4. **Annuler les abonnements** dans le Microsoft 365 Admin Center, `Billing` (Facturation) > `Your products` (Vos produits).
-5. **Annuler la Subscription Azure** si elle n'a plus d'usage, via `Subscriptions` > sélection > `Cancel subscription` (Annuler l'abonnement).
+3. **Supprimer le Managed DevOps Pool** dans le portail Azure. C'est lui qui consomme de la puissance de calcul à chaque exécution du pipeline.
+4. **Supprimer le dev center et son projet** s'ils n'ont plus d'usage.
+5. **Supprimer le Resource group** dans le portail Azure.
+6. **Annuler les abonnements** dans le Microsoft 365 Admin Center, `Billing` (Facturation) > `Your products` (Vos produits).
+7. **Annuler la Subscription Azure** si elle n'a plus d'usage, via `Subscriptions` > sélection > `Cancel subscription` (Annuler l'abonnement).
+
+**Ce qui peut être conservé sans coût.** L'organisation Azure DevOps et son dépôt Git restent gratuits dans les limites du niveau de base. Conserver le dépôt après la suppression de l'environnement préserve l'intégralité de votre code et de son historique, pour un coût nul.
 
 Les consommations antérieures à la suppression restent facturables. En revanche, aucun frais nouveau n'est généré ensuite.
 
-### 13.4 Ce qui subsiste
+### 14.4 Ce qui subsiste
 
 Le tenant ne disparaît pas à l'expiration des abonnements. Vous pouvez y revenir ultérieurement pour souscrire de nouvelles licences. Conservez donc soigneusement le nom de domaine et les identifiants administrateur.
 
-## 14. Annexe E : Références officielles
+## 15. Annexe E : Références officielles
 
 - [Lifecycle Services project creation freeze, Microsoft Learn](https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/lifecycle-services/lcs-project-creation-freeze)
 - [Migration of the Lifecycle Services support experience to Power Platform admin center, Microsoft Learn](https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/lifecycle-services/support-migration-to-ppac)
@@ -1716,16 +2295,24 @@ Le tenant ne disparaît pas à l'expiration des abonnements. Vous pouvez y reven
 - [Request credentials to access the D365 product database, Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/developer/unified-experience/finance-operations-product-db-access)
 - [Write, deploy, and debug X++ code, Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/developer/unified-experience/finance-operations-debug)
 - [Avoid charges with your Azure free account, Microsoft Learn](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/avoid-charges-free-account)
-- [Version control, metadata search, and navigation, Microsoft Learn](https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/dev-tools/version-control-metadata-navigation)
 - [X++ in Git, Microsoft Learn](https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/dev-tools/git-intro)
 - [Setting to disable creation of TFVC repositories, notes de version Azure DevOps](https://learn.microsoft.com/en-us/azure/devops/release-notes/2024/sprint-240-update)
 - [No TFVC in new projects, feuille de route Azure DevOps](https://learn.microsoft.com/en-us/azure/devops/release-notes/roadmap/2024/no-tfvc-in-new-projects)
 - [Team Foundation Version Control, documentation Azure DevOps](https://learn.microsoft.com/en-us/azure/devops/repos/tfvc/)
 - [Workflow to write, deploy, debug, and troubleshoot X++ code across multiple environments, Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/developer/unified-experience/finance-operations-innerloop)
+- [Continuous integration and deployment pour finance and operations, Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/developer/unified-experience/finance-operations-pipelines)
+- [Tutorial: Set up a build pipeline for finance and operations apps using Azure DevOps, Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/admin/unified-experience/tutorial-build-pipeline-azure-devops)
+- [Build automation that uses Microsoft-hosted agents and Azure Pipelines, Microsoft Learn](https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/dev-tools/hosted-build-automation)
+- [Create deployable packages in Azure Pipelines, Microsoft Learn](https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/dev-tools/pipeline-create-deployable-package)
+- [Managed DevOps Pools, vue d'ensemble](https://learn.microsoft.com/en-us/azure/devops/managed-devops-pools/overview)
+- [Prerequisites for Managed DevOps Pools](https://learn.microsoft.com/en-us/azure/devops/managed-devops-pools/prerequisites)
+- [Create a Managed DevOps Pool using the Azure portal](https://learn.microsoft.com/en-us/azure/devops/managed-devops-pools/quickstart-azure-portal)
+- [Microsoft Power Platform Build Tools for Azure DevOps](https://learn.microsoft.com/en-us/power-platform/alm/devops-build-tools)
+- [Microsoft Power Platform Build Tools tasks](https://learn.microsoft.com/en-us/power-platform/alm/devops-build-tool-tasks)
 
-## 15. À propos, contact et communauté
+## 16. À propos, contact et communauté
 
-### 15.1 Auteur et éditeur
+### 16.1 Auteur et éditeur
 
 Document rédigé par **Rodrigue YENGO** pour **ARCHIA365** et **ARCHIALEARN**, dans le cadre de la série **Dynamics en 365**.
 
@@ -1735,19 +2322,19 @@ Document rédigé par **Rodrigue YENGO** pour **ARCHIA365** et **ARCHIALEARN**, 
 | Communauté | [Data & AI France Study Group](https://data-day.archifridays.com/) |
 | Contact | contact@archia365.fr |
 
-### 15.2 Data & AI France Study Group
+### 16.2 Data & AI France Study Group
 
 Le **Data & AI France Study Group** est une communauté ouverte, soutenue par **ARCHIA365** et **ARCHIALEARN**, dont l'ambition est de bâtir la plus grande communauté Data francophone. Elle réunit celles et ceux qui souhaitent apprendre, partager et progresser autour des technologies Data et intelligence artificielle, à travers des sessions de formation, des parcours de préparation aux certifications et des événements réguliers.
 
 Cette procédure s'inscrit dans cette démarche de partage : elle est diffusée pour que chacun puisse monter un environnement de développement Dynamics 365 Finance and Operations complet, sans blocage et sans mauvaise surprise de facturation.
 
-### 15.3 Méthode d'élaboration
+### 16.3 Méthode d'élaboration
 
 Ce document a été rédigé puis réécrit à l'issue de **deux déploiements complets menés de bout en bout**, sur deux tenants distincts. Le premier déploiement a servi à établir la séquence des opérations. Le second a permis de la valider, d'en mesurer les durées réelles et d'identifier les points de blocage qui figurent aujourd'hui dans les avertissements et dans l'annexe A.
 
 Contenu vérifié au regard de la documentation Microsoft en vigueur au 25 août 2026. Les interfaces Microsoft évoluant fréquemment, certains libellés peuvent différer légèrement de ceux constatés à l'écran. La logique des étapes, elle, reste inchangée.
 
-### 15.4 Vos retours
+### 16.4 Vos retours
 
 Cette procédure est vivante. Si vous rencontrez un point de blocage, si un libellé a changé, si une étape ne se déroule pas comme décrit, ou si vous souhaitez proposer une amélioration, écrivez-nous à **contact@archia365.fr**.
 
