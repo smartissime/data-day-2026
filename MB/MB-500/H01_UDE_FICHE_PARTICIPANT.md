@@ -493,6 +493,5 @@ Cette dernière étape n'est pas négociable. Un UDE n'a pas de snapshot, pas de
 - Microsoft Learn, [Unified environment types and templates](https://learn.microsoft.com/en-us/power-platform/admin/unified-experience/unified-environment-types-and-templates)
 - Microsoft Learn, [Write, deploy, and debug X++ code](https://learn.microsoft.com/en-us/power-platform/developer/unified-experience/finance-operations-debug)
 - Microsoft Learn, [Inner loop workflow](https://learn.microsoft.com/en-us/power-platform/developer/unified-experience/finance-operations-innerloop)
-- Adrià Ariste Santacreu, [Deploying a UDE using PowerShell](https://ariste.info/dynamics365almguide/deploy-unified-developer-environment-powershell/) et [Connect Visual Studio to your UDE](https://ariste.info/dynamics365almguide/connect-visual-studio-ude/)
 - FastTrack TechTalk, [Unified Development Experience for Finance and Operations](https://www.youtube.com/watch?v=OuEZ1rXkpYY)
 - TechTalk, [Unified Admin Experience for Finance and Operations](https://www.youtube.com/watch?v=24RS5YgXnEc)
