@@ -1,0 +1,36 @@
+PENSE-BETE AZ-104
+
+LAB : Deploy Azure Firewall (Optional)
+DUREE INDICATIVE : 2 h
+
+OBJECTIF DU LAB
+In this lab, you will learn how to deploy an Azure Firewall, configure Application Rules and configure Network Rules.
+
+NOTIONS ET DEFINITIONS
+- Azure Firewall : pare-feu managé et stateful destiné à contrôler les flux réseau centralisés.
+- Firewall Policy : ressource qui centralise les règles et paramètres d’un ou plusieurs pare-feu.
+- Règle réseau : filtre de couche 3 et 4 selon IP, port et protocole.
+- Règle applicative : filtre de couche 7 pour les flux HTTP, HTTPS ou MSSQL, notamment selon le FQDN.
+- DNAT : traduction d’une adresse et d’un port publics vers une destination privée.
+- AzureFirewallSubnet : sous-réseau dédié obligatoire, généralement au minimum /26.
+
+MISE EN OEUVRE
+1. Créer le VNet et le sous-réseau nommé exactement AzureFirewallSubnet.
+2. Déployer Azure Firewall avec une adresse IP publique et une Firewall Policy.
+3. Créer les collections de règles DNAT, réseau et applicatives avec des priorités explicites.
+4. Créer une table de routage avec une route 0.0.0.0/0 pointant vers l’adresse privée du pare-feu, puis l’associer aux sous-réseaux protégés.
+5. Activer les journaux de diagnostic vers Log Analytics et tester les flux.
+
+POINTS A RETENIR POUR L'EXAMEN AZ-104
+- Ordre général de traitement : DNAT, règles réseau, puis règles applicatives.
+- Azure Firewall et NSG sont complémentaires : contrôle centralisé d’un côté, filtrage distribué de l’autre.
+- Les règles applicatives utilisent des FQDN, les règles réseau utilisent principalement IP, ports et protocoles.
+- Ne pas forcer le trafic du sous-réseau AzureFirewallSubnet vers le pare-feu lui-même.
+- Connaître les différences fonctionnelles entre les références Basic, Standard et Premium.
+
+VERIFICATION RAPIDE
+- La ressource est créée dans le bon abonnement, le bon groupe de ressources et la bonne région.
+- Les droits appliqués respectent le principe du moindre privilège.
+- Le fonctionnement est testé et les journaux ou métriques utiles sont consultés.
+- Les ressources de lab inutiles sont supprimées afin d’éviter des coûts.
+
