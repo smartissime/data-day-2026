@@ -1,0 +1,36 @@
+PENSE-BETE AZ-104
+
+LAB : Manage Governance via Azure Policy
+DUREE INDICATIVE : 1 h
+
+OBJECTIF DU LAB
+In this lab, you learn how to implement your organization's governance plans. You learn how Azure policies can ensure operational decisions are enforced across the organization. You learn how to use resource tagging to improve reporting.
+
+NOTIONS ET DEFINITIONS
+- Azure Policy : service qui évalue les ressources par rapport à des règles de gouvernance.
+- Définition : règle individuelle. Initiative : ensemble de définitions de stratégie.
+- Affectation : application d’une définition ou initiative à une étendue. Exemption : dérogation documentée.
+- Effets courants : Audit, Deny, Append, Modify, DeployIfNotExists et Disabled.
+- Balise ou tag : paire clé-valeur utilisée pour classer, rechercher, automatiser ou répartir les coûts.
+- Verrou : CanNotDelete empêche la suppression, ReadOnly empêche la modification et la suppression.
+
+MISE EN OEUVRE
+1. Affecter une stratégie intégrée à un groupe d’administration, abonnement ou groupe de ressources.
+2. Limiter l’exclusion avec notScopes ou créer une exemption justifiée.
+3. Pour Modify ou DeployIfNotExists, configurer l’identité managée et lancer une tâche de remédiation.
+4. Créer une convention de tags, par exemple Environment, CostCenter et Owner.
+5. Ajouter un verrou au niveau approprié, puis tester avec un compte non privilégié.
+
+POINTS A RETENIR POUR L'EXAMEN AZ-104
+- Azure Policy contrôle la conformité, mais n’accorde pas de permissions.
+- RBAC répond à qui peut agir, Policy à ce qui est autorisé ou requis.
+- Les tags ne sont pas automatiquement hérités des groupes de ressources, sauf stratégie spécifique.
+- Un verrou est hérité par les ressources enfants et s’applique même aux propriétaires.
+- Deny bloque les nouvelles opérations non conformes, tandis qu’Audit les signale.
+
+VERIFICATION RAPIDE
+- La ressource est créée dans le bon abonnement, le bon groupe de ressources et la bonne région.
+- Les droits appliqués respectent le principe du moindre privilège.
+- Le fonctionnement est testé et les journaux ou métriques utiles sont consultés.
+- Les ressources de lab inutiles sont supprimées afin d’éviter des coûts.
+
