@@ -1,0 +1,34 @@
+PENSE-BETE AZ-104
+
+LAB : Manage Microsoft Entra ID Identities
+DUREE INDICATIVE : 1 h
+
+OBJECTIF DU LAB
+This is the first in a series of labs for Azure Administrators. In this lab, you learn about users and groups. Users and groups are the basic building blocks for an identity solution.
+
+NOTIONS ET DEFINITIONS
+- Tenant Microsoft Entra : instance dédiée du service d’identité associée à une organisation.
+- Utilisateur membre : identité interne du tenant. Utilisateur invité : identité B2B généralement issue d’un tenant externe.
+- Groupe de sécurité : regroupe des identités afin d’attribuer des accès. Un groupe Microsoft 365 sert aussi à la collaboration.
+- Appartenance affectée : membres ajoutés explicitement. Appartenance dynamique : membres calculés à partir d’une règle et nécessitant une licence adaptée.
+- Réinitialisation de mot de passe en libre-service, ou SSPR : permet aux utilisateurs autorisés de réinitialiser leur mot de passe après vérification.
+
+MISE EN OEUVRE
+1. Créer un utilisateur dans Microsoft Entra ID > Users > New user.
+2. Créer un groupe de sécurité, choisir le type d’appartenance, puis ajouter des membres et éventuellement des propriétaires.
+3. Avec PowerShell Microsoft Graph : New-MgUser, New-MgGroup et New-MgGroupMember.
+4. Vérifier les propriétés Usage location, Job title, Department et Account enabled.
+5. Pour un invité, utiliser New guest user puis envoyer ou copier l’invitation.
+
+POINTS A RETENIR POUR L'EXAMEN AZ-104
+- Un rôle Microsoft Entra administre l’annuaire. Un rôle Azure RBAC autorise l’accès aux ressources Azure : ne pas les confondre.
+- Les groupes imbriqués ne sont pas pris en charge dans tous les scénarios d’autorisation.
+- La suppression d’un utilisateur ne supprime pas nécessairement les ressources qu’il possède.
+- Connaître la différence entre membre, invité, groupe de sécurité et groupe Microsoft 365.
+
+VERIFICATION RAPIDE
+- La ressource est créée dans le bon abonnement, le bon groupe de ressources et la bonne région.
+- Les droits appliqués respectent le principe du moindre privilège.
+- Le fonctionnement est testé et les journaux ou métriques utiles sont consultés.
+- Les ressources de lab inutiles sont supprimées afin d’éviter des coûts.
+
