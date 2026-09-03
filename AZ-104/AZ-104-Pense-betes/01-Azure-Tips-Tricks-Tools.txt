@@ -1,0 +1,34 @@
+PENSE-BETE AZ-104
+
+LAB : Azure Tips, Tricks, and Tools (Optional)
+DUREE INDICATIVE : 1 h
+
+OBJECTIF DU LAB
+Explore Tips, Tricks and tools that will help you while completing labs included in this course.
+
+NOTIONS ET DEFINITIONS
+- Azure Cloud Shell : terminal Bash ou PowerShell accessible depuis le portail. Il utilise une identité Azure et nécessite un stockage persistant pour les fichiers.
+- Azure CLI : outil multiplateforme utilisant des commandes de la forme az groupe action. Le paramètre --query applique une requête JMESPath et -o table améliore la lecture.
+- Azure PowerShell : module Az fondé sur des cmdlets telles que Get-AzResource et New-AzResourceGroup.
+- Azure Resource Graph : moteur de requête rapide pour inventorier des ressources sur plusieurs abonnements.
+- ARM : couche de gestion utilisée par le portail, Azure CLI, PowerShell, les modèles ARM et Bicep.
+
+MISE EN OEUVRE
+1. Se connecter avec az login ou Connect-AzAccount.
+2. Lister les abonnements avec az account list -o table, puis sélectionner le contexte avec az account set --subscription <ID>.
+3. Créer un groupe de ressources avec az group create --name rg-az104-lab --location francecentral.
+4. Rechercher une ressource avec az resource list -g rg-az104-lab -o table.
+5. Dans le portail, utiliser la recherche globale, Cloud Shell, Resource Graph Explorer et l’option Export template.
+
+POINTS A RETENIR POUR L'EXAMEN AZ-104
+- Toujours vérifier l’abonnement actif et la région avant une création.
+- Connaître l’équivalence entre portail, Azure CLI, PowerShell et modèle déclaratif.
+- Savoir lire un ID de ressource : /subscriptions/.../resourceGroups/.../providers/type/name.
+- Attention : la suppression d’un groupe de ressources supprime toutes les ressources qu’il contient.
+
+VERIFICATION RAPIDE
+- La ressource est créée dans le bon abonnement, le bon groupe de ressources et la bonne région.
+- Les droits appliqués respectent le principe du moindre privilège.
+- Le fonctionnement est testé et les journaux ou métriques utiles sont consultés.
+- Les ressources de lab inutiles sont supprimées afin d’éviter des coûts.
+
