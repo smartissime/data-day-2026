@@ -1,0 +1,34 @@
+PENSE-BETE AZ-104
+
+LAB : Manage Azure resources by using Azure Resource Manager Templates
+DUREE INDICATIVE : 1 h
+
+OBJECTIF DU LAB
+In this lab, you learn how to automate resource deployments. You learn about Azure Resource Manager templates and Bicep templates. You learn about the different ways of deploying the templates.
+
+NOTIONS ET DEFINITIONS
+- Infrastructure as Code : description versionnée et reproductible de l’infrastructure.
+- Modèle ARM : fichier JSON déclaratif contenant paramètres, variables, ressources et sorties.
+- Bicep : langage déclaratif Azure plus lisible, compilé en modèle ARM.
+- Déploiement incrémentiel : ajoute ou met à jour les ressources décrites sans supprimer les autres. Le mode Complete peut supprimer les ressources absentes et doit être utilisé avec prudence.
+- Idempotence : plusieurs déploiements du même modèle conduisent au même état cible.
+
+MISE EN OEUVRE
+1. Créer un fichier main.bicep avec les paramètres de nom et de région.
+2. Prévisualiser avec az deployment group what-if -g <RG> -f main.bicep.
+3. Déployer avec az deployment group create -g <RG> -f main.bicep -p storageName=<nom>.
+4. Réutiliser les composants avec des modules Bicep et exposer les valeurs nécessaires dans outputs.
+5. Consulter Deployment history pour diagnostiquer une erreur et exporter un modèle existant comme point de départ.
+
+POINTS A RETENIR POUR L'EXAMEN AZ-104
+- Les paramètres rendent un modèle réutilisable, les variables calculent des valeurs internes et les outputs renvoient des résultats.
+- Les secrets ne doivent pas être placés en clair dans les fichiers de paramètres.
+- Distinguer déploiement au niveau groupe de ressources, abonnement, groupe d’administration et tenant.
+- Les dépendances implicites Bicep sont préférables à dependsOn lorsqu’une référence existe.
+
+VERIFICATION RAPIDE
+- La ressource est créée dans le bon abonnement, le bon groupe de ressources et la bonne région.
+- Les droits appliqués respectent le principe du moindre privilège.
+- Le fonctionnement est testé et les journaux ou métriques utiles sont consultés.
+- Les ressources de lab inutiles sont supprimées afin d’éviter des coûts.
+
