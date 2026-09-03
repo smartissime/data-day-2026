@@ -1,0 +1,35 @@
+PENSE-BETE AZ-104
+
+LAB : On-Prem to Azure Connections (Optional)
+DUREE INDICATIVE : 1,25 h
+
+OBJECTIF DU LAB
+In this lab, you will learn about connecting an on premise device to Azure and use a virtual appliance to create an IPsec VPN.
+
+NOTIONS ET DEFINITIONS
+- VPN site à site : tunnel IPsec/IKE entre un équipement local et une passerelle VPN Azure.
+- VPN Gateway : passerelle managée déployée dans un sous-réseau nommé GatewaySubnet.
+- Local network gateway : représentation Azure du site local, avec adresse IP publique de l’équipement et préfixes locaux.
+- Connection : ressource qui associe les deux passerelles et contient la clé partagée.
+- Appliance virtuelle, ou NVA : machine ou service assurant des fonctions de routage ou de sécurité.
+
+MISE EN OEUVRE
+1. Créer GatewaySubnet sans lui associer de NSG pouvant bloquer le fonctionnement de la passerelle.
+2. Créer une IP publique, une Virtual network gateway de type VPN et une Local network gateway.
+3. Créer la connexion site à site avec une clé prépartagée identique des deux côtés.
+4. Configurer l’équipement ou l’appliance locale avec les paramètres IPsec/IKE compatibles.
+5. Vérifier le statut Connected, les octets entrants et sortants, les routes et les journaux.
+
+POINTS A RETENIR POUR L'EXAMEN AZ-104
+- Les plages locales et Azure ne doivent pas se chevaucher.
+- Route-based VPN est le choix habituel et prend en charge davantage de scénarios que Policy-based.
+- Une modification de taille de GatewaySubnet peut exiger une opération planifiée.
+- Point-to-site connecte un poste individuel, site-to-site connecte des réseaux, VNet-to-VNet relie deux VNets.
+- ExpressRoute utilise une connectivité privée dédiée et n’est pas un VPN Internet.
+
+VERIFICATION RAPIDE
+- La ressource est créée dans le bon abonnement, le bon groupe de ressources et la bonne région.
+- Les droits appliqués respectent le principe du moindre privilège.
+- Le fonctionnement est testé et les journaux ou métriques utiles sont consultés.
+- Les ressources de lab inutiles sont supprimées afin d’éviter des coûts.
+
