@@ -1,0 +1,36 @@
+PENSE-BETE AZ-104
+
+LAB : Implement Network Traffic Management
+DUREE INDICATIVE : 2 h
+
+OBJECTIF DU LAB
+In this lab, you learn how to configure and test a public Load Balancer and an Application Gateway.
+
+NOTIONS ET DEFINITIONS
+- Azure Load Balancer : répartiteur de charge de couche 4 pour les flux TCP et UDP. Il peut être public ou interne.
+- Application Gateway : répartiteur de couche 7 pour HTTP et HTTPS, avec routage selon l’hôte ou le chemin, terminaison TLS et option WAF.
+- Backend pool : ensemble des destinations recevant le trafic.
+- Health probe : test périodique déterminant si une instance peut recevoir du trafic.
+- Frontend IP : adresse exposée par le répartiteur.
+- Session persistence : affinité permettant de maintenir certains clients sur la même destination.
+
+MISE EN OEUVRE
+1. Pour Load Balancer, créer l’IP frontend, le pool backend, la sonde et la règle de répartition.
+2. Associer les interfaces réseau ou le groupe de machines virtuelles au pool backend, puis autoriser le port dans les NSG.
+3. Pour Application Gateway, prévoir un sous-réseau dédié, puis configurer frontend, listener, certificat éventuel, backend, HTTP settings et règle.
+4. Tester la sonde avant d’interpréter un échec de distribution.
+5. Activer les métriques et journaux de diagnostic.
+
+POINTS A RETENIR POUR L'EXAMEN AZ-104
+- Load Balancer ne réalise pas de routage par URL : utiliser Application Gateway pour la couche 7.
+- Une sonde saine dépend aussi du NSG, du service écouté et du chemin HTTP configuré.
+- Standard Load Balancer est sécurisé par défaut : le trafic entrant doit être explicitement autorisé.
+- Application Gateway WAF protège les applications web, tandis qu’Azure Firewall contrôle des flux réseau plus larges.
+- Traffic Manager est global et fondé sur DNS, Front Door est un service global de couche 7.
+
+VERIFICATION RAPIDE
+- La ressource est créée dans le bon abonnement, le bon groupe de ressources et la bonne région.
+- Les droits appliqués respectent le principe du moindre privilège.
+- Le fonctionnement est testé et les journaux ou métriques utiles sont consultés.
+- Les ressources de lab inutiles sont supprimées afin d’éviter des coûts.
+
