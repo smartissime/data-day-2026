@@ -1,0 +1,35 @@
+PENSE-BETE AZ-104
+
+LAB : Implement Virtual Networking
+DUREE INDICATIVE : 1 h
+
+OBJECTIF DU LAB
+This lab is the first of three labs that focuses on virtual networking. In this lab, you learn the basics of virtual networking and subnetting. You learn how to protect your network with network security groups and application security groups. You also learn about DNS zones and records.
+
+NOTIONS ET DEFINITIONS
+- Réseau virtuel, ou VNet : réseau privé logique Azure composé d’un ou plusieurs espaces d’adressage CIDR.
+- Sous-réseau : subdivision d’un VNet. Azure réserve cinq adresses par sous-réseau.
+- NSG : filtre réseau stateful composé de règles entrantes et sortantes avec priorité, source, destination, port, protocole et action.
+- ASG : groupe logique de cartes réseau utilisé comme source ou destination dans une règle NSG.
+- DNS privé Azure : résolution de noms privée via une zone liée à un ou plusieurs VNets. DNS public : publication sur Internet.
+
+MISE EN OEUVRE
+1. Planifier des plages non chevauchantes et créer VNet et sous-réseaux.
+2. Associer un NSG au sous-réseau ou à une interface réseau, puis créer les règles avec une priorité unique entre 100 et 4096.
+3. Créer des ASG pour représenter les rôles applicatifs, puis les référencer dans les règles NSG.
+4. Créer une zone DNS privée, la lier au VNet et ajouter les enregistrements A ou CNAME requis.
+5. Diagnostiquer avec Network Watcher, IP flow verify, NSG diagnostics et effective security rules.
+
+POINTS A RETENIR POUR L'EXAMEN AZ-104
+- Une priorité numérique plus faible est évaluée avant une priorité plus élevée.
+- Les NSG sont stateful : le trafic de réponse d’une connexion autorisée est automatiquement permis.
+- Un VNet ne traverse pas les régions, mais le peering global relie des VNets de régions différentes.
+- Les adresses de VNets pairés ou reliés par VPN ne doivent pas se chevaucher.
+- Private DNS zone et Private Endpoint sont liés mais constituent des ressources distinctes.
+
+VERIFICATION RAPIDE
+- La ressource est créée dans le bon abonnement, le bon groupe de ressources et la bonne région.
+- Les droits appliqués respectent le principe du moindre privilège.
+- Le fonctionnement est testé et les journaux ou métriques utiles sont consultés.
+- Les ressources de lab inutiles sont supprimées afin d’éviter des coûts.
+
