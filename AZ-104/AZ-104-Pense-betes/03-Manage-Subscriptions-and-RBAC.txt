@@ -1,0 +1,34 @@
+PENSE-BETE AZ-104
+
+LAB : Manage Subscriptions and RBAC Entra
+DUREE INDICATIVE : 0,5 h
+
+OBJECTIF DU LAB
+In this lab, you learn about role-based access control. You learn how to use permissions and scopes to control what actions identities can and cannot perform. You also learn how to make subscription management easier using management groups.
+
+NOTIONS ET DEFINITIONS
+- Azure RBAC : système d’autorisation qui détermine qui peut effectuer quelles actions, sur quelles ressources.
+- Attribution de rôle : combinaison d’un principal de sécurité, d’une définition de rôle et d’une étendue.
+- Étendue : groupe d’administration, abonnement, groupe de ressources ou ressource. Les droits sont hérités vers les niveaux inférieurs.
+- Rôles courants : Owner gère les ressources et les accès, Contributor gère les ressources sans attribuer les rôles, Reader consulte, User Access Administrator gère les accès.
+- Groupe d’administration : conteneur de gouvernance situé au-dessus des abonnements.
+
+MISE EN OEUVRE
+1. Dans Access control (IAM), utiliser Check access pour examiner les droits effectifs.
+2. Ajouter une attribution : sélectionner le rôle, le membre et l’étendue minimale nécessaire.
+3. CLI : az role assignment create --assignee <object-id> --role Reader --scope <resource-id>.
+4. Créer une hiérarchie de groupes d’administration, puis y déplacer les abonnements selon la gouvernance voulue.
+5. Appliquer le principe du moindre privilège et préférer l’attribution aux groupes.
+
+POINTS A RETENIR POUR L'EXAMEN AZ-104
+- Deny assignments a priorité sur les autorisations RBAC et ne se gère généralement pas comme un rôle classique.
+- Les autorisations héritées ne se suppriment pas au niveau enfant : il faut modifier l’attribution au niveau parent.
+- Owner et User Access Administrator peuvent attribuer des rôles, Contributor ne le peut pas.
+- Une attribution peut prendre quelques minutes avant d’être effective.
+
+VERIFICATION RAPIDE
+- La ressource est créée dans le bon abonnement, le bon groupe de ressources et la bonne région.
+- Les droits appliqués respectent le principe du moindre privilège.
+- Le fonctionnement est testé et les journaux ou métriques utiles sont consultés.
+- Les ressources de lab inutiles sont supprimées afin d’éviter des coûts.
+
