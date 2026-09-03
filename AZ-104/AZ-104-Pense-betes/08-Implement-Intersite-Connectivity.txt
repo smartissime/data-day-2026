@@ -1,0 +1,35 @@
+PENSE-BETE AZ-104
+
+LAB : Implement Intersite Connectivity
+DUREE INDICATIVE : 1 h
+
+OBJECTIF DU LAB
+In this lab you explore communication between virtual networks. You implement virtual network peering and test connections. You will also create a custom route.
+
+NOTIONS ET DEFINITIONS
+- Peering de VNets : connexion privée à faible latence entre deux réseaux virtuels via le backbone Microsoft.
+- Peering global : peering entre VNets de régions différentes.
+- UDR : route définie par l’utilisateur dans une table de routage.
+- Next hop Virtual appliance : envoie le trafic vers une appliance réseau dont l’adresse IP privée est indiquée.
+- Gateway transit : permet à un VNet pairé d’utiliser la passerelle VPN ou ExpressRoute d’un autre VNet.
+
+MISE EN OEUVRE
+1. Créer le peering dans les deux directions et vérifier que l’état est Connected.
+2. Activer Allow forwarded traffic si une appliance ou un hub transfère le trafic.
+3. Sur le hub, activer Allow gateway transit. Sur le spoke, activer Use remote gateways.
+4. Créer une route personnalisée avec préfixe de destination et type de prochain saut, puis associer la table au sous-réseau.
+5. Tester avec Network Watcher Connection troubleshoot, effective routes et une connexion applicative.
+
+POINTS A RETENIR POUR L'EXAMEN AZ-104
+- Le peering n’est pas transitif : A pairé à B et B pairé à C ne relie pas automatiquement A à C.
+- Les espaces d’adressage pairés ne doivent pas se chevaucher.
+- Une seule passerelle peut être utilisée par un VNet, locale ou distante.
+- Une UDR plus spécifique l’emporte généralement sur une route moins spécifique.
+- Vérifier IP forwarding sur la carte réseau et dans le système de l’appliance.
+
+VERIFICATION RAPIDE
+- La ressource est créée dans le bon abonnement, le bon groupe de ressources et la bonne région.
+- Les droits appliqués respectent le principe du moindre privilège.
+- Le fonctionnement est testé et les journaux ou métriques utiles sont consultés.
+- Les ressources de lab inutiles sont supprimées afin d’éviter des coûts.
+
