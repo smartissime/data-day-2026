@@ -9,7 +9,7 @@
 | Format | 1 journée, 4 parties, 1 lab par compétence du guide d'étude |
 | Supports associés | Deck `AB-730-Archia365-Slides.pptx`, prompteur, banque de questions |
 
----
+
 
 ## 1. Organisation du kit
 
@@ -34,7 +34,7 @@ Structure de chaque lab :
 6. **À noter pour l'examen** : les points que l'examen teste sur cette compétence, formulés comme ils apparaissent dans les questions.
 7. **Question flash** : une question d'entraînement avec sa réponse.
 
----
+
 
 ## 2. Prérequis généraux (à vérifier avant la journée)
 
@@ -86,7 +86,7 @@ Chaque document Word porte en pied de page la mention de propriété intellectue
 * Une **équipe Teams « AB-730 - Session du 18/09/2026 »** est créée par le formateur, avec tous les stagiaires membres et un canal **Général**.
 * Une **réunion Teams de test** de 15 minutes est planifiée dans le calendrier de chaque stagiaire pour le Lab 4.4 (transcription autorisée).
 
----
+
 
 ## 3. Conventions d'écriture des procédures
 
@@ -96,7 +96,7 @@ Chaque document Word porte en pied de page la mention de propriété intellectue
 * Les interfaces Microsoft 365 Copilot évoluent régulièrement : si un libellé diffère légèrement, chercher l'icône ou le menu **Plus d'options** (les trois points `...`) correspondant.
 * Les chronométrages sont indicatifs. Le formateur peut regrouper ou raccourcir les labs selon l'avancement de la journée.
 
----
+
 
 ## 4. Rappel des réflexes examen (à relire avant chaque « À noter pour l'examen »)
 
@@ -107,6 +107,6 @@ Chaque document Word porte en pied de page la mention de propriété intellectue
 5. L'examen ne demande **ni code, ni configuration d'administration** : les réponses « centre d'administration », « Purview pour l'utilisateur », « demander une licence » sont presque toujours des pièges quand une action utilisateur existe.
 
 
----
+
 
 *Propriété intellectuelle : ARCHIA365 ([Société ARCHIA365 à 75008 PARIS - SIREN 990 705 055 | L'Annuaire des Entreprises](https://annuaire-entreprises.data.gouv.fr/entreprise/archia365-990705055)) et ARCHIALEARN. Supports réservés à la formation AB-730 délivrée par ARCHIALEARN. Pour des besoins de formation, nous contacter : contact@archia365.fr*
