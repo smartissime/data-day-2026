@@ -1,0 +1,19 @@
+﻿Nom du compte;Type de relation;Compte parent;Secteur d'activité;Ville;Code postal;Téléphone principal;Site Web;Propriétaire;Description
+Groupe Distelec;Distributeur;;Distribution de matériel électrique;Paris;75012;01 44 00 10 00;www.distelec-groupe.example;Julien Bernard;Accord cadre national avec ARCHIFRIDAYS, 140 agences
+Distelec Sud-Est;Distributeur;Groupe Distelec;Distribution de matériel électrique;Lyon;69007;04 72 00 20 00;www.distelec-groupe.example;Julien Bernard;Agence de Lyon, livre et facture les installateurs de la région
+Vitalis Immobilier;Client;;Promotion immobilière;Lyon;69002;04 78 00 30 00;www.vitalis-immo.example;Sophie Leroy;Maître d'ouvrage du projet Campus Lumière
+Kelvin Ingénierie;Prescripteur;;Bureau d'études;Villeurbanne;69100;04 78 00 40 00;www.kelvin-ing.example;Sophie Leroy;Bureau d'études fluides et électricité
+Atelier Brunel Architectes;Prescripteur;;Architecture;Lyon;69001;04 78 00 50 00;www.atelier-brunel.example;Sophie Leroy;Architecte de Campus Lumière
+Électricité Rhône Services;Client;;Installation électrique;Vénissieux;69200;04 72 00 60 00;www.ers-elec.example;Karim Haddad;Installateur, 85 salariés, titulaire du lot électricité Campus Lumière
+Alpes Élec;Client;;Installation électrique;Grenoble;38000;04 76 00 70 00;www.alpes-elec.example;Karim Haddad;Installateur spécialisé hôtellerie et domotique
+VoltPark Exploitation;Client;;Exploitation de bornes de recharge;Lyon;69003;04 78 00 80 00;www.voltpark.example;Julien Bernard;Exploitant de parkings équipés
+Foncière Arcades;Client;;Foncière commerciale;Marseille;13008;04 91 00 10 00;www.fonciere-arcades.example;Julien Bernard;Propriétaire de centres commerciaux
+Ville de Sainte-Aurore;Client;;Collectivité territoriale;Sainte-Aurore;26000;04 75 00 20 00;www.sainte-aurore.example;Sophie Leroy;Commune de 42 000 habitants, plan bornes de voirie
+Région Rhône-Sud;Client;;Collectivité territoriale;Lyon;69002;04 26 00 30 00;www.rhone-sud.example;Sophie Leroy;Maître d'ouvrage des lycées
+Habitat Rhodanien;Client;;Bailleur et bâtisseur;Valence;26000;04 75 00 40 00;www.habitat-rhodanien.example;Sophie Leroy;Bâtisseur de logements collectifs
+Nexadata;Client;;Centres de données;Vénissieux;69200;04 72 00 50 00;www.nexadata.example;Julien Bernard;Opérateur de centres de données
+Méca-Rhône;Client;;Industrie mécanique;Saint-Étienne;42000;04 77 00 60 00;www.meca-rhone.example;Karim Haddad;Usine de 450 salariés, projet de stockage d'énergie
+Clinique Saint-Roch;Client;;Santé;Lyon;69008;04 78 00 90 00;www.clinique-saint-roch.example;Karim Haddad;Établissement de santé, rénovation TGBT
+Logisud;Client;;Logistique;Saint-Priest;69800;04 72 00 70 00;www.logisud.example;Karim Haddad;Entrepôt logistique de 30 000 m²
+NovaVolt;Concurrent;;Bornes de recharge;Grenoble;38100;04 76 00 80 00;www.novavolt.example;Thomas Petit;Concurrent spécialiste des bornes
+Elektra Systems;Concurrent;;Matériel électrique;Strasbourg;67000;03 88 00 90 00;www.elektra-systems.example;Thomas Petit;Concurrent généraliste TGBT et GTB
