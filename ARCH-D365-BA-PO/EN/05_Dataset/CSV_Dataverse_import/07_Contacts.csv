@@ -1,0 +1,19 @@
+﻿First name;Last name;Account name;Job title;Email;Mobile phone;Role in the scenario
+Marc;Duval;Vitalis Immobilier;Programme director;marc.duval@vitalis-immo.example;06 10 00 00 01;Final decision maker for Campus Lumière
+Inès;Garnier;Kelvin Ingénierie;Power systems engineer;ines.garnier@kelvin-ing.example;06 10 00 00 02;"Source of the trade show lead; joins Vitalis on day 2"
+Hugo;Blanc;Kelvin Ingénierie;Project manager;hugo.blanc@kelvin-ing.example;06 10 00 00 03;Replaces Inès on the project
+Léa;Brunel;Atelier Brunel Architectes;Partner architect;lea.brunel@atelier-brunel.example;06 10 00 00 04;Sensitive to the look of the charging stations
+Paul;Lefèvre;Électricité Rhône Services;Managing director;paul.lefevre@ers-elec.example;06 10 00 00 05;Asks for a 22% discount
+Camille;Girard;Électricité Rhône Services;Estimator;camille.girard@ers-elec.example;06 10 00 00 06;Prepares ERS's estimates
+Sandrine;Morel;Distelec Sud-Est;Branch manager;sandrine.morel@distelec-groupe.example;06 10 00 00 07;Approves delivery terms
+Olivier;Lambert;Groupe Distelec;Purchasing director;olivier.lambert@distelec-groupe.example;06 10 00 00 08;Negotiates the 2027 charging station framework agreement
+Anne;Mercier;Alpes Élec;Managing director;anne.mercier@alpes-elec.example;06 10 00 00 09;Customer of the Hôtel Belvédère deal
+David;Rousseau;VoltPark Exploitation;Technical director;david.rousseau@voltpark.example;06 10 00 00 10;Parking Confluence
+Julie;Faure;Foncière Arcades;Maintenance manager;julie.faure@fonciere-arcades.example;06 10 00 00 11;Les Arcades maintenance contract
+Pierre;Chevalier;Ville de Sainte-Aurore;Technical services director;pierre.chevalier@sainte-aurore.example;06 10 00 00 12;Street charging stations
+Nathalie;Robin;Région Rhône-Sud;Schools project manager;nathalie.robin@rhone-sud.example;06 10 00 00 13;Lycée Ampère
+Éric;Gauthier;Habitat Rhodanien;Technical director;eric.gauthier@habitat-rhodanien.example;06 10 00 00 14;Résidence Les Tilleuls
+Sarah;Lopez;Nexadata;Infrastructure manager;sarah.lopez@nexadata.example;06 10 00 00 15;Data center Vénissieux
+Bruno;Masson;Méca-Rhône;Plant manager;bruno.masson@meca-rhone.example;06 10 00 00 16;Storage project postponed to 2027
+Isabelle;Fabre;Clinique Saint-Roch;Technical services manager;isabelle.fabre@clinique-saint-roch.example;06 10 00 00 17;Main LV switchboard renovation
+Franck;Noël;Logisud;Site director;franck.noel@logisud.example;06 10 00 00 18;Entrepôt Logisud
