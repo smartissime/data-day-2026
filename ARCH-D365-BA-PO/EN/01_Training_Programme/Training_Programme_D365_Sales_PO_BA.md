@@ -30,6 +30,7 @@ By the end of the 2 days, participants will be able to:
 ## Time allocation
 
 ![Allocation of the 14 hours by theme (excluding breaks and lunches)](repartition_temps.png)
+![Image distante](https://data-day.archifridays.com/admin/depot?path=ARCH-D365-BA-PO%2FEN%2F01_Training_Programme&preview=ARCH-D365-BA-PO%2FEN%2F01_Training_Programme%2Frepartition_temps.png)
 
 Allocation of the 14 hours by theme (excluding breaks and lunches)
 
