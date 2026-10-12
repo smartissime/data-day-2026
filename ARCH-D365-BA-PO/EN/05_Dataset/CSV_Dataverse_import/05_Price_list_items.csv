@@ -1,0 +1,19 @@
+﻿Price list;Product ID;Product;Unit;Amount (EUR)
+2026 public price list;DE-TGBT-630;Main low voltage switchboard (TGBT) 630 A;Unit;18500
+Distributor framework price list;DE-TGBT-630;Main low voltage switchboard (TGBT) 630 A;Unit;12580
+Project price list;DE-TGBT-630;Main low voltage switchboard (TGBT) 630 A;Unit;15725
+2026 public price list;DE-TD-250;Distribution board 250 A;Unit;4200
+Distributor framework price list;DE-TD-250;Distribution board 250 A;Unit;2856
+Project price list;DE-TD-250;Distribution board 250 A;Unit;3570
+2026 public price list;GTB-SUP-MB;Multi-building BMS monitoring pack;Unit;48000
+Distributor framework price list;GTB-SUP-MB;Multi-building BMS monitoring pack;Unit;32640
+Project price list;GTB-SUP-MB;Multi-building BMS monitoring pack;Unit;40800
+2026 public price list;ME-BRN-2X22;Dual charging station 2 x 22 kW;Unit;2900
+Distributor framework price list;ME-BRN-2X22;Dual charging station 2 x 22 kW;Unit;1972
+Project price list;ME-BRN-2X22;Dual charging station 2 x 22 kW;Unit;2465
+2026 public price list;SV-MES-J;On-site commissioning;Day;950
+Distributor framework price list;SV-MES-J;On-site commissioning;Day;646
+Project price list;SV-MES-J;On-site commissioning;Day;807.50
+2026 public price list;SV-MNT-BRN;Charging station maintenance contract;Station per year;180
+Distributor framework price list;SV-MNT-BRN;Charging station maintenance contract;Station per year;122.40
+Project price list;SV-MNT-BRN;Charging station maintenance contract;Station per year;153
