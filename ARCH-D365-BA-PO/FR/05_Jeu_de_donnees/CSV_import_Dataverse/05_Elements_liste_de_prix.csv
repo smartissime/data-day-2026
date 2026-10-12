@@ -1,0 +1,19 @@
+﻿Liste de prix;ID de produit;Produit;Unité;Montant (EUR)
+Tarif public 2026;DE-TGBT-630;Tableau général basse tension (TGBT) 630 A;Unité;18500
+Tarif accord cadre distributeurs;DE-TGBT-630;Tableau général basse tension (TGBT) 630 A;Unité;12580
+Tarif projets;DE-TGBT-630;Tableau général basse tension (TGBT) 630 A;Unité;15725
+Tarif public 2026;DE-TD-250;Tableau divisionnaire 250 A;Unité;4200
+Tarif accord cadre distributeurs;DE-TD-250;Tableau divisionnaire 250 A;Unité;2856
+Tarif projets;DE-TD-250;Tableau divisionnaire 250 A;Unité;3570
+Tarif public 2026;GTB-SUP-MB;Pack supervision GTB multi-bâtiments;Unité;48000
+Tarif accord cadre distributeurs;GTB-SUP-MB;Pack supervision GTB multi-bâtiments;Unité;32640
+Tarif projets;GTB-SUP-MB;Pack supervision GTB multi-bâtiments;Unité;40800
+Tarif public 2026;ME-BRN-2X22;Borne de recharge double 2 x 22 kW;Unité;2900
+Tarif accord cadre distributeurs;ME-BRN-2X22;Borne de recharge double 2 x 22 kW;Unité;1972
+Tarif projets;ME-BRN-2X22;Borne de recharge double 2 x 22 kW;Unité;2465
+Tarif public 2026;SV-MES-J;Mise en service sur site;Jour;950
+Tarif accord cadre distributeurs;SV-MES-J;Mise en service sur site;Jour;646
+Tarif projets;SV-MES-J;Mise en service sur site;Jour;807,50
+Tarif public 2026;SV-MNT-BRN;Contrat de maintenance borne;Borne et an;180
+Tarif accord cadre distributeurs;SV-MNT-BRN;Contrat de maintenance borne;Borne et an;122,40
+Tarif projets;SV-MNT-BRN;Contrat de maintenance borne;Borne et an;153
