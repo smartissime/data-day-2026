@@ -1,0 +1,19 @@
+﻿Prénom;Nom;Nom du compte;Fonction;Adresse e-mail;Téléphone mobile;Rôle dans le scénario
+Marc;Duval;Vitalis Immobilier;Directeur de programmes;marc.duval@vitalis-immo.example;06 10 00 00 01;Décideur final de Campus Lumière
+Inès;Garnier;Kelvin Ingénierie;Ingénieure courant fort;ines.garnier@kelvin-ing.example;06 10 00 00 02;"Source du lead salon ; rejoint Vitalis au jour 2"
+Hugo;Blanc;Kelvin Ingénierie;Chef de projet;hugo.blanc@kelvin-ing.example;06 10 00 00 03;Remplace Inès sur le projet
+Léa;Brunel;Atelier Brunel Architectes;Architecte associée;lea.brunel@atelier-brunel.example;06 10 00 00 04;Sensible à l'esthétique des bornes
+Paul;Lefèvre;Électricité Rhône Services;Gérant;paul.lefevre@ers-elec.example;06 10 00 00 05;Demande 22 % de remise
+Camille;Girard;Électricité Rhône Services;Chargée d'études;camille.girard@ers-elec.example;06 10 00 00 06;Prépare les chiffrages d'ERS
+Sandrine;Morel;Distelec Sud-Est;Responsable d'agence;sandrine.morel@distelec-groupe.example;06 10 00 00 07;Valide les conditions de livraison
+Olivier;Lambert;Groupe Distelec;Directeur des achats;olivier.lambert@distelec-groupe.example;06 10 00 00 08;Négocie l'accord cadre bornes 2027
+Anne;Mercier;Alpes Élec;Gérante;anne.mercier@alpes-elec.example;06 10 00 00 09;Cliente de l'affaire Hôtel Belvédère
+David;Rousseau;VoltPark Exploitation;Directeur technique;david.rousseau@voltpark.example;06 10 00 00 10;Parking Confluence
+Julie;Faure;Foncière Arcades;Responsable maintenance;julie.faure@fonciere-arcades.example;06 10 00 00 11;Contrat de maintenance Les Arcades
+Pierre;Chevalier;Ville de Sainte-Aurore;Directeur des services techniques;pierre.chevalier@sainte-aurore.example;06 10 00 00 12;Bornes de voirie
+Nathalie;Robin;Région Rhône-Sud;Cheffe de projet lycées;nathalie.robin@rhone-sud.example;06 10 00 00 13;Lycée Ampère
+Éric;Gauthier;Habitat Rhodanien;Directeur technique;eric.gauthier@habitat-rhodanien.example;06 10 00 00 14;Résidence Les Tilleuls
+Sarah;Lopez;Nexadata;Responsable infrastructures;sarah.lopez@nexadata.example;06 10 00 00 15;Data center Vénissieux
+Bruno;Masson;Méca-Rhône;Directeur d'usine;bruno.masson@meca-rhone.example;06 10 00 00 16;Projet stockage reporté à 2027
+Isabelle;Fabre;Clinique Saint-Roch;Responsable des services techniques;isabelle.fabre@clinique-saint-roch.example;06 10 00 00 17;Rénovation TGBT
+Franck;Noël;Logisud;Directeur de site;franck.noel@logisud.example;06 10 00 00 18;Entrepôt Logisud
