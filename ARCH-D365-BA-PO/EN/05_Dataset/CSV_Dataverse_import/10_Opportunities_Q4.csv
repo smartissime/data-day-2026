@@ -1,0 +1,13 @@
+﻿Topic;Potential customer;Owner;Process stage;Est. revenue (EUR);Probability (%);Forecast category;Est. close date
+Entrepôt Logisud, power distribution;Électricité Rhône Services;Karim Haddad;Won;140000;100;Won;14/10/2026
+Hôtel Belvédère, home automation;Alpes Élec;Karim Haddad;Won;62000;100;Won;22/10/2026
+Parking Confluence, 40 charging stations;VoltPark Exploitation;Julien Bernard;Close;125000;90;Committed;05/11/2026
+Centre commercial Les Arcades, 3-year maintenance;Foncière Arcades;Julien Bernard;Close;76000;80;Committed;15/11/2026
+Charging station framework agreement 2027;Groupe Distelec;Julien Bernard;Close;410000;80;Committed;30/11/2026
+Ville de Sainte-Aurore, street charging stations;Ville de Sainte-Aurore;Sophie Leroy;Propose;88000;60;Best case;28/11/2026
+Lycée Ampère, building management system;Région Rhône-Sud;Sophie Leroy;Propose;180000;50;Best case;10/12/2026
+Campus Lumière, electrical package;Vitalis Immobilier;Sophie Leroy;Propose;344000;60;Best case;15/12/2026
+Clinique Saint-Roch, main LV switchboard renovation;Électricité Rhône Services;Karim Haddad;Develop;95000;40;Pipeline;20/12/2026
+Résidence Les Tilleuls, 120 homes;Habitat Rhodanien;Sophie Leroy;Qualify;210000;20;Pipeline;18/12/2026
+Data center Vénissieux, main LV switchboard;Nexadata;Julien Bernard;Develop;290000;30;Pipeline;22/12/2026
+Usine Méca-Rhône, energy storage;Méca-Rhône;Karim Haddad;Develop;150000;30;Omitted;31/12/2026
