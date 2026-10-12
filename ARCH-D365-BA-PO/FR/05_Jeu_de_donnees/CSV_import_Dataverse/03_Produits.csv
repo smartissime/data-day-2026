@@ -1,0 +1,7 @@
+﻿ID de produit;Nom;Famille de produits;Groupe d'unités;Unité par défaut;Prix catalogue (EUR)
+DE-TGBT-630;Tableau général basse tension (TGBT) 630 A;Distribution d'énergie;Matériel;Unité;18500
+DE-TD-250;Tableau divisionnaire 250 A;Distribution d'énergie;Matériel;Unité;4200
+GTB-SUP-MB;Pack supervision GTB multi-bâtiments;Gestion du bâtiment;Matériel;Unité;48000
+ME-BRN-2X22;Borne de recharge double 2 x 22 kW;Mobilité électrique;Matériel;Unité;2900
+SV-MES-J;Mise en service sur site;Services;Services;Jour;950
+SV-MNT-BRN;Contrat de maintenance borne;Services;Contrats;Borne et an;180
