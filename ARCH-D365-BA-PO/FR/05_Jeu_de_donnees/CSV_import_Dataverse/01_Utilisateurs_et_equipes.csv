@@ -1,0 +1,10 @@
+﻿Prénom;Nom;Fonction;Unité commerciale;Rôle de sécurité;Responsable;Équipe
+Claire;Martin;Directrice commerciale France;Direction commerciale France (Paris);Responsable commercial;;Direction commerciale
+Julien;Bernard;Key Account Manager distribution;Direction commerciale France (Paris);Commercial;Claire Martin;Grands comptes distribution (canal Diffuse)
+Sophie;Leroy;Chargée d'affaires prescription;Région Sud-Est;Commercial;Claire Martin;Prescription et projets (canal Project)
+Karim;Haddad;Commercial terrain installateurs;Région Sud-Est;Commercial;Claire Martin;Terrain installateurs (canal Diffuse)
+Nadia;Benali;Chargée marketing;Siège ARCHIFRIDAYS (Obernai);Responsable marketing;Claire Martin;Marketing
+Émilie;Roux;Responsable ADV;Siège ARCHIFRIDAYS (Obernai);Commercial (lecture devis et commandes);Claire Martin;Administration des ventes
+Lucas;Fontaine;Inside sales;Direction commerciale France (Paris);Commercial;Claire Martin;Inside sales
+Anna;Becker;Key Account Manager DACH;ARCHIFRIDAYS Deutschland (Blieskastel);Commercial;Claire Martin;Grands comptes DACH, bureau de Frankfurt (canal Diffuse)
+Thomas;Petit;Product Owner CRM;Siège ARCHIFRIDAYS (Obernai);Personnalisateur système;;Direction des systèmes d'information
