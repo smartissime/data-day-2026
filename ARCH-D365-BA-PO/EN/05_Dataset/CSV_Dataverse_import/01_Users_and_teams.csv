@@ -1,0 +1,10 @@
+﻿First name;Last name;Job title;Business unit;Security role;Owner;Team
+Claire;Martin;Sales Director France;France sales management (Paris);Sales Manager;;Sales management
+Julien;Bernard;Distribution Key Account Manager;France sales management (Paris);Salesperson;Claire Martin;Distribution key accounts (Diffuse channel)
+Sophie;Leroy;Specification project manager;South-East region;Salesperson;Claire Martin;Specification and projects (Project channel)
+Karim;Haddad;Installer field sales representative;South-East region;Salesperson;Claire Martin;Installer field sales (Diffuse channel)
+Nadia;Benali;Marketing officer;ARCHIFRIDAYS headquarters (Obernai);Marketing Manager;Claire Martin;Marketing
+Émilie;Roux;Sales administration manager;ARCHIFRIDAYS headquarters (Obernai);Salesperson (read quotes and orders);Claire Martin;Sales administration
+Lucas;Fontaine;Inside sales;France sales management (Paris);Salesperson;Claire Martin;Inside sales
+Anna;Becker;DACH Key Account Manager;ARCHIFRIDAYS Deutschland (Blieskastel);Salesperson;Claire Martin;DACH key accounts, Frankfurt office (Diffuse channel)
+Thomas;Petit;CRM Product Owner;ARCHIFRIDAYS headquarters (Obernai);System Customizer;;IT department
