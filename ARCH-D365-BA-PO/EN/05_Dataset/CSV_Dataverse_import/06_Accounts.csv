@@ -1,0 +1,19 @@
+﻿Account name;Relationship type;Parent account;Industry;City;ZIP/Postal code;Main phone;Website;Owner;Description
+Groupe Distelec;Distributor;;Electrical equipment distribution;Paris;75012;01 44 00 10 00;www.distelec-groupe.example;Julien Bernard;National framework agreement with ARCHIFRIDAYS, 140 branches
+Distelec Sud-Est;Distributor;Groupe Distelec;Electrical equipment distribution;Lyon;69007;04 72 00 20 00;www.distelec-groupe.example;Julien Bernard;Lyon branch, delivers to and invoices installers in the region
+Vitalis Immobilier;Customer;;Property development;Lyon;69002;04 78 00 30 00;www.vitalis-immo.example;Sophie Leroy;Project owner of Campus Lumière
+Kelvin Ingénierie;Specifier;;Engineering consultancy;Villeurbanne;69100;04 78 00 40 00;www.kelvin-ing.example;Sophie Leroy;MEP and electrical engineering consultancy
+Atelier Brunel Architectes;Specifier;;Architecture;Lyon;69001;04 78 00 50 00;www.atelier-brunel.example;Sophie Leroy;Architect of Campus Lumière
+Électricité Rhône Services;Customer;;Electrical installation;Vénissieux;69200;04 72 00 60 00;www.ers-elec.example;Karim Haddad;Installer, 85 employees, holder of the Campus Lumière electrical package
+Alpes Élec;Customer;;Electrical installation;Grenoble;38000;04 76 00 70 00;www.alpes-elec.example;Karim Haddad;Installer specialised in hotels and home automation
+VoltPark Exploitation;Customer;;Charging station operation;Lyon;69003;04 78 00 80 00;www.voltpark.example;Julien Bernard;Operator of equipped car parks
+Foncière Arcades;Customer;;Retail property company;Marseille;13008;04 91 00 10 00;www.fonciere-arcades.example;Julien Bernard;Owner of shopping centres
+Ville de Sainte-Aurore;Customer;;Local authority;Sainte-Aurore;26000;04 75 00 20 00;www.sainte-aurore.example;Sophie Leroy;Town of 42,000 inhabitants, street charging plan
+Région Rhône-Sud;Customer;;Local authority;Lyon;69002;04 26 00 30 00;www.rhone-sud.example;Sophie Leroy;Project owner for schools
+Habitat Rhodanien;Customer;;Social landlord and builder;Valence;26000;04 75 00 40 00;www.habitat-rhodanien.example;Sophie Leroy;Builder of apartment buildings
+Nexadata;Customer;;Data centres;Vénissieux;69200;04 72 00 50 00;www.nexadata.example;Julien Bernard;Data centre operator
+Méca-Rhône;Customer;;Mechanical engineering industry;Saint-Étienne;42000;04 77 00 60 00;www.meca-rhone.example;Karim Haddad;Plant with 450 employees, energy storage project
+Clinique Saint-Roch;Customer;;Healthcare;Lyon;69008;04 78 00 90 00;www.clinique-saint-roch.example;Karim Haddad;Healthcare facility, main LV switchboard renovation
+Logisud;Customer;;Logistics;Saint-Priest;69800;04 72 00 70 00;www.logisud.example;Karim Haddad;30,000 m² logistics warehouse
+NovaVolt;Competitor;;Charging stations;Grenoble;38100;04 76 00 80 00;www.novavolt.example;Thomas Petit;Charging station specialist competitor
+Elektra Systems;Competitor;;Electrical equipment;Strasbourg;67000;03 88 00 90 00;www.elektra-systems.example;Thomas Petit;Generalist competitor, switchboards and BMS
